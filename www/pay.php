@@ -46,7 +46,7 @@
 //    }
     $receive_addr = SBTCP_RECEIVE_ADDR;
 
-    $sql =  "REPLACE INTO invoices ".
+    $sql =  "REPLACE INTO orders ".
             "(oid, total, email, desc, status, btc_usd, tot_usd, tot_btc, address) ".
             "VALUES ".
             "(:oid, :total, :email, :desc, :status, :btc_usd, :tot_usd, :tot_btc, :address);";

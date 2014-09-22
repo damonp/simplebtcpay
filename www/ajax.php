@@ -36,7 +36,7 @@ error_log('vars.post: '. print_r($vars,true));
         case('check_receipt'):
             $balance = $api->getAddressBalance($addr, SBTCP_MIN_CONFIRMATIONS);
 
-            $sql =  "SELECT * FROM invoices WHERE oid = :oid";
+            $sql =  "SELECT * FROM orders WHERE oid = :oid";
             $qry = $db->prepare($sql);
             $qry->bindValue(':oid', $oid);
             $qry->execute();
