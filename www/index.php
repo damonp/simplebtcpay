@@ -10,6 +10,7 @@
                          'oid'      => FILTER_SANITIZE_STRING,
                          'odesc'    => FILTER_SANITIZE_STRING,
                          'oemail'   => FILTER_SANITIZE_STRING,
+                         'act'      => FILTER_SANITIZE_STRING,
                         );
        extract(filter_input_array(INPUT_GET, $filters));
     }
@@ -21,7 +22,21 @@
     $oid = $oid ? $oid:rand_id();
 
     include('header.inc.php');
+
+    $error = false;
+    switch($act)    {
+        case('error.minimum'):
+            $error = "Minimum Payment is: 0.001 BTC.";
+        break;
+    }
+
+    if($error):
 ?>
+<div id="error">
+<?php echo $error; ?>
+</div>
+
+<?php endif; ?>
 
 <div id="orderform">
 <form action="./pay.php" method="post" id="orderform" name="orderform" onclick="return submit_form();">

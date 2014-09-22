@@ -1,6 +1,6 @@
 <?php
 
-    function complete_order()
+    function complete_order($oid=null)
     {
         //- processes to run once payment is received
         //- updated DB, download link, send email etc.

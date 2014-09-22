@@ -12,6 +12,7 @@ div#invoice     {   padding: .75em; margin: .5em auto; width:250px; text-align:c
 div#button      {   padding:1em;   }
 div#results     {   padding:.25em; display:block; height:50px; width:200px; text-align:center;font-family: monospace;    }
 div#loading     {   padding:.75em;   }
+div#error       {   padding:.75em; color:crimson;font-weight: bold;    }
 .invrow         {   clear:both; text-align: left;     }
 .invhead,.invitem   { font-family: monospace; }
 .invhead        {   width:50px;font-weight:bold;float:left;margin:auto;text-align: left;     }

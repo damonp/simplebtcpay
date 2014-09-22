@@ -4,47 +4,47 @@
 
     //- prefer _POSTed variables
     if(count($_POST) > 0)   {
-        $filters = array(
-                         'tot_btc'  => FILTER_SANITIZE_STRING,
-                         'tot_usd'  => FILTER_SANITIZE_STRING,
-                         'oid'      => FILTER_SANITIZE_STRING,
-                         'odesc'    => FILTER_SANITIZE_STRING,
-                         'oemail'   => FILTER_SANITIZE_STRING,
-                         'act'      => FILTER_SANITIZE_STRING,
-                        );
-        extract(filter_input_array(INPUT_POST, $filters));
+      $filters = array(
+                       'tot_btc'  => FILTER_SANITIZE_STRING,
+                       'tot_usd'  => FILTER_SANITIZE_STRING,
+                       'oid'      => FILTER_SANITIZE_STRING,
+                       'odesc'    => FILTER_SANITIZE_STRING,
+                       'oemail'   => FILTER_SANITIZE_STRING,
+                       'act'      => FILTER_SANITIZE_STRING,
+                      );
+      extract(filter_input_array(INPUT_POST, $filters));
     }   elseif(count($_GET) > 0)   {
     //- but accept in _GET if _POST empty
-        $filters = array(
-                         'tot_btc'  => FILTER_SANITIZE_STRING,
-                         'tot_usd'  => FILTER_SANITIZE_STRING,
-                         'oid'      => FILTER_SANITIZE_STRING,
-                         'odesc'    => FILTER_SANITIZE_STRING,
-                         'oemail'   => FILTER_SANITIZE_STRING,
-                         'act'      => FILTER_SANITIZE_STRING,
-                        );
-        extract(filter_input_array(INPUT_GET, $filters));
-    }
-
-    //= if both neither is set we can't do anything
-    if($tot_usd <= 0  && $tot_btc <= 0) {
-        header('Location: ./index.php');
-        return;
+      $filters = array(
+                       'tot_btc'  => FILTER_SANITIZE_STRING,
+                       'tot_usd'  => FILTER_SANITIZE_STRING,
+                       'oid'      => FILTER_SANITIZE_STRING,
+                       'odesc'    => FILTER_SANITIZE_STRING,
+                       'oemail'   => FILTER_SANITIZE_STRING,
+                       'act'      => FILTER_SANITIZE_STRING,
+                      );
+      extract(filter_input_array(INPUT_GET, $filters));
     }
 
     include('main.inc.php');
 
-    if(!$receive_addr = $api->getReceiveAddress())   {
-        $receive_addr = SBTCP_RECEIVE_ADDR;
-        error_log('Invalid Receive Address. Defaulting to main address.');
-    }
-//    $receive_addr = SBTCP_RECEIVE_ADDR;
-
     if($tot_usd > 0)    {
-        $amt = $tot_usd / $exch_rate;
+        $total = $tot_usd / $exch_rate;
     }   else    {
-        $amt = $tot_btc;
+        $total = $tot_btc;
     }
+
+    if($total < 0.001)  {
+      header('Location: ./index.php?act=error.minimum');
+      return false;
+    }
+
+
+//    if(!$receive_addr = $api->getReceiveAddress())   {
+//        $receive_addr = SBTCP_RECEIVE_ADDR;
+//        error_log('Invalid Receive Address. Defaulting to main address.');
+//    }
+    $receive_addr = SBTCP_RECEIVE_ADDR;
 
     $sql =  "REPLACE INTO invoices ".
             "(oid, total, email, desc, status, btc_usd, tot_usd, tot_btc, address) ".
@@ -54,7 +54,7 @@
     $qry = $db->prepare($sql);
     $vars = array(
                   ':oid'    => $oid,
-                  ':total'  => round($amt, 8),
+                  ':total'  => round($total, 8),
                   ':email'  => $oemail,
                   ':desc'   => $odesc,
                   ':status' => 'PENDING',
@@ -78,11 +78,11 @@
 
 <div id="orderform">
 <?php if($receive_addr): ?>
-<h3 class="">Send <?php echo round($amt, 8); ?> BTC <?php if($tot_usd > 0) echo '($'.number_format($tot_usd, 2).') '; ?>to:</h3>
+<h3 class="">Send <?php echo round($total, 8); ?> BTC <?php if($tot_usd > 0) echo '($'.number_format($tot_usd, 2).') '; ?>to:</h3>
 
-<?php echo '<img src="./qr.php?addr='.$receive_addr.'&amount='.$amt.'&orderid='.$oid.'" width="264" height="264" class="qrcode">'."\n"; ?>
+<?php echo '<img src="./qr.php?addr='.$receive_addr.'&amount='.$total.'&orderid='.$oid.'" width="264" height="264" class="qrcode">'."\n"; ?>
 <div style="padding:.5em;">
-<?php echo '<a href="bitcoin:'.$receive_addr.'?amount='.$amt.'&label='.$oid.'" title="">'.$receive_addr.'</a>'."\n";  ?>
+<?php echo '<a href="bitcoin:'.$receive_addr.'?amount='.$total.'&label='.$oid.'" title="">'.$receive_addr.'</a>'."\n";  ?>
 </div>
 
 <?php if($oid != '' || $odesc != ''): ?>

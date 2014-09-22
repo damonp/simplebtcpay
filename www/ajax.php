@@ -30,11 +30,11 @@ error_log('vars.post: '. print_r($vars,true));
 
     switch($act)  {
         case('balance'):
-            $balance = $api->getAddressBalance($addr);
+            $balance = $api->getAddressBalance($addr, SBTCP_MIN_CONFIRMATIONS);
             $out = array("return"=>true,"balance"=>number_format(($balance/100000000), 8));
         break;
         case('check_receipt'):
-            $balance = $api->getAddressBalance($addr);
+            $balance = $api->getAddressBalance($addr, SBTCP_MIN_CONFIRMATIONS);
 
             $sql =  "SELECT * FROM invoices WHERE oid = :oid";
             $qry = $db->prepare($sql);
@@ -46,7 +46,7 @@ error_log('vars.post: '. print_r($vars,true));
             if(floatval($balance) <= $total) {
                 $out = array("return"=>false,"message"=>"Funds Not Received");
             }   else    {
-                $message = complete_order();
+                $message = complete_order($oid);
                 $out = array("return"=>true,"balance"=>number_format(($balance/100000000), 8),'message'=>$message);
             }
         break;
