@@ -1,0 +1,25 @@
+
+
+body            {   text-align: center; background-color: #eee; }
+p,td,th,div     {   font-family: Verdana, Arial Sans-serif; font-size:13px; }
+a, a:visited    {   color: blue; text-decoration: none; }
+a:hover         {   color: #999;    }
+a.smgray,div.smgray a       {   color: #666;    }
+div#main        {   margin: 1em auto; padding: 8px; width: 400px; text-align: center; border: 1px solid #bbb; background-color: #fff;  }
+div#orderform   {   text-align: center;  }
+h2#exchrate     {   width:100%; text-align: center; color:#666;   }
+div#invoice     {   padding: .75em; margin: .5em auto; width:250px; text-align:center;    }
+div#button      {   padding:1em;   }
+div#results     {   padding:.25em; display:block; height:50px; width:200px; text-align:center;font-family: monospace;    }
+div#loading     {   padding:.75em;   }
+.invrow         {   clear:both; text-align: left;     }
+.invhead,.invitem   { font-family: monospace; }
+.invhead        {   width:50px;font-weight:bold;float:left;margin:auto;text-align: left;     }
+.invitem        {   float:left;    }
+div.footer      {   padding: 2em; color:#666; font-size:.8em;    }
+div.footer a    {   color: #666;    }
+img             {   margin-bottom:1em;    }
+
+fieldset    {   padding: 1em; margin: .5em auto;width:300px; display:inline-block; font-size:.9em; text-align:left; color: #000; border: 1px solid #999;background:#fff; }
+label       {   float:left; width:45%; display:inline-block; padding:.25em .25em; margin: 0 .25em; text-align:right; font-weight:bold;color: #666; }
+legend      {   font-size:1.2em; padding: 0.2em 0.5em; font-weight: bold; color:#666;   }
