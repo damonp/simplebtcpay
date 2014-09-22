@@ -5,7 +5,10 @@
     if(count($_GET) > 0)   {
         $filters = array(
                          'act'  => FILTER_SANITIZE_STRING,
-                         'addr' => FILTER_SANITIZE_STRING
+                         'addr' => FILTER_SANITIZE_STRING,
+                         'amt'  => FILTER_SANITIZE_STRING,
+                         'hash' => FILTER_SANITIZE_STRING,
+                         'oid'  => FILTER_SANITIZE_STRING,
                         );
         extract(filter_input_array(INPUT_GET, $filters));
     }
@@ -28,15 +31,32 @@ error_log('vars.post: '. print_r($vars,true));
     switch($act)  {
         case('balance'):
             $balance = $api->getAddressBalance($addr);
-            $out = array("return"=>true,"balance"=>$balance);
+            $out = array("return"=>true,"balance"=>number_format(($balance/100000000), 8));
         break;
         case('check_receipt'):
             $balance = $api->getAddressBalance($addr);
-            if(floatval($balance) <= 0) {
+
+            $sql =  "SELECT * FROM invoices WHERE oid = :oid";
+            $qry = $db->prepare($sql);
+            $qry->bindValue(':oid', $oid);
+            $qry->execute();
+            $res = $qry->fetch(PDO::FETCH_OBJ);
+            $total = round(floatval($res->total), 8);
+
+            if(floatval($balance) <= $total) {
                 $out = array("return"=>false,"message"=>"Funds Not Received");
             }   else    {
-                $out = array("return"=>true,"balance"=>$balance);
+                $message = complete_order();
+                $out = array("return"=>true,"balance"=>number_format(($balance/100000000), 8),'message'=>$message);
             }
+        break;
+        case('history'):
+            $data = $api->getAddressHistory($addr);
+            $out = array("return"=>true,"history"=>$data);
+        break;
+        case('transaction'):
+            $data = $api->getTransaction($hash);
+            $out = array("return"=>true,"transaction"=>$data);
         break;
         default:
             $out = array("return"=>false,"message"=>"404: Not Found");

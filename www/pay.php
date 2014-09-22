@@ -34,10 +34,11 @@
 
     include('main.inc.php');
 
-//    if(!$receive_addr = $api->getReceiveAddress())   {
-//        error_log('Invalid Receive Address.');
-//    }
-    $receive_addr = SBTCP_RECEIVE_ADDR;
+    if(!$receive_addr = $api->getReceiveAddress())   {
+        $receive_addr = SBTCP_RECEIVE_ADDR;
+        error_log('Invalid Receive Address. Defaulting to main address.');
+    }
+//    $receive_addr = SBTCP_RECEIVE_ADDR;
 
     if($tot_usd > 0)    {
         $amt = $tot_usd / $exch_rate;
@@ -45,22 +46,25 @@
         $amt = $tot_btc;
     }
 
-    $amt = round($amt, 8);
-
-    $sql =  "REPLACE INTO invoices (oid, total, email, desc, status, btc_usd, tot_usd, tot_btc) ".
-            "VALUES (:oid, :total, :email, :desc, 'PENDING', :btc_usd, :tot_usd, :tot_btc) ";
+    $sql =  "REPLACE INTO invoices ".
+            "(oid, total, email, desc, status, btc_usd, tot_usd, tot_btc, address) ".
+            "VALUES ".
+            "(:oid, :total, :email, :desc, :status, :btc_usd, :tot_usd, :tot_btc, :address);";
 
     $qry = $db->prepare($sql);
     $vars = array(
                   ':oid'    => $oid,
-                  ':total'  => $amt,
+                  ':total'  => round($amt, 8),
                   ':email'  => $oemail,
                   ':desc'   => $odesc,
-                  ':btc_usd'=> $exch_rate,
-                  ':tot_usd'=> $tot_usd,
-                  ':tot_btc'=> $tot_btc
+                  ':status' => 'PENDING',
+                  ':btc_usd'=> round($exch_rate, 2),
+                  ':tot_usd'=> round($tot_usd, 2),
+                  ':tot_btc'=> round($tot_btc, 8),
+                  ':address'=> $receive_addr
                   );
 
+    //error_log('vars: '. print_r($vars,true));
     foreach($vars as $key => $val)  {
       $qry->bindValue($key, $val);
     }
@@ -135,7 +139,7 @@ $( "#receipt" ).click(function() {
           if(!json.return)  {
             $("#results").html(json.message);
           } else  {
-            $("#results").html('Balance: '+json.balance);
+            $("#results").html('Balance: '+json.balance+'<br />'+json.message);
           }
         }
       });

@@ -10,6 +10,11 @@ class API {
         //return $this->curl('http://blockexplorer.com/q/getreceivedbyaddress/'.$address.'/'.$confirmations);
     }
 
+    public function getAddressHistory($address)
+    {
+        return $this->curl('http://blockchain.info/rawaddr/'.$address);
+    }
+
     public function getCurrentPrice()
     {
         $ticker = $this->curl('https://api.bitcoinaverage.com/ticker/global/USD/');
@@ -35,6 +40,11 @@ class API {
         }   else    {
             return false;
         }
+    }
+
+    public function getTransaction($hash)
+    {
+        return $this->curl('http://blockchain.info/rawtx/'.$hash);
     }
 
     public function curl($url, $payload=null)
