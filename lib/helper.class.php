@@ -28,18 +28,7 @@ class Helper {
 
         $message = ('<a href="http://simplebtcpay.com/download.php">Download File</a>');
 
-        try {
-            $sql = "UPDATE orders SET `status` = 'COMPLETE' WHERE `oid` = :oid";
-            $qry = Helper::$db->prepare($sql);
-            $qry->bindValue(':oid', $oid);
-            $qry->execute();
-        }  catch (PDOException $e) {
-            error_log('error: '. print_r($e->getMessage(),true));
-            error_log('FILE: '. print_r(__FILE__,true));
-            error_log('LINE: '. print_r(__LINE__,true));
-            error_log('_REQUEST: '. print_r($_REQUEST,true));
-            error_log('oid: '. print_r($oid,true));
-        }
+        Helper::update_order($oid, 'status', 'CONFIRM');
 
         Helper::order_email_admin($oid);
         Helper::order_email_user($oid);
@@ -93,5 +82,22 @@ class Helper {
         $rand_id = strrev(str_replace("/", "", $rand_id));
 
         return substr($rand_id, 0, $length);
+    }
+
+    public static function update_order($oid, $key, $val)
+    {
+        try {
+            $sql = "UPDATE orders SET `".$key."` = :val WHERE `oid` = :oid";
+            $qry = Helper::$db->prepare($sql);
+            $qry->bindValue(':oid', $oid);
+            $qry->bindValue(':val', $val);
+            return $qry->execute();
+        }  catch (PDOException $e) {
+            error_log('error: '. print_r($e->getMessage(),true));
+            error_log('FILE: '. print_r(__FILE__,true));
+            error_log('LINE: '. print_r(__LINE__,true));
+            error_log('_REQUEST: '. print_r($_REQUEST,true));
+            error_log('oid: '. print_r($oid,true));
+        }
     }
 }

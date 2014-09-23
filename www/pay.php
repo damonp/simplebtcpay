@@ -47,7 +47,7 @@
 
     $secret = Helper::rand_id(13);
 
-    if(!$receive_addr = $api->get_receive_address(SBTCP_RECEIVE_ADDR, $secret))   {
+    if(!$receive_addr = $api->get_receive_address(SBTCP_RECEIVE_ADDR, $secret, $oid))   {
         $receive_addr = SBTCP_RECEIVE_ADDR;
         error_log('Invalid Receive Address. Defaulting to main address. Disable at:');
         error_log('FILE: '. print_r(__FILE__,true));

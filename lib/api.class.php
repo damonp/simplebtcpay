@@ -45,10 +45,9 @@ class API {
         }
     }
 
-    public function get_receive_address($address=null, $secret=null)
+    public function get_receive_address($address=null, $secret=null, $oid=null)
     {
         if(!$address)   $address = SBTCP_RECEIVE_ADDR;
-        $callback_url = SBTCP_CALLBACK_URL;
 
         if(array_key_exists('sbtcp_fwd_addr_t_stamp', $_SESSION) && 
                 $_SESSION['sbtcp_fwd_addr_t_stamp'] > (SBTCP_GLOBAL_TIMESTAMP - 600))  {
@@ -56,8 +55,14 @@ class API {
         }
 
         try {
-            $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.$callback_url);
-            //echo '<pre>'.print_r($response, true)."</pre>\n";
+            $url_params = array(
+                                'oid'       => $oid,
+                                'secret'    => $secret
+                                );
+            $callback_url = SBTCP_CALLBACK_URL.'?'.http_build_query($url_params);
+            $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.urlencode($callback_url));
+            echo '<pre>'.print_r($response, true)."</pre>\n";
+            error_log('get_receive_address.response: '. print_r($response,true));
 
             //- could check output == SBTP_RECEIVE_ADDR for security
             if($response && property_exists($response, 'input_address'))   {

@@ -26,7 +26,7 @@ $vars = filter_input_array(INPUT_POST, $filters);
 error_log('vars.post: '. print_r($vars,true));
     }
 
-    include('../lib/main.inc.php');
+    include('main.inc.php');
 
     switch($act)  {
         case('balance'):
@@ -36,7 +36,17 @@ error_log('vars.post: '. print_r($vars,true));
         case('check_receipt'):
             $total = $balance = 0;
             $balance = $api->get_address_balance($addr, SBTCP_MIN_CONFIRMATIONS);
+            $history = $api->get_address_history($addr);
+            $receipt_address = $history->txs[0]->out[0]->addr;
+            $final_balance = $history->final_balance;
+            $total_received = $history->total_received;
+            $total_sent = $history->total_sent;
+
 error_log('check_receipt.balance: '. print_r($balance,true));
+error_log('check_receipt.history: '. print_r($history,true));
+//error_log('check_receipt.history.addr: '. print_r($history->txs[0]->out[0]->addr,true));
+error_log('receipt_address: '. print_r($receipt_address,true));
+
             try {
 
                 $order = Helper::get_order($oid);
@@ -47,13 +57,21 @@ error_log('order: '. print_r($order,true));
                 error_log('FILE: '. print_r(__FILE__,true));
                 error_log('LINE: '. print_r(__LINE__,true));
             }
-error_log('total: '. print_r($total,true));
 
-            if($total <= 0 || floatval($balance) <= $total) {
-                $out = array("return"=>false,"message"=>"Transaction Not Found");
-            }   else    {
+error_log('total: '. print_r($total,true));
+            if($receipt_address != SBTCP_RECEIVE_ADDR)  {
+                $out = array("return"=>false,"message"=>"Transaction Not Found","history"=>$history);
+                error_log('receipt_address does not match SBTCP_RECEIVE_ADDR');
+                error_log('receipt_address: '. print_r($receipt_address,true));
+                error_log('SBTCP_RECEIVE_ADDR: '. print_r(SBTCP_RECEIVE_ADDR,true));
+            }   else if($total_sent == $total_received && $final_balance == 0 && $total_sent <= $total) {
+                $message = Helper::complete_order($oid);
+                $out = array("return"=>true,"balance"=>number_format($total_sent, 8),'message'=>$message);
+            }   else if($balance > 0 && $balance <= $total) {
                 $message = Helper::complete_order($oid);
                 $out = array("return"=>true,"balance"=>number_format($balance, 8),'message'=>$message);
+            }   else    {
+                $out = array("return"=>false,"message"=>"Transaction Not Found","history"=>$history);
             }
         break;
         case('history'):
