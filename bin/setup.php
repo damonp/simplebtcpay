@@ -24,7 +24,7 @@ CREATE TABLE callbacks (
   `input_address` varchar(50),
   `secret` varchar(50),
   `oid` varchar(20),
-  `value` numeric,
+  `total` numeric,
   `confirmations` integer,
   `t_stamp` integer,
   `last_update` varchar,
