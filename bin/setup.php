@@ -26,7 +26,6 @@ CREATE TABLE callbacks (
   `oid` varchar(20),
   `total` numeric,
   `confirmations` integer,
-  `t_stamp` integer,
   `last_update` varchar,
   `transaction_hash` varchar(100),
   `destination_address` varchar(100) DEFAULT(null),
