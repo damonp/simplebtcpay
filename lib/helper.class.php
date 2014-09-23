@@ -23,15 +23,18 @@ class Helper {
         //- processes to run once payment is received
         //- updated DB, download link, send email etc.
 
-        $history = Helper::$api->get_address_history($order->address);
+        //$history = Helper::$api->get_address_history($order->address);
         //error_log('complete_order.history: '. print_r($history,true));
 
         $message = ('<a href="http://simplebtcpay.com/download.php">Download File</a>');
 
-        Helper::update_order($oid, 'status', 'COMPLETE');
+        //- don't process status update and emails
+        if($order->status != 'COMPLETE')    {
+            Helper::update_order($oid, 'status', 'COMPLETE');
 
-        Helper::order_email_admin($oid);
-        Helper::order_email_user($oid);
+            Helper::order_email_admin($oid);
+            Helper::order_email_user($oid);
+        }
 
         return $message;
     }
@@ -50,8 +53,8 @@ class Helper {
         $qry = Helper::$db->prepare($sql);
         $qry->bindValue(':oid', $oid);
         $qry->execute();
-        $res = $qry->fetch(PDO::FETCH_OBJ);
-        return $res;
+
+        return $qry->fetch(PDO::FETCH_OBJ);
     }
 
     public static function order_email_admin($oid)
@@ -61,7 +64,8 @@ class Helper {
         $balance = Helper::$api->get_address_balance($order->address);
         $msg .= 'Balance:'.print_r($balance, true)."\n";
         if(defined('SBTCP_CALLBACK'))   $msg .= "\nCALLBACK = true\n";
-        $res = Helper::send_email($msg, 'SBTCP:Order Completed', SBTCP_EMAIL_ADMIN);
+
+        return Helper::send_email($msg, 'SBTCP:Order Completed', SBTCP_EMAIL_ADMIN);
     }
 
     public static function order_email_user($oid)
@@ -72,7 +76,8 @@ class Helper {
         $msg = 'Order:'.print_r($order, true)."\n";
         $balance = Helper::$api->get_address_balance($order->address);
         $msg .= 'Balance:'.print_r($balance, true)."\n";
-        $res = Helper::send_email($msg, 'Order Completed', $order->email);
+
+        return Helper::send_email($msg, 'Order Completed', $order->email);
     }
 
     public static function rand_id($length=6)

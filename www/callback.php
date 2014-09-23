@@ -31,7 +31,7 @@
                      'input_transaction_hash'=> FILTER_SANITIZE_STRING,
                     );
    extract(filter_input_array(INPUT_GET, $filters));
-error_log('_REQUEST: '. print_r($_REQUEST,true));
+   //error_log('_REQUEST: '. print_r($_REQUEST,true));
 
    $value = round($value / 100000000, 8);
 
@@ -62,8 +62,8 @@ error_log('_REQUEST: '. print_r($_REQUEST,true));
          $qry->bindValue($key, $val);
       }
 
-      error_log('callback.sql: '. print_r($sql,true));
-      error_log('callback.vars: '. print_r($vars,true));
+      //error_log('callback.sql: '. print_r($sql,true));
+      //error_log('callback.vars: '. print_r($vars,true));
       $qry->execute();
 
    }  catch (PDOException $e) {
@@ -82,27 +82,28 @@ error_log('_REQUEST: '. print_r($_REQUEST,true));
    }
 
    $order = Helper::get_order($oid);
-   $history = Helper::$api->get_address_history($address);
+   $history = Helper::$api->get_address_history($input_address);
+
    $received_address = $history->txs[0]->out[0]->addr;
    $final_balance = $history->final_balance;
    $total_received = $history->total_received;
    $total_sent = $history->total_sent;
 error_log('callback.order: '. print_r($order,true));
-error_log('callback.history: '. print_r($history,true));
+//error_log('callback.history: '. print_r($history,true));
 error_log('callback.history.received_address: '. print_r($received_address,true));
 
    if ($destination_address != '' && $destination_address != SBTCP_RECEIVE_ADDR) {
-      error_log('Incorrect Destination Address');
+      error_log('Incorrect Destination Address: '.$destination_address);
       return false;
    }
 
    if ($received_address != '' && $received_address != SBTCP_RECEIVE_ADDR) {
-      error_log('Incorrect Receiving Address');
+      error_log('Incorrect Receiving Address: '.$received_address);
       return false;
    }
 
    if ($secret != $order->secret) {
-      error_log('Invalid Secret');
+      error_log('Invalid Secret: '.$secret);
       return false;
    }
 
@@ -113,23 +114,12 @@ error_log('callback.history.received_address: '. print_r($received_address,true)
          $message = Helper::complete_order($oid);
          return true;
       }
-
-      //Add the invoice to the database
-      //$result = mysql_query("replace INTO order_payments (invoice_id, transaction_hash, value) values($invoice_id, '$transaction_hash', $value_in_btc)");
-
-      //Delete from pending
-      //mysql_query("delete from pending_invoice_payments where invoice_id = $invoice_id limit 1");
-
-      //if($result) {
-      //   return json_encode(array('return'=>'true', 'message'=>$result));
-      //}
    } else {
-      //Waiting for confirmations
-      //create a pending payment entry
-     // mysql_query("replace INTO pending_invoice_payments (invoice_id, transaction_hash, value) values($invoice_id, '$transaction_hash', $value_in_btc)");
-
-      //return json_encode(array('return'=>'false', 'error'=>'Waiting for confirmations. ('.$confirmations.'/'.MIN_CONFIRMATIONS.')'));
       Helper::update_order($oid, 'status', 'CONFIRM');
       error_log('Waiting for Confirmations: '.$oid.' ('.$confirmations.'/'.SBTCP_MIN_CONFIRMATIONS.')');
       return false;
    }
+
+   return false;
+
+   
