@@ -9,7 +9,7 @@
                          'tot_usd'  => FILTER_SANITIZE_STRING,
                          'oid'      => FILTER_SANITIZE_STRING,
                          'odesc'    => FILTER_SANITIZE_STRING,
-                         'oemail'   => FILTER_SANITIZE_STRING,
+                         'oemail'   => FILTER_SANITIZE_STRING, //- filter email
                          'act'      => FILTER_SANITIZE_STRING,
                         );
        extract(filter_input_array(INPUT_GET, $filters));
@@ -45,9 +45,12 @@
 
 <fieldset style="width:94%;margin-right:15px;">
 <legend>BTCPay</legend>
+
+<?php if($oid != 'false'): ?>
 <label for="oid">Invoice ID:</label>
 <input type="text" name="oid" value="<?php echo $oid;?>" size="8" style="text-align:right;" />
 <br /><br />
+<?php endif; ?>
 
 <label for="tot_btc">Total BTC:</label>
 <input type="text" name="tot_btc" value="<?php echo $tot_btc;?>" size="8" style="text-align:right;" /> <b>BTC</b>
@@ -58,14 +61,18 @@
 <input type="text" name="tot_usd" value="<?php echo $tot_usd;?>" size="8" style="text-align:right;" /> <b>USD</b>
 <br /><br />
 
+<?php if($oemail != 'false'): ?>
 <label for="oemail">Email:</label>
 <input type="text" name="oemail" value="<?php echo $oemail;?>" size="20" style="text-align:left;" />
 <br /><br />
+<?php endif; ?>
 
+<?php if($odesc != 'false'): ?>
 <label for="odesc">Description:</label>
 <textarea name="odesc" rows="3" cols="20"><?php echo $odesc;?></textarea>
-
 <br /><br />
+<?php endif; ?>
+
 <label for="submit"></label>
 <button type="submit" name="submit" id="submit" >Submit</button>
 

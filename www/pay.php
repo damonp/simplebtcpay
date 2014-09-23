@@ -28,9 +28,11 @@
 
     include('main.inc.php');
 
-    if($tot_usd > 0)    {
-        $total = $tot_usd / $exch_rate;
+    if($tot_btc > 0)    {
+        $total = $tot_btc;
+        $tot_usd = round($tot_btc * $exch_rate, 2);
     }   else    {
+        $tot_btc = round($tot_usd / $exch_rate, 8);
         $total = $tot_btc;
     }
 
@@ -39,38 +41,55 @@
       return false;
     }
 
+    if($oid == '')  {
+        $oid = rand_id();
+    }
 
-//    if(!$receive_addr = $api->getReceiveAddress())   {
+    $secret = rand_id(13);
+
+
+//    if(!$receive_addr = $api->getReceiveAddress(SBTCP_RECEIVE_ADDR, $secret))   {
 //        $receive_addr = SBTCP_RECEIVE_ADDR;
 //        error_log('Invalid Receive Address. Defaulting to main address.');
 //    }
     $receive_addr = SBTCP_RECEIVE_ADDR;
 
-    $sql =  "REPLACE INTO orders ".
-            "(oid, total, email, desc, status, btc_usd, tot_usd, tot_btc, address) ".
-            "VALUES ".
-            "(:oid, :total, :email, :desc, :status, :btc_usd, :tot_usd, :tot_btc, :address);";
+    try {
+        $sql =  "REPLACE INTO orders ".
+                "(oid, total, email, desc, status, btc_usd, ".
+                "tot_usd, tot_btc, address, secret, t_stamp) ".
+                "VALUES ".
+                "(:oid, :total, :email, :desc, :status, :btc_usd, ".
+                ":tot_usd, :tot_btc, :address, :secret, :t_stamp";
 
-    $qry = $db->prepare($sql);
-    $vars = array(
-                  ':oid'    => $oid,
-                  ':total'  => round($total, 8),
-                  ':email'  => $oemail,
-                  ':desc'   => $odesc,
-                  ':status' => 'PENDING',
-                  ':btc_usd'=> round($exch_rate, 2),
-                  ':tot_usd'=> round($tot_usd, 2),
-                  ':tot_btc'=> round($tot_btc, 8),
-                  ':address'=> $receive_addr
-                  );
+        $qry = $db->prepare($sql);
+        $vars = array(
+                      ':oid'    => $oid,
+                      ':total'  => round($total, 8),
+                      ':email'  => $oemail,
+                      ':desc'   => $odesc,
+                      ':status' => 'PENDING',
+                      ':btc_usd'=> round($exch_rate, 2),
+                      ':tot_usd'=> round($tot_usd, 2),
+                      ':tot_btc'=> round($tot_btc, 8),
+                      ':address'=> $receive_addr,
+                      ':secret' => $secret,
+                      ':t_stamp'=> time()
+                      );
 
-    //error_log('vars: '. print_r($vars,true));
-    foreach($vars as $key => $val)  {
-      $qry->bindValue($key, $val);
+        error_log('vars: '. print_r($vars,true));
+        foreach($vars as $key => $val)  {
+          $qry->bindValue($key, $val);
+        }
+
+        $qry->execute();
+
+    }  catch (PDOException $e) {
+        error_log('error: '. print_r($e->getMessage(),true));
+        error_log('FILE: '. print_r(__FILE__,true));
+        error_log('LINE: '. print_r(__LINE__,true));
     }
 
-    $qry->execute();
-    //error_log('qry: '. print_r($qry->errorInfo(),true));
 
     include('header.inc.php');
 
@@ -132,7 +151,7 @@ $( "#receipt" ).click(function() {
     $("#results" ).show( "slow", function() {
       $("#results").html('<div id="loading"><img src="images/loader.gif" alt="loading" height="20" width="20" align="center" /></div>');
       $.ajax({
-        url: "ajax.php?act=check_receipt&addr=<?php echo $receive_addr;?>",
+        url: "ajax.php?act=check_receipt&addr=<?php echo $receive_addr;?>&oid=<?php echo $oid;?>",
         cache: false,
         success: function(html){
           var json = $.parseJSON(html);

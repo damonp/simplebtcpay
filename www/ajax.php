@@ -36,12 +36,18 @@ error_log('vars.post: '. print_r($vars,true));
         case('check_receipt'):
             $balance = $api->getAddressBalance($addr, SBTCP_MIN_CONFIRMATIONS);
 
-            $sql =  "SELECT * FROM orders WHERE oid = :oid";
-            $qry = $db->prepare($sql);
-            $qry->bindValue(':oid', $oid);
-            $qry->execute();
-            $res = $qry->fetch(PDO::FETCH_OBJ);
-            $total = round(floatval($res->total), 8);
+            try {
+                $sql =  "SELECT * FROM orders WHERE oid = :oid";
+                $qry = $db->prepare($sql);
+                $qry->bindValue(':oid', $oid);
+                $qry->execute();
+                $res = $qry->fetch(PDO::FETCH_OBJ);
+                $total = round(floatval($res->total), 8);
+            }  catch (PDOException $e) {
+                error_log('error: '. print_r($e->getMessage(),true));
+                error_log('FILE: '. print_r(__FILE__,true));
+                error_log('LINE: '. print_r(__LINE__,true));
+            }
 
             if(floatval($balance) <= $total) {
                 $out = array("return"=>false,"message"=>"Funds Not Received");

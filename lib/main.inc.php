@@ -4,6 +4,7 @@
 
     $db = new PDO('sqlite:../data/simplebtcpay.sqlite3') or die("Open DB FAILED!");
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    global $db;
 
     $api = new API();
 
