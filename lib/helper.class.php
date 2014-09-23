@@ -14,11 +14,17 @@ class Helper {
     public static function complete_order($oid)
     {
 
-        //- processes to run once payment is received
-        //- updated DB, download link, send email etc.
+        $order = Helper::get_order($oid);
+        error_log('complete_order.order: '. print_r($order,true));
 
         //- remove cached fwd_addr, oid etc.
         session_unset();
+
+        //- processes to run once payment is received
+        //- updated DB, download link, send email etc.
+
+        $history = Helper::get_address_history($order->address);
+        error_log('complete_order.history: '. print_r($history,true));
 
         $message = ('<a href="http://simplebtcpay.com/download.php">Download File</a>');
 

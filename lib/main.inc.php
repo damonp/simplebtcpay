@@ -10,5 +10,5 @@
 
     $helper = new Helper($db, $api);
 
-    $exch_rate = $api->getCurrentPrice();
+    $exch_rate = $api->get_current_price();
     //error_log('exch_rate: '. print_r($exch_rate,true));

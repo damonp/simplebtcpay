@@ -30,13 +30,13 @@ error_log('vars.post: '. print_r($vars,true));
 
     switch($act)  {
         case('balance'):
-            $balance = $api->getAddressBalance($addr, SBTCP_MIN_CONFIRMATIONS);
+            $balance = $api->get_address_balance($addr, SBTCP_MIN_CONFIRMATIONS);
             $out = array("return"=>true,"balance"=>number_format($balance, 8));
         break;
         case('check_receipt'):
             $total = $balance = 0;
-            $balance = $api->getAddressBalance($addr, SBTCP_MIN_CONFIRMATIONS);
-
+            $balance = $api->get_address_balance($addr, SBTCP_MIN_CONFIRMATIONS);
+error_log('check_receipt.balance: '. print_r($balance,true));
             try {
 
                 $order = Helper::get_order($oid);
@@ -48,7 +48,7 @@ error_log('order: '. print_r($order,true));
                 error_log('LINE: '. print_r(__LINE__,true));
             }
 error_log('total: '. print_r($total,true));
-error_log('balance: '. print_r($balance,true));
+
             if($total <= 0 || floatval($balance) <= $total) {
                 $out = array("return"=>false,"message"=>"Transaction Not Found");
             }   else    {
@@ -57,11 +57,11 @@ error_log('balance: '. print_r($balance,true));
             }
         break;
         case('history'):
-            $data = $api->getAddressHistory($addr);
+            $data = $api->get_address_history($addr);
             $out = array("return"=>true,"history"=>$data);
         break;
         case('transaction'):
-            $data = $api->getTransaction($hash);
+            $data = $api->get_transaction($hash);
             $out = array("return"=>true,"transaction"=>$data);
         break;
         default:

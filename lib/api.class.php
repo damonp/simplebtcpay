@@ -4,7 +4,7 @@ class API {
 
     public $use_24h_avg = false;
 
-    public function getAddressBalance($address, $confirmations=0)
+    public function get_address_balance($address, $confirmations=0)
     {
         try {
             $balance = $this->curl('http://blockchain.info/nl/q/addressbalance/'.$address.'?confirmations='.$confirmations);
@@ -17,7 +17,7 @@ class API {
         }
     }
 
-    public function getAddressHistory($address)
+    public function get_address_history($address)
     {
         try {
             return $this->curl('http://blockchain.info/rawaddr/'.$address);
@@ -28,7 +28,7 @@ class API {
         }
     }
 
-    public function getCurrentPrice()
+    public function get_current_price()
     {
         try {
             $ticker = $this->curl('https://api.bitcoinaverage.com/ticker/global/USD/');
@@ -45,7 +45,7 @@ class API {
         }
     }
 
-    public function getReceiveAddress($address=null, $secret=null)
+    public function get_receive_address($address=null, $secret=null)
     {
         if(!$address)   $address = SBTCP_RECEIVE_ADDR;
         $callback_url = SBTCP_CALLBACK_URL;
@@ -75,7 +75,7 @@ class API {
         }
     }
 
-    public function getTransaction($hash)
+    public function get_transaction($hash)
     {
         try {
             return $this->curl('http://blockchain.info/rawtx/'.$hash);
