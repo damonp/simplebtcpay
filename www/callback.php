@@ -82,7 +82,7 @@ error_log('_REQUEST: '. print_r($_REQUEST,true));
    }
 
    $order = Helper::get_order($oid);
-   $history = Helper::$api->get_address_history($addr);
+   $history = Helper::$api->get_address_history($address);
    $received_address = $history->txs[0]->out[0]->addr;
    $final_balance = $history->final_balance;
    $total_received = $history->total_received;
@@ -92,24 +92,21 @@ error_log('callback.history: '. print_r($history,true));
 error_log('callback.history.received_address: '. print_r($received_address,true));
 
    if ($destination_address != '' && $destination_address != SBTCP_RECEIVE_ADDR) {
-      $error = true;
       error_log('Incorrect Destination Address');
       return false;
    }
 
    if ($received_address != '' && $received_address != SBTCP_RECEIVE_ADDR) {
-      $error = true;
       error_log('Incorrect Receiving Address');
       return false;
    }
 
    if ($secret != $order->secret) {
-      $error = true;
       error_log('Invalid Secret');
       return false;
    }
 
-   if ($confirmations >= SBTCP_MIN_gIRMATIONS)  {
+   if ($confirmations >= SBTCP_MIN_CONFIRMATIONS)  {
       error_log('Update order COMPLETE');
 
       if($total_sent == $total_received && $final_balance == 0 && $total_sent <= $order->total) {
@@ -133,6 +130,6 @@ error_log('callback.history.received_address: '. print_r($received_address,true)
 
       //return json_encode(array('return'=>'false', 'error'=>'Waiting for confirmations. ('.$confirmations.'/'.MIN_CONFIRMATIONS.')'));
       Helper::update_order($oid, 'status', 'CONFIRM');
-      error_log('Waiting for Confirmations: '.$oid);
+      error_log('Waiting for Confirmations: '.$oid.' ('.$confirmations.'/'.SBTCP_MIN_CONFIRMATIONS.')');
       return false;
    }
