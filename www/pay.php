@@ -60,7 +60,7 @@
                 "tot_usd, tot_btc, address, secret, t_stamp) ".
                 "VALUES ".
                 "(:oid, :total, :email, :desc, :status, :btc_usd, ".
-                ":tot_usd, :tot_btc, :address, :secret, :t_stamp";
+                ":tot_usd, :tot_btc, :address, :secret, :t_stamp)";
 
         $qry = $db->prepare($sql);
         $vars = array(
@@ -104,7 +104,6 @@
 <?php echo '<a href="bitcoin:'.$receive_addr.'?amount='.$total.'&label='.$oid.'" title="">'.$receive_addr.'</a>'."\n";  ?>
 </div>
 
-<?php if($oid != '' || $odesc != ''): ?>
 <div id="invoice">
   <?php if($oid != ''): ?>
     <div class="invrow">
@@ -124,8 +123,11 @@
         <div class="invitem"><?php echo $oemail; ?></div>
     </div>
   <?php endif; ?>
+    <div class="invrow">
+        <div class="invhead">Total:</div>
+        <div class="invitem"><?php echo number_format($total, 8); ?> BTC</div>
+    </div>
 </div>
-<?php endif; ?>
 
 <div id="button">
 <button type="submit" name="receipt" id="receipt" >Check Receipt</button>

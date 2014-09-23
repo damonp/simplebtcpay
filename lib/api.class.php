@@ -6,45 +6,76 @@ class API {
 
     public function getAddressBalance($address, $confirmations=0)
     {
-        return $this->curl('http://blockchain.info/nl/q/addressbalance/'.$address.'?confirmations='.$confirmations);
-        //return $this->curl('http://blockexplorer.com/q/getreceivedbyaddress/'.$address.'/'.$confirmations);
+        try {
+            $balance = $this->curl('http://blockchain.info/nl/q/addressbalance/'.$address.'?confirmations='.$confirmations);
+            return $balance/100000000;
+            //return $this->curl('http://blockexplorer.com/q/getreceivedbyaddress/'.$address.'/'.$confirmations);
+        } catch (Exception $e) {
+            error_log('error: '. print_r($e->getMessage(),true));
+            error_log('FILE: '. print_r(__FILE__,true));
+            error_log('LINE: '. print_r(__LINE__,true));
+        }
     }
 
     public function getAddressHistory($address)
     {
-        return $this->curl('http://blockchain.info/rawaddr/'.$address);
+        try {
+            return $this->curl('http://blockchain.info/rawaddr/'.$address);
+        } catch (Exception $e) {
+            error_log('error: '. print_r($e->getMessage(),true));
+            error_log('FILE: '. print_r(__FILE__,true));
+            error_log('LINE: '. print_r(__LINE__,true));
+        }
     }
 
     public function getCurrentPrice()
     {
-        $ticker = $this->curl('https://api.bitcoinaverage.com/ticker/global/USD/');
-        //echo '<pre>'.print_r($ticker, true)."</pre>\n";
+        try {
+            $ticker = $this->curl('https://api.bitcoinaverage.com/ticker/global/USD/');
 
-        if($this->use_24h_avg)    {
-            return $ticker->{'24h_avg'};
-        }   else    {
-            return $ticker->last;
+            if($this->use_24h_avg)    {
+                return $ticker->{'24h_avg'};
+            }   else    {
+                return $ticker->last;
+            }
+        } catch (Exception $e) {
+            error_log('error: '. print_r($e->getMessage(),true));
+            error_log('FILE: '. print_r(__FILE__,true));
+            error_log('LINE: '. print_r(__LINE__,true));
         }
     }
 
-    public function getReceiveAddress($address=null)
+    public function getReceiveAddress($address=null, $secret=null)
     {
         if(!$address)   $address = SBTCP_RECEIVE_ADDR;
         $callback_url = SBTCP_CALLBACK_URL;
 
-        $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.$callback_url);
-//echo '<pre>'.print_r($response, true)."</pre>\n";
+        try {
+            $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.$callback_url);
+            //echo '<pre>'.print_r($response, true)."</pre>\n";
 
-        if($response && property_exists($response, 'input_address'))   {
-            return $response->input_address;
-        }   else    {
-            return false;
+            //- could check output == SBTP_RECEIVE_ADDR for security
+            if($response && property_exists($response, 'input_address'))   {
+                return $response->input_address;
+            }   else    {
+                return false;
+            }
+        } catch (Exception $e) {
+            error_log('error: '. print_r($e->getMessage(),true));
+            error_log('FILE: '. print_r(__FILE__,true));
+            error_log('LINE: '. print_r(__LINE__,true));
         }
     }
 
     public function getTransaction($hash)
     {
-        return $this->curl('http://blockchain.info/rawtx/'.$hash);
+        try {
+            return $this->curl('http://blockchain.info/rawtx/'.$hash);
+        } catch (Exception $e) {
+            error_log('error: '. print_r($e->getMessage(),true));
+            error_log('FILE: '. print_r(__FILE__,true));
+            error_log('LINE: '. print_r(__LINE__,true));
+        }
     }
 
     public function curl($url, $payload=null)
@@ -79,8 +110,14 @@ class API {
         $ch = curl_init();
         curl_setopt_array($ch, $options);
         $response = curl_exec($ch);
+
+        if(curl_errno($ch)){
+            throw new Exception(curl_error($ch));
+        }
+
         $response = json_decode($response);
-error_log('curl.response: '. print_r($response,true));
+        //error_log('curl.response: '. print_r($response,true));
+
         return $response;
     }
 }
