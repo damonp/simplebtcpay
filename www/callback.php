@@ -1,5 +1,6 @@
 <?php
 
+   define('SBTCP_CALLBACK', true);
    include('../lib/config.inc.php');
    include('main.inc.php');
 /*
@@ -23,6 +24,7 @@
                      'secret' => FILTER_SANITIZE_STRING,
                      'oid'    => FILTER_SANITIZE_STRING,
                      'value'  => FILTER_SANITIZE_STRING,
+                     'input_address'      => FILTER_SANITIZE_STRING,
                      'confirmations'      => FILTER_SANITIZE_STRING,
                      'transaction_hash'   => FILTER_SANITIZE_STRING,
                      'destination_address'   => FILTER_SANITIZE_STRING,
@@ -31,15 +33,56 @@
    extract(filter_input_array(INPUT_GET, $filters));
 error_log('_REQUEST: '. print_r($_REQUEST,true));
 
-   $value = $value / 100000000;
-   //- callback should error_log returning json to blockchain won't help us
+   $value = round($value / 100000000, 8);
+
+
+   try {
+      $sql =   "INSERT INTO callbacks ".
+               "( `address`, `input_address`, `secret`, `oid`, `total`, `confirmations`, ".
+               "`transaction_hash`, `destination_address`, `input_transaction_hash`) ".
+               "VALUES ".
+               "(:address, :input_address, :secret, :oid, :total, :confirmations, ".
+               ":transaction_hash, :destination_address, :input_transaction_hash)";
+
+      $vars = array(
+                     ':oid'    => $oid,
+                     ':total'  => $value,
+                     ':secret'   => $secret,
+                     ':address'  => $address,
+                     ':input_address'     => $input_address,
+                     ':confirmations'     => $confirmations,
+                     ':transaction_hash'  => $transaction_hash,
+                     ':destination_address'  => $destination_address,
+                     ':input_transaction_hash'  => $input_transaction_hash
+                  );
+
+      $qry = $db->prepare($sql);
+
+      foreach($vars as $key => $val)  {
+         $qry->bindValue($key, $val);
+      }
+
+      error_log('callback.sql: '. print_r($sql,true));
+      error_log('callback.vars: '. print_r($vars,true));
+      $qry->execute();
+
+   }  catch (PDOException $e) {
+      error_log('error: '. print_r($e->getMessage(),true));
+      error_log('FILE: '. print_r(__FILE__,true));
+      error_log('LINE: '. print_r(__LINE__,true));
+      error_log('_REQUEST: '. print_r($_REQUEST,true));
+      error_log('vars: '. print_r($vars,true));
+      error_log('sql: '. print_r($sql,true));
+   }
+
+
    if ($_GET['test'] == true) {
       echo 'Ignoring Test Callback';
       return;
    }
 
    $order = Helper::get_order($oid);
-   $history = $api->get_address_history($addr);
+   $history = Helper::$api->get_address_history($addr);
    $received_address = $history->txs[0]->out[0]->addr;
    $final_balance = $history->final_balance;
    $total_received = $history->total_received;
@@ -66,7 +109,7 @@ error_log('callback.history.received_address: '. print_r($received_address,true)
       return false;
    }
 
-   if ($confirmations >= SBTCP_MIN_CONFIRMATIONS)  {
+   if ($confirmations >= SBTCP_MIN_gIRMATIONS)  {
       error_log('Update order COMPLETE');
 
       if($total_sent == $total_received && $final_balance == 0 && $total_sent <= $order->total) {
@@ -89,6 +132,7 @@ error_log('callback.history.received_address: '. print_r($received_address,true)
      // mysql_query("replace INTO pending_invoice_payments (invoice_id, transaction_hash, value) values($invoice_id, '$transaction_hash', $value_in_btc)");
 
       //return json_encode(array('return'=>'false', 'error'=>'Waiting for confirmations. ('.$confirmations.'/'.MIN_CONFIRMATIONS.')'));
+      Helper::update_order($oid, 'status', 'CONFIRM');
       error_log('Waiting for Confirmations: '.$oid);
       return false;
    }

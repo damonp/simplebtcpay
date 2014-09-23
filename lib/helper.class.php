@@ -23,12 +23,12 @@ class Helper {
         //- processes to run once payment is received
         //- updated DB, download link, send email etc.
 
-        $history = Helper::get_address_history($order->address);
-        error_log('complete_order.history: '. print_r($history,true));
+        $history = Helper::$api->get_address_history($order->address);
+        //error_log('complete_order.history: '. print_r($history,true));
 
         $message = ('<a href="http://simplebtcpay.com/download.php">Download File</a>');
 
-        Helper::update_order($oid, 'status', 'CONFIRM');
+        Helper::update_order($oid, 'status', 'COMPLETE');
 
         Helper::order_email_admin($oid);
         Helper::order_email_user($oid);
@@ -58,8 +58,9 @@ class Helper {
     {
         $order = Helper::get_order($oid);
         $msg = 'Order:'.print_r($order, true)."\n";
-        $balance = Helper::$api->getAddressBalance($order->address);
+        $balance = Helper::$api->get_address_balance($order->address);
         $msg .= 'Balance:'.print_r($balance, true)."\n";
+        if(defined('SBTCP_CALLBACK'))   $msg .= "\nCALLBACK = true\n";
         $res = Helper::send_email($msg, 'SBTCP:Order Completed', SBTCP_EMAIL_ADMIN);
     }
 
@@ -69,7 +70,7 @@ class Helper {
         if(!$order->email || !filter_var($order->email, FILTER_VALIDATE_EMAIL))  return false;
 
         $msg = 'Order:'.print_r($order, true)."\n";
-        $balance = Helper::$api->getAddressBalance($order->address);
+        $balance = Helper::$api->get_address_balance($order->address);
         $msg .= 'Balance:'.print_r($balance, true)."\n";
         $res = Helper::send_email($msg, 'Order Completed', $order->email);
     }
