@@ -107,7 +107,6 @@ END_SQL;
         if($qry->execute()) echo chr(27)."[01;32m"."OK".chr(27)."[0m\n";
         else    echo chr(27)."[02;31m"."FAILED".chr(27)."[0m\n";
         //echo $sql."\n";
-    }
 
         echo "Creating ".chr(27)."[01;36m"."orders".chr(27)."[0m idx_orders_oid: ";
 
@@ -147,6 +146,7 @@ END_SQL;
         if($qry->execute()) echo chr(27)."[01;32m"."OK".chr(27)."[0m\n";
         else    echo chr(27)."[02;31m"."FAILED".chr(27)."[0m\n";
         //echo $sql."\n";
+    }
 
     echo chr(27)."[01;32m"."Install Complete".chr(27)."[0m\n";
 
