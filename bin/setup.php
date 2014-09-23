@@ -18,16 +18,19 @@
         echo "Creating ".chr(27)."[01;36m"."callbacks".chr(27)."[0m table: ";
 
         $sql = <<< END_SQL
-CREATE TABLE `callbacks` (
-    `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    `address`   TEXT,
-    `secret`    TEXT,
-    `oid`   TEXT,
-    `transaction_hash`  TEXT,
-    `value` NUMERIC,
-    `confirmations` INTEGER,
-    `t_stamp`   INTEGER,
-    `last_update`   TEXT
+CREATE TABLE callbacks (
+  `rowid` integer PRIMARY KEY NOT NULL,
+  `address` varchar(50),
+  `input_address` varchar(50),
+  `secret` varchar(50),
+  `oid` varchar(20),
+  `value` numeric,
+  `confirmations` integer,
+  `t_stamp` integer,
+  `last_update` varchar,
+  `transaction_hash` varchar(100),
+  `destination_address` varchar(100) DEFAULT(null),
+  `input_transaction_hash` varchar(100)
 );
 END_SQL;
 
@@ -84,7 +87,7 @@ END_SQL;
 
         $sql = <<< END_SQL
 CREATE TABLE `orders` (
-    `id`    INTEGER PRIMARY KEY AUTOINCREMENT,
+    `rowid`    INTEGER PRIMARY KEY AUTOINCREMENT,
     `oid`   NUMERIC NOT NULL UNIQUE,
     `total` NUMERIC,
     `email` TEXT,
