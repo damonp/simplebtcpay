@@ -50,12 +50,20 @@ class API {
         if(!$address)   $address = SBTCP_RECEIVE_ADDR;
         $callback_url = SBTCP_CALLBACK_URL;
 
+        if(array_key_exists('sbtcp_fwd_addr_t_stamp', $_SESSION) && 
+                $_SESSION['sbtcp_fwd_addr_t_stamp'] > (SBTCP_GLOBAL_TIMESTAMP - 600))  {
+            return $_SESSION['sbtcp_fwd_addr'];
+        }
+
         try {
             $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.$callback_url);
             //echo '<pre>'.print_r($response, true)."</pre>\n";
 
             //- could check output == SBTP_RECEIVE_ADDR for security
             if($response && property_exists($response, 'input_address'))   {
+                $_SESSION['sbtcp_fwd_addr'] = $response->input_address;
+                $_SESSION['sbtcp_fwd_addr_t_stamp'] = SBTCP_GLOBAL_TIMESTAMP;
+                $_SESSION['sbtcp_fwd_addr_input'] = $address;
                 return $response->input_address;
             }   else    {
                 return false;

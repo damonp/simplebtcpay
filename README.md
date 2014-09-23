@@ -6,10 +6,11 @@ simpleBTCpay provides an easy to setup bitcoin donation / micro-payment interfac
 
 ### Features
 - Simple API driven functionality
+- PDO Sqlite database, easliy ported to other PHP PDO interface.
 - Live BTC/USD quotes from BitcoinAverage.com
 - On-the-fly BTC forwarding addresses generated from [blockchain.io](https://blockchain.info/api/api_receive)
-- Configurable minimum payment amount. [Default: 0.001B (~$0.40)]
 - Only one BTC address needed
+- Configurable minimum payment amount. [Default: 0.001B (~$0.40)]
 
 
 ### Examples

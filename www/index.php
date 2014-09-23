@@ -17,9 +17,9 @@
 
     include('main.inc.php');
 
-    $tot_btc = $tot_btc != '' ? $tot_btc:'0.0';
-    $tot_usd = $tot_usd != '' ? $tot_usd:'0.00';
-    $oid = $oid ? $oid:rand_id();
+    $tot_btc = $tot_btc != '' ? $tot_btc:0.0;
+    $tot_usd = $tot_usd != '' ? $tot_usd:0.50;
+    $oid = $oid ? $oid:Helper::rand_id();
 
     include('header.inc.php');
 
@@ -58,7 +58,7 @@
 <center><em style="font-weight:bold;color:#999;">or</em></center>
 
 <label for="tot_usd">Total USD:</label>
-<input type="text" name="tot_usd" value="<?php echo $tot_usd;?>" size="8" style="text-align:right;" /> <b>USD</b>
+<input type="text" name="tot_usd" value="<?php echo number_format($tot_usd, 2);?>" size="8" style="text-align:right;" /> <b>USD</b>
 <br /><br />
 
 <?php if($oemail != 'false'): ?>

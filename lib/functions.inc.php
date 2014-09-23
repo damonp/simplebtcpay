@@ -15,6 +15,8 @@
             $qry->execute();
         }  catch (PDOException $e) {
             error_log('error: '. print_r($e->getMessage(),true));
+            error_log('_REQUEST: '. print_r($_REQUEST,true));
+            error_log('oid: '. print_r($oid,true));
             error_log('FILE: '. print_r(__FILE__,true));
             error_log('LINE: '. print_r(__LINE__,true));
         }

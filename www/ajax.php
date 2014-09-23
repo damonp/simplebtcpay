@@ -39,15 +39,9 @@ error_log('vars.post: '. print_r($vars,true));
 
             try {
 
-                $sql =  "SELECT * FROM orders WHERE oid = :oid";
-error_log('sql: '. print_r($sql,true));
-error_log('oid: '. print_r($oid,true));
-                $qry = $db->prepare($sql);
-                $qry->bindValue(':oid', $oid);
-                $qry->execute();
-                $res = $qry->fetch(PDO::FETCH_OBJ);
-                $total = round(floatval($res->total), 8);
-error_log('res: '. print_r($res,true));
+                $order = Helper::get_order($oid);
+                $total = round(floatval($order->total), 8);
+error_log('order: '. print_r($order,true));
             }  catch (PDOException $e) {
                 error_log('error: '. print_r($e->getMessage(),true));
                 error_log('FILE: '. print_r(__FILE__,true));
@@ -58,7 +52,7 @@ error_log('balance: '. print_r($balance,true));
             if($total <= 0 || floatval($balance) <= $total) {
                 $out = array("return"=>false,"message"=>"Transaction Not Found");
             }   else    {
-                $message = complete_order($oid);
+                $message = Helper::complete_order($oid);
                 $out = array("return"=>true,"balance"=>number_format($balance, 8),'message'=>$message);
             }
         break;

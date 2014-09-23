@@ -42,17 +42,18 @@
     }
 
     if($oid == '')  {
-        $oid = rand_id();
+        $oid = Helper::rand_id();
     }
 
-    $secret = rand_id(13);
+    $secret = Helper::rand_id(13);
 
-
-//    if(!$receive_addr = $api->getReceiveAddress(SBTCP_RECEIVE_ADDR, $secret))   {
-//        $receive_addr = SBTCP_RECEIVE_ADDR;
-//        error_log('Invalid Receive Address. Defaulting to main address.');
-//    }
-    $receive_addr = SBTCP_RECEIVE_ADDR;
+    if(!$receive_addr = $api->getReceiveAddress(SBTCP_RECEIVE_ADDR, $secret))   {
+        $receive_addr = SBTCP_RECEIVE_ADDR;
+        error_log('Invalid Receive Address. Defaulting to main address. Disable at:');
+        error_log('FILE: '. print_r(__FILE__,true));
+        error_log('LINE: '. print_r(__LINE__,true));
+    }
+//    $receive_addr = SBTCP_RECEIVE_ADDR;
 
     try {
         $sql =  "REPLACE INTO orders ".
@@ -88,6 +89,8 @@
         error_log('error: '. print_r($e->getMessage(),true));
         error_log('FILE: '. print_r(__FILE__,true));
         error_log('LINE: '. print_r(__LINE__,true));
+        error_log('_REQUEST: '. print_r($_REQUEST,true));
+        error_log('vars: '. print_r($vars,true));
     }
 
 
@@ -171,4 +174,6 @@ $( "#receipt" ).click(function() {
 </script>
 </body>
 </html>
+
+
 
