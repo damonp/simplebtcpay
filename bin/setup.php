@@ -54,7 +54,7 @@ END_SQL;
         $sql = <<< END_SQL
 CREATE TRIGGER callbacks_trigger_ai AFTER INSERT ON callbacks
  BEGIN
-  UPDATE callbacks SET last_update = DATETIME('NOW')  WHERE id = new.id;
+  UPDATE callbacks SET last_update = DATETIME('NOW')  WHERE rowid = new.rowid;
  END;
 END_SQL;
 
@@ -67,7 +67,7 @@ END_SQL;
         $sql = <<< END_SQL
 CREATE TRIGGER callbacks_trigger_au AFTER UPDATE ON callbacks
  BEGIN
-  UPDATE callbacks SET last_update = DATETIME('NOW')  WHERE id = new.id;
+  UPDATE callbacks SET last_update = DATETIME('NOW')  WHERE rowid = new.rowid;
  END;
 END_SQL;
 
@@ -124,7 +124,7 @@ END_SQL;
         $sql = <<< END_SQL
 CREATE TRIGGER orders_trigger_ai AFTER INSERT ON orders
  BEGIN
-  UPDATE orders SET last_update = DATETIME('NOW')  WHERE id = new.id;
+  UPDATE orders SET last_update = DATETIME('NOW')  WHERE rowid = new.rowid;
  END;
 END_SQL;
 
@@ -138,7 +138,7 @@ END_SQL;
         $sql = <<< END_SQL
 CREATE TRIGGER orders_trigger_au AFTER UPDATE ON orders
  BEGIN
-  UPDATE orders SET last_update = DATETIME('NOW')  WHERE id = new.id;
+  UPDATE orders SET last_update = DATETIME('NOW')  WHERE rowid = new.rowid;
  END;
 END_SQL;
 
