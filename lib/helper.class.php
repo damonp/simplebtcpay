@@ -67,7 +67,6 @@ class Helper {
 
         if(!$order = Helper::get_order($oid))   return false;
 
-        $balance = Helper::$api->get_address_balance($order->address);
         $history = Helper::$api->get_address_history($order->address);
 
         $tmpl = file_get_contents('../style/tmpl/email.admin.tmpl.html');
@@ -85,12 +84,16 @@ class Helper {
                              'input_transaction_hash'=> FILTER_SANITIZE_STRING,
                             );
             $get = filter_input_array(INPUT_GET, $filters);
+
+            $balance = Helper::$api->get_address_balance($get['destination_address']);
+
             $map['{input_address}'] = $get['input_address'];
             $map['{confirmations}'] = $get['confirmations'];
             $map['{trans_hash}'] = $get['transaction_hash'];
             $map['{callback}'] = 'true';
         } else  {
             $get = null;
+            $balance = Helper::$api->get_address_balance($order->address);
             $map['{input_address}'] = $history->txs[0]->inputs[0]->prev_out->addr;
             $map['{confirmations}'] = 'na';
             $map['{trans_hash}'] = $history->txs[0]->hash;
@@ -121,7 +124,6 @@ class Helper {
         if(!$order = Helper::get_order($oid))   return false;
         if(!$order->email || !filter_var($order->email, FILTER_VALIDATE_EMAIL))  return false;
 
-        $balance = Helper::$api->get_address_balance($order->address);
         $history = Helper::$api->get_address_history($order->address);
 
         $tmpl = file_get_contents('../style/tmpl/email.user.tmpl.html');
@@ -139,12 +141,16 @@ class Helper {
                              'input_transaction_hash'=> FILTER_SANITIZE_STRING,
                             );
             $get = filter_input_array(INPUT_GET, $filters);
+
+            $balance = Helper::$api->get_address_balance($get['destination_address']);
+
             $map['{input_address}'] = $get['input_address'];
             $map['{confirmations}'] = $get['confirmations'];
             $map['{trans_hash}'] = $get['transaction_hash'];
             $map['{callback}'] = 'true';
         } else  {
             $get = null;
+            $balance = Helper::$api->get_address_balance($order->address);
             $map['{input_address}'] = $history->txs[0]->inputs[0]->prev_out->addr;
             $map['{confirmations}'] = 'na';
             $map['{trans_hash}'] = $history->txs[0]->hash;
