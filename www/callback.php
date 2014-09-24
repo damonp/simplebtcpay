@@ -63,7 +63,7 @@
       }
 
       //error_log('callback.sql: '. print_r($sql,true));
-      error_log('callback.vars: '. print_r($vars,true));
+      //error_log('callback.vars: '. print_r($vars,true));
       $qry->execute();
 
    }  catch (PDOException $e) {
