@@ -39,7 +39,7 @@
 <?php endif; ?>
 
 <div id="orderform">
-<form action="./pay.php" method="post" id="orderform" name="orderform" onclick="return submit_form();">
+<form action="./pay.php" method="post" id="orderform" name="orderform" onclick="">
 <input type="hidden" name="exch_rate" value="<?php $exch_rate; ?>" />
 <input type="hidden" name="act" value="pay" />
 

@@ -31,7 +31,7 @@
                      'input_transaction_hash'=> FILTER_SANITIZE_STRING,
                     );
    extract(filter_input_array(INPUT_GET, $filters));
-   //error_log('_REQUEST: '. print_r($_REQUEST,true));
+   error_log('_REQUEST: '. print_r($_REQUEST,true));
 
    $value = round($value / 100000000, 8);
 
@@ -63,7 +63,7 @@
       }
 
       //error_log('callback.sql: '. print_r($sql,true));
-      //error_log('callback.vars: '. print_r($vars,true));
+      error_log('callback.vars: '. print_r($vars,true));
       $qry->execute();
 
    }  catch (PDOException $e) {
@@ -122,4 +122,3 @@ error_log('callback.history.received_address: '. print_r($received_address,true)
 
    return false;
 
-   

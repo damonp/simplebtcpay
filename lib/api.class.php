@@ -61,7 +61,7 @@ class API {
                                 );
             $callback_url = SBTCP_CALLBACK_URL.'?'.http_build_query($url_params);
             $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.urlencode($callback_url));
-            echo '<pre>'.print_r($response, true)."</pre>\n";
+            //echo '<pre>'.print_r($response, true)."</pre>\n";
             error_log('get_receive_address.response: '. print_r($response,true));
 
             //- could check output == SBTP_RECEIVE_ADDR for security
