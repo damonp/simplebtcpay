@@ -6,28 +6,40 @@ simpleBTCpay provides an easy to setup bitcoin donation / micro-payment interfac
 
 ### Features
 - Simple API driven functionality
-- PDO Sqlite database, easliy ported to other PHP PDO interface.
 - Live BTC/USD quotes from BitcoinAverage.com
 - On-the-fly BTC forwarding addresses generated from [blockchain.io](https://blockchain.info/api/api_receive)
-- Only one BTC address needed
-- Configurable minimum payment amount. [Default: 0.001B (~$0.40)]
+- Configurable minimum payment amount. [Default: 0.001B]
+- Only one incoming BTC address needed
 
 
 ### Examples
 1. Link to form to allow customer to complete (all fields):  
-<http://simplebtcpay.com/index.php?oid=7f0665&oemail=user@domain.com&tot_usd=0.50&odesc=Donation>
+<http://simplebtcpay.com/index.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation>
 1. Direct link to payment page (all fields):  
-<http://simplebtcpay.com/index.php?oid=1ALK5l&oemail=user@domain.com&tot_usd=0.50&odesc=Donation>
+<http://simplebtcpay.com/index.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation>
 1. Link to minimal form:  
 <http://simplebtcpay.com/index.php?tot_usd=0.50>
 1. Form with optional fields disabled:  
 <http://simplebtcpay.com/index.php?oid=false&oemail=false&tot_usd=0.50&odesc=false>
 
 ### Install
+1. Clone repo outside of public web space.
+2. Add an [Apache alias](http://httpd.apache.org/docs/2.2/mod/mod_alias.html) in your vhost container to simplebtcpay/www similar to:
 
-Edit lib/config.inc.php as needed.
+	```
+	Alias /srv/simplebtcpay/www /btc
+	```	
+	This will expose the app at the url:
+	<http://domain.com/btc>
 
-```
-php -f bin/setup.php
-```
+3. Copy lib/config.sample.inc.php
+4. Edit lib/config.inc.php as needed.
+5. From app root directory:
+	
+	```
+	php -f bin/setup.php
+	```
+6. Restart webserver.
+7. Go: <http://domain.com/btc>
 
+Setup creates a new SQLite database in the data/ directory. 

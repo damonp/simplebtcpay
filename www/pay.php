@@ -166,7 +166,7 @@ $( "#receipt" ).click(function() {
           if(!json.return)  {
             $("#results").html(json.message);
           } else  {
-            $("#results").html('Balance: '+json.balance+'<br />'+json.message);
+            $("#results").html('Received: '+json.balance+'<br />'+json.message);
           }
         }
       });

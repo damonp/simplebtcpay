@@ -43,7 +43,10 @@ class Helper {
     public static function send_email($msg, $subj, $to)
     {
 
-        $headers = 'From: '.SBTCP_EMAIL_FROM;
+        $headers = 'From: '.SBTCP_EMAIL_FROM."\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+
         return mail($to, $subj, $msg, $headers);
     }
 
@@ -60,12 +63,53 @@ class Helper {
     public static function order_email_admin($oid)
     {
         $order = Helper::get_order($oid);
-        $msg = 'Order:'.print_r($order, true)."\n";
         $balance = Helper::$api->get_address_balance($order->address);
-        $msg .= 'Balance:'.print_r($balance, true)."\n";
-        if(defined('SBTCP_CALLBACK'))   $msg .= "\nCALLBACK = true\n";
+        $history = Helper::$api->get_address_history($order->address);
 
-        return Helper::send_email($msg, 'SBTCP:Order Completed', SBTCP_EMAIL_ADMIN);
+        $tmpl = file_get_contents('../style/tmpl/email.admin.tmpl.html');
+
+        if(defined('SBTCP_CALLBACK'))   {
+            $filters = array(
+                             'address'   => FILTER_SANITIZE_STRING,
+                             'secret' => FILTER_SANITIZE_STRING,
+                             'oid'    => FILTER_SANITIZE_STRING,
+                             'value'  => FILTER_SANITIZE_STRING,
+                             'input_address'      => FILTER_SANITIZE_STRING,
+                             'confirmations'      => FILTER_SANITIZE_STRING,
+                             'transaction_hash'   => FILTER_SANITIZE_STRING,
+                             'destination_address'   => FILTER_SANITIZE_STRING,
+                             'input_transaction_hash'=> FILTER_SANITIZE_STRING,
+                            );
+            $get = filter_input_array(INPUT_GET, $filters);
+            $map['{input_address}'] = $get['input_address'];
+            $map['{confirmations}'] = $get['confirmations'];
+            $map['{trans_hash}'] = $get['transaction_hash'];
+            $map['{callback}'] = 'true';
+        } else  {
+            $get = null;
+            $map['{input_address}'] = $history->txs[0]->inputs[0]->prev_out->addr;
+            $map['{confirmations}'] = 'na';
+            $map['{trans_hash}'] = $history->txs[0]->hash;
+            $map['{callback}'] = 'false';
+        }
+
+        $map['{receipt_address}'] = $history->txs[0]->out[0]->addr;
+        $map['{final_balance}'] = $history->final_balance/100000000;
+        $map['{total_received}'] = $history->total_received/100000000;
+        $map['{total_sent}'] = $history->total_sent/100000000;
+
+        foreach($order as $key => $val) {
+            $map['{'.$key.'}'] = $val;
+        }
+        $map['{balance}'] = number_format($balance, 8);
+        $map['{total}'] = number_format($order->total, 8);
+        $map['{tot_usd}'] = number_format($order->tot_usd, 2);
+        $map['{timestamp}'] = date('Y-m-d H:i:s', SBTCP_GLOBAL_TIMESTAMP);
+        //$map['{callback}'] = defined('SBTCP_CALLBACK') ? 'true':'false';
+
+        $html = str_replace(array_keys($map), array_values($map), $tmpl);
+
+        return Helper::send_email($html, 'SBTCP:Order Completed', SBTCP_EMAIL_ADMIN);
     }
 
     public static function order_email_user($oid)
@@ -73,11 +117,53 @@ class Helper {
         $order = Helper::get_order($oid);
         if(!$order->email || !filter_var($order->email, FILTER_VALIDATE_EMAIL))  return false;
 
-        $msg = 'Order:'.print_r($order, true)."\n";
         $balance = Helper::$api->get_address_balance($order->address);
-        $msg .= 'Balance:'.print_r($balance, true)."\n";
+        $history = Helper::$api->get_address_history($order->address);
 
-        return Helper::send_email($msg, 'Order Completed', $order->email);
+        $tmpl = file_get_contents('../style/tmpl/email.user.tmpl.html');
+
+        if(defined('SBTCP_CALLBACK'))   {
+            $filters = array(
+                             'address'   => FILTER_SANITIZE_STRING,
+                             'secret' => FILTER_SANITIZE_STRING,
+                             'oid'    => FILTER_SANITIZE_STRING,
+                             'value'  => FILTER_SANITIZE_STRING,
+                             'input_address'      => FILTER_SANITIZE_STRING,
+                             'confirmations'      => FILTER_SANITIZE_STRING,
+                             'transaction_hash'   => FILTER_SANITIZE_STRING,
+                             'destination_address'   => FILTER_SANITIZE_STRING,
+                             'input_transaction_hash'=> FILTER_SANITIZE_STRING,
+                            );
+            $get = filter_input_array(INPUT_GET, $filters);
+            $map['{input_address}'] = $get['input_address'];
+            $map['{confirmations}'] = $get['confirmations'];
+            $map['{trans_hash}'] = $get['transaction_hash'];
+            $map['{callback}'] = 'true';
+        } else  {
+            $get = null;
+            $map['{input_address}'] = $history->txs[0]->inputs[0]->prev_out->addr;
+            $map['{confirmations}'] = 'na';
+            $map['{trans_hash}'] = $history->txs[0]->hash;
+            $map['{callback}'] = 'false';
+        }
+
+        $map['{receipt_address}'] = $history->txs[0]->out[0]->addr;
+        $map['{final_balance}'] = $history->final_balance/100000000;
+        $map['{total_received}'] = $history->total_received/100000000;
+        $map['{total_sent}'] = $history->total_sent/100000000;
+
+        foreach($order as $key => $val) {
+            $map['{'.$key.'}'] = $val;
+        }
+        $map['{balance}'] = number_format($balance, 8);
+        $map['{total}'] = number_format($order->total, 8);
+        $map['{tot_usd}'] = number_format($order->tot_usd, 2);
+        $map['{timestamp}'] = date('Y-m-d H:i:s', SBTCP_GLOBAL_TIMESTAMP);
+        //$map['{callback}'] = defined('SBTCP_CALLBACK') ? 'true':'false';
+
+        $html = str_replace(array_keys($map), array_values($map), $tmpl);
+
+        return Helper::send_email($html, 'Order Completed', $order->email);
     }
 
     public static function rand_id($length=6)
