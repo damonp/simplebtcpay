@@ -5,7 +5,7 @@
   user: root
   vars:
   - project: 'simplebtcpay'
-  - releasedir: /srv/simplebtcpay.api
+  - releasedir: /srv/simplebtcpay
 
   tasks:
   - name: Check node alive
