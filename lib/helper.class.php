@@ -47,6 +47,8 @@ class Helper {
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
+        if(trim($msg) == '')    return false;
+
         return mail($to, $subj, $msg, $headers);
     }
 
@@ -62,7 +64,9 @@ class Helper {
 
     public static function order_email_admin($oid)
     {
-        $order = Helper::get_order($oid);
+
+        if(!$order = Helper::get_order($oid))   return false;
+
         $balance = Helper::$api->get_address_balance($order->address);
         $history = Helper::$api->get_address_history($order->address);
 
@@ -114,7 +118,7 @@ class Helper {
 
     public static function order_email_user($oid)
     {
-        $order = Helper::get_order($oid);
+        if(!$order = Helper::get_order($oid))   return false;
         if(!$order->email || !filter_var($order->email, FILTER_VALIDATE_EMAIL))  return false;
 
         $balance = Helper::$api->get_address_balance($order->address);
@@ -186,10 +190,10 @@ class Helper {
             return $qry->execute();
         }  catch (PDOException $e) {
             error_log('error: '. print_r($e->getMessage(),true));
+            error_log('oid: '. print_r($oid,true));
             error_log('FILE: '. print_r(__FILE__,true));
             error_log('LINE: '. print_r(__LINE__,true));
-            error_log('_REQUEST: '. print_r($_REQUEST,true));
-            error_log('oid: '. print_r($oid,true));
+            return false;
         }
     }
 }
