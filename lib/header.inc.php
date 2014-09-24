@@ -7,17 +7,12 @@
 <meta charset="utf-8">
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<!--
-<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
-<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
--->
 <script>
 <!--
 
 -->
 </script>
 
-<!-- <link rel="stylesheet" href="style.css" type="text/css" media="screen" /> -->
 <link href="css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 
 <style>
