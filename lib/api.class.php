@@ -12,8 +12,7 @@ class API {
             //return $this->curl('http://blockexplorer.com/q/getreceivedbyaddress/'.$address.'/'.$confirmations);
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
-            error_log('FILE: '. print_r(__FILE__,true));
-            error_log('LINE: '. print_r(__LINE__,true));
+            error_log('['.__LINE__.'] : '.__FILE__);
         }
     }
 
@@ -23,8 +22,7 @@ class API {
             return $this->curl('http://blockchain.info/rawaddr/'.$address);
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
-            error_log('FILE: '. print_r(__FILE__,true));
-            error_log('LINE: '. print_r(__LINE__,true));
+            error_log('['.__LINE__.'] : '.__FILE__);
         }
     }
 
@@ -40,8 +38,7 @@ class API {
             }
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
-            error_log('FILE: '. print_r(__FILE__,true));
-            error_log('LINE: '. print_r(__LINE__,true));
+            error_log('['.__LINE__.'] : '.__FILE__);
         }
     }
 
@@ -75,8 +72,7 @@ class API {
             }
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
-            error_log('FILE: '. print_r(__FILE__,true));
-            error_log('LINE: '. print_r(__LINE__,true));
+            error_log('['.__LINE__.'] : '.__FILE__);
         }
     }
 
@@ -86,8 +82,7 @@ class API {
             return $this->curl('http://blockchain.info/rawtx/'.$hash);
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
-            error_log('FILE: '. print_r(__FILE__,true));
-            error_log('LINE: '. print_r(__LINE__,true));
+            error_log('['.__LINE__.'] : '.__FILE__);
         }
     }
 
