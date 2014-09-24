@@ -42,6 +42,7 @@
     }
 
     if($oid == '')  {
+        //- need to allow existing check to prevent collisions
         $oid = Helper::rand_id();
     }
 
@@ -53,7 +54,9 @@
         error_log('FILE: '. print_r(__FILE__,true));
         error_log('LINE: '. print_r(__LINE__,true));
     }
-//    $receive_addr = SBTCP_RECEIVE_ADDR;
+
+    //- harcode to main address if not using receive_address from blockchain
+    //$receive_addr = SBTCP_RECEIVE_ADDR;
 
     try {
         $sql =  "REPLACE INTO orders ".
@@ -143,7 +146,7 @@
 
 <?php else: ?>
 
-<h3 class="">Error: Please Try Again Later</h3>
+<h3 class="error">Error: Please Try Again Later</h3>
 
 <?php endif; ?>
 

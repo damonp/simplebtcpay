@@ -17,7 +17,8 @@
 -->
 </script>
 
-<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+<!-- <link rel="stylesheet" href="style.css" type="text/css" media="screen" /> -->
+<link href="css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 
 <style>
 
@@ -28,5 +29,5 @@
 
 <div id="main">
 <h2 id="exchrate">1 BTC = $<?php echo number_format($exch_rate, 2); ?></h2>
-<div style="text-align:center;"><img src="images/bitcoin-logo.png" alt="SimpleBTCPay" width="200" height="52" border="0" align="center" /></div>
+<div style="text-align:center;"><img src="images/bitcoin-logo.png" id="logo" alt="SimpleBTCPay" width="200" height="52" border="0" align="center" /></div>
 <!-- end header.inc.php -->
