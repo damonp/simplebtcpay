@@ -1,0 +1,30 @@
+---
+# file: deploy_sbtcp.yml
+-
+  hosts: simplebtcpay
+  user: root
+  vars:
+  - project: 'simplebtcpay'
+  - releasedir: /srv/simplebtcpay.api
+
+  tasks:
+  - name: Check node alive
+    action: ping
+
+  - name: Update {{ project }}/ from github
+    git: repo=ssh://git@github.com/damonp/simplebtcpay.git dest={{ releasedir }} version=HEAD
+
+  - name: Install host specific configs
+    copy: src=../lib/config.{{ inventory_hostname }}.inc.php dest={{ releasedir }}/lib/config.inc.php owner=nginx group=nginx mode=0644
+
+#  - name: Run composer install
+#    composer: working_dir={{ releasedir }}
+
+  - name: Update {{ project }}/ owner/group
+    file: path={{ releasedir }} mode=0664 owner=nginx group=nginx
+
+  - name: Update {{ project }}/ permissions
+    shell: chown -R nginx:nginx {{ releasedir }}*;
+           chmod -R 664 {{ releasedir }}*;
+           chmod -R a+X {{ releasedir }}*;
+
