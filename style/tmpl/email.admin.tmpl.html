@@ -5,13 +5,15 @@
 <style type="text/css">
 body {font-family: verdana;font-size: 14px;}
 #main {margin:1em auto;padding:1em;width: 450px;text-align: left;border: 1px solid #bbb;background-color: #fff;}
-.row    {display:table-row;padding:0.25em; }
-.cell   {display:table-cell;}
+.row    {display:table-row;padding:0.25em;}
+.cell   {display:table-cell;padding:0.25em;}
 .head   {font-weight:bold;width:100px;}
+.value  {width:325px;}
 .footer {width:100%;padding:2em 0 0.5em 0;color:#333;font-size:0.75em;}
 .footer a {color:#666;text-decoration:none;}
 .code   {font-family: monospace;}
 .debug  {margin: 2em 0 1em 0;}
+.even   {background-color:#efefef;}
 h4,h5   {margin:1em auto;}
 </style>
 </head>
@@ -21,46 +23,46 @@ h4,h5   {margin:1em auto;}
 <h5 class="">{timestamp}</h5>
 
 <div id="table">
-  <div class="row">
+  <div class="row even">
     <div class="cell head">ID</div>
-    <div class="cell">{oid}</div>
+    <div class="cell value">{oid}</div>
   </div>
   <div class="row">
     <div class="cell head">Item</div>
-    <div class="cell">{desc}</div>
+    <div class="cell value">{desc}</div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head">Email</div>
-    <div class="cell">{email}</div>
+    <div class="cell value">{email}</div>
   </div>
   <div class="row">
     <div class="cell head">Address</div>
-    <div class="cell"><a href="https://blockchain.info/address/{address}">{address}</a></div>
+    <div class="cell value"><a href="https://blockchain.info/address/{address}">{address}</a></div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head">BTC/USD</div>
-    <div class="cell">${btc_usd}</div>
+    <div class="cell value">${btc_usd}</div>
   </div>
   <div class="row">
     <div class="cell head">Status</div>
-    <div class="cell">{status}</div>
+    <div class="cell value">{status}</div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head">Balance</div>
-    <div class="cell">{balance} BTC</div>
+    <div class="cell value">{balance} BTC</div>
   </div>
   <div class="row">
     <div class="cell head">Total USD</div>
-    <div class="cell">${tot_usd}</div>
+    <div class="cell value">${tot_usd}</div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head">Total</div>
-    <div class="cell">{total} BTC</div>
+    <div class="cell value">{total} BTC</div>
   </div>
 </div>
 <div class="head code debug">Debug</div>
 <div id="table">
-  <div class="row">
+  <div class="row even">
     <div class="cell head code">Rcpt Addr</div>
     <div class="cell code"><a href="https://blockchain.info/address/{receipt_address}">{receipt_address}</a></div>
   </div>
@@ -68,7 +70,7 @@ h4,h5   {margin:1em auto;}
     <div class="cell head code">Inpt Addr</div>
     <div class="cell code"><a href="https://blockchain.info/address/{input_address}">{input_address}</a></div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head code">Tot Rcvd</div>
     <div class="cell code">{total_received}</div>
   </div>
@@ -76,13 +78,13 @@ h4,h5   {margin:1em auto;}
     <div class="cell head code">Tot Sent</div>
     <div class="cell code">{total_sent}</div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head code">Final Bal</div>
     <div class="cell code">{final_balance}</div>
   </div>
   <div class="row">
     <div class="cell head code">Trans Hash</div>
-    <div class="cell"><a href="https://blockchain.info/tx/{trans_hash}">{trans_hash}</a></div>
+    <div class="cell value"><a href="https://blockchain.info/tx/{trans_hash}">{trans_hash}</a></div>
   </div>
   <div class="row">
     <div class="cell head code">Confirm</div>
