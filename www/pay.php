@@ -103,7 +103,7 @@
 
 <div id="orderform">
 <?php if($receive_addr): ?>
-<h3 class="">Send <?php echo round($total, 8); ?> BTC <?php if($tot_usd > 0) echo '($'.number_format($tot_usd, 2).') '; ?>to:</h3>
+<h3 id="sendbtc">Send <?php echo round($total, 8); ?> BTC <?php if($tot_usd > 0) echo '($'.number_format($tot_usd, 2).') '; ?>to:</h3>
 
 <?php echo '<img src="./qr.php?addr='.$receive_addr.'&amount='.$total.'&orderid='.$oid.'" width="264" height="264" class="qrcode">'."\n"; ?>
 <div style="padding:.5em;">
