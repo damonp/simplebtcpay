@@ -85,12 +85,15 @@
    $history = Helper::$api->get_address_history($input_address);
 
    $received_address = $history->txs[0]->out[0]->addr;
-   $final_balance = $history->final_balance;
-   $total_received = $history->total_received;
-   $total_sent = $history->total_sent;
+   $final_balance = $history->final_balance/100000000;
+   $total_received = $history->total_received/100000000;
+   $total_sent = $history->total_sent/100000000;
 error_log('callback.order: '. print_r($order,true));
 //error_log('callback.history: '. print_r($history,true));
 error_log('callback.history.received_address: '. print_r($received_address,true));
+error_log('callback.final_balance: '. print_r($final_balance,true));
+error_log('callback.total_received: '. print_r($total_received,true));
+error_log('callback.total_sent: '. print_r($total_sent,true));
 
    if ($destination_address != '' && $destination_address != SBTCP_RECEIVE_ADDR) {
       error_log('Incorrect Destination Address: '.$destination_address);
