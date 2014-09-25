@@ -55,7 +55,10 @@ class Helper {
     public static function send_email_sms($msg, $to)
     {
         if(trim($msg) == '')    return false;
+        if($to == '')   return false;
+
         $headers = 'From: '.SBTCP_EMAIL_FROM."\r\n";
+
         return mail($to, null, $msg."\n.", $headers);
     }
 
@@ -75,6 +78,12 @@ class Helper {
         if(!$order = Helper::get_order($oid))   return false;
 
         $history = Helper::$api->get_address_history($order->address);
+
+        $msg  = 'Order: '.$order->oid."\n";
+        $msg .= 'BTC: '.number_format($order->total, 4)."B\n";
+        $msg .= 'USD: $'.number_format($order->tot_usd, 2)."\n";
+        //if($order->email != '') $msg .= 'Email: '.print_r($order->email, true)."\n";
+        if($order->desc != '') $msg .= 'Item: '. print_r($order->desc, true)."\n";
 
         $tmpl = file_get_contents('../style/tmpl/email.admin.tmpl.html');
 
@@ -98,6 +107,9 @@ class Helper {
             $map['{confirmations}'] = $get['confirmations'];
             $map['{trans_hash}'] = $get['transaction_hash'];
             $map['{callback}'] = 'true';
+
+            $msg .= 'Bal:'.$balance."\n";
+            $msg .= "CLBK\n";
         } else  {
             $get = null;
             $balance = Helper::$api->get_address_balance($order->address);
@@ -105,16 +117,22 @@ class Helper {
             $map['{confirmations}'] = 'na';
             $map['{trans_hash}'] = $history->txs[0]->hash;
             $map['{callback}'] = 'false';
+
         }
 
         $map['{receipt_address}'] = $history->txs[0]->out[0]->addr;
-        $map['{final_balance}'] = $history->final_balance/100000000;
-        $map['{total_received}'] = $history->total_received/100000000;
-        $map['{total_sent}'] = $history->total_sent/100000000;
+        $map['{final_balance}'] = $history->final_balance / 100000000;
+        $map['{total_received}'] = $history->total_received / 100000000;
+        $map['{total_sent}'] = $history->total_sent / 100000000;
+
+        if($input_address != '') $msg .= 'InAddr:'.$input_address."\n";
+        if($map['{receipt_address}'] != '')    $msg .= 'RcvAddr:'.substr($map['{receipt_address}'], 0, 3).'..'.substr($map['{receipt_address}'], -3)."\n";
+        if($balance != '') $msg .= 'Bal: '.number_format($balance, 4)."B\n";
 
         foreach($order as $key => $val) {
             $map['{'.$key.'}'] = $val;
         }
+
         $map['{balance}'] = number_format($balance, 8);
         $map['{total}'] = number_format($order->total, 8);
         $map['{tot_usd}'] = number_format($order->tot_usd, 2);
@@ -122,6 +140,14 @@ class Helper {
         //$map['{callback}'] = defined('SBTCP_CALLBACK') ? 'true':'false';
 
         $html = str_replace(array_keys($map), array_values($map), $tmpl);
+
+        //- lop off last newline
+        $msg = substr($msg, 0, -1);
+
+        //- send to carrier's email to SMS gateway if configured
+        if(defined(SBTCP_SMS_ADMIN) && filter_var(SBTCP_SMS_ADMIN, FILTER_VALIDATE_EMAIL))  {
+            Helper::send_email_sms($msg, SBTCP_SMS_ADMIN);
+        }
 
         return Helper::send_email($html, 'SBTCP:Order Completed', SBTCP_EMAIL_ADMIN);
     }
@@ -165,9 +191,9 @@ class Helper {
         }
 
         $map['{receipt_address}'] = $history->txs[0]->out[0]->addr;
-        $map['{final_balance}'] = $history->final_balance/100000000;
-        $map['{total_received}'] = $history->total_received/100000000;
-        $map['{total_sent}'] = $history->total_sent/100000000;
+        $map['{final_balance}'] = $history->final_balance / 100000000;
+        $map['{total_received}'] = $history->total_received / 100000000;
+        $map['{total_sent}'] = $history->total_sent / 100000000;
 
         foreach($order as $key => $val) {
             $map['{'.$key.'}'] = $val;

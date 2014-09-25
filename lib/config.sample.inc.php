@@ -11,6 +11,7 @@
     define('SBTCP_EXCH_RATE_REFRESH', 60);
     define('SBTCP_EMAIL_FROM', 'simpleBTCpay <noreply@domain.com>');
     define('SBTCP_EMAIL_ADMIN', 'User Name <user@domain.com>');
+    //define('SBTCP_SMS_ADMIN', '##########@carrier.com'); //- @txt.att.net @vtext.com etc.
     define('SBTCP_CALLBACK_URL', 'http://yourdomain.com/callback.php');
 
     include('helper.class.php');

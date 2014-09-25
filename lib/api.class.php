@@ -8,7 +8,7 @@ class API {
     {
         try {
             $balance = $this->curl('http://blockchain.info/nl/q/addressbalance/'.$address.'?confirmations='.$confirmations);
-            return $balance/100000000;
+            return $balance / 100000000;
             //return $this->curl('http://blockexplorer.com/q/getreceivedbyaddress/'.$address.'/'.$confirmations);
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
