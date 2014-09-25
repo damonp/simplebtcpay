@@ -52,6 +52,13 @@ class Helper {
         return mail($to, $subj, $msg, $headers);
     }
 
+    public static function send_email_sms($msg, $to)
+    {
+        if(trim($msg) == '')    return false;
+        $headers = 'From: '.SBTCP_EMAIL_FROM."\r\n";
+        return mail($to, null, $msg."\n.", $headers);
+    }
+
     public static function get_order($oid)
     {
         $sql =  "SELECT * FROM orders WHERE oid = :oid";

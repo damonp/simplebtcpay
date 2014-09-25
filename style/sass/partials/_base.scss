@@ -1,13 +1,19 @@
 // Use Compass ('cause it rocks!')
-//@import "compass";
+@import "compass";
+@import "compass/reset";
+@import "compass/css3";
+@import "compass/css3/images";
 
 // Font weights
 $light: 100;
 $regular: 400;
 $bold: 600;
 
+$gray: #666;
+$gray-hover: #999;
+
 // Base Font
-$base-font-family: sans-serif;
+$base-font-family: verdana;
 $base-font-weight: $regular;
 $base-font-size: 13px;
 $base-line-height: 1.4;
@@ -21,4 +27,28 @@ $fixed-line-height: $base-line-height;
 $header-font-weight: $bold;
 
 //@import "modules/all";
+
+body {
+    text-align: center;
+    background-color: #eee;
+    font-family: $base-font-family;
+    font-size: $base-font-size;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+    &:visited {
+        color: blue;
+        text-decoration: none;
+    }
+    &:hover {
+        color: $gray-hover;
+    }
+    &.smgray {
+        color: $gray;
+    }
+}
+
+b   {font-weight: $bold;}
 

@@ -1,0 +1,29 @@
+fieldset {
+    padding: 1em;
+    margin: 0.5em auto;
+    width: 300px;
+    display: inline-block;
+    font-size: .9em;
+    text-align: left;
+    color: #000;
+    border: 1px solid #999;
+    background: #fff;
+}
+
+label {
+    float: left;
+    width: 45%;
+    display: inline-block;
+    padding: .25em .25em;
+    margin: 0 .25em;
+    text-align: right;
+    font-weight: bold;
+    color: #666;
+}
+
+legend {
+    font-size: 1.2em;
+    padding: 0.2em 0.5em;
+    font-weight: bold;
+    color: #666;
+}

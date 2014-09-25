@@ -2,12 +2,14 @@
 <head>
 <title>simpleBTCpay Order Notification</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style type="text/css">
 body {font-family: verdana;font-size: 14px;}
 #main {margin:1em auto;padding:1em;width: 450px;text-align: left;border: 1px solid #bbb;background-color: #fff;}
 .row    {display:table-row;padding:0.25em;}
 .cell   {display:table-cell;padding:0.25em;}
 .head   {font-weight:bold;width:100px;}
+.header {background-color:#dfdfdf;font-weight: bold;}
 .value  {width:325px;}
 .footer {width:100%;padding:2em 0 0.5em 0;color:#333;font-size:0.75em;}
 .footer a {color:#666;text-decoration:none;}
@@ -40,22 +42,22 @@ h4,h5   {margin:1em auto;}
     <div class="cell value"><a href="https://blockchain.info/address/{address}">{address}</a></div>
   </div>
   <div class="row even">
-    <div class="cell head">BTC/USD</div>
-    <div class="cell value">${btc_usd}</div>
-  </div>
-  <div class="row">
     <div class="cell head">Status</div>
     <div class="cell value">{status}</div>
   </div>
-  <div class="row even">
+  <div class="row">
     <div class="cell head">Balance</div>
     <div class="cell value">{balance} BTC</div>
+  </div>
+  <div class="row even">
+    <div class="cell head">BTC/USD</div>
+    <div class="cell value">${btc_usd}</div>
   </div>
   <div class="row">
     <div class="cell head">Total USD</div>
     <div class="cell value">${tot_usd}</div>
   </div>
-  <div class="row even">
+  <div class="row header">
     <div class="cell head">Total</div>
     <div class="cell value">{total} BTC</div>
   </div>
