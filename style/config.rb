@@ -1,5 +1,12 @@
+
+#gem "compass", "~> 0.12.7"
 require 'compass/import-once/activate'
 # Require any additional compass plugins here.
+
+#require 'compass-unsemantic'
+
+
+disable_warnings = true
 
 # Set this to the root of your project when deployed:
 http_path = "/"
@@ -28,3 +35,4 @@ relative_assets = true # by Compass.app
 line_comments = true # by Compass.app 
 sass_options = {:debug_info=>false} # by Compass.app 
 sourcemap = false # by Compass.app 
+

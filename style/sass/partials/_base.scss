@@ -1,8 +1,18 @@
 // Use Compass ('cause it rocks!')
 @import "compass";
-@import "compass/reset";
-@import "compass/css3";
-@import "compass/css3/images";
+//@include global-reset;
+//@import "compass-unsemantic";
+//@import "compass/reset";
+//@import "compass/css3";
+//@import "compass/css3/images";
+//@import "compass/typography";
+//@import "compass/utilities";
+//@import "compass/layout";
+//@import "html5-boilerplate";
+
+@import "partials/normalize";
+
+@include establish-baseline;
 
 // Font weights
 $light: 100;
@@ -11,12 +21,14 @@ $bold: 600;
 
 $gray: #666;
 $gray-hover: #999;
+$quiet-color: #666;
+$loud-color: #fff;
 
 // Base Font
 $base-font-family: verdana;
 $base-font-weight: $regular;
-$base-font-size: 13px;
-$base-line-height: 1.4;
+$base-font-size: 14px;
+$base-line-height: 20px;
 
 // Fixed Font
 $fixed-font-family: monospace;
@@ -24,7 +36,8 @@ $fixed-font-size: 85%;
 $fixed-line-height: $base-line-height;
 
 // Headings
-$header-font-weight: $bold;
+$heading-font-family: $base-font-family;
+$heading-font-weight: $bold;
 
 //@import "modules/all";
 
@@ -51,4 +64,40 @@ a {
 }
 
 b   {font-weight: $bold;}
+/*
+h1,h2,h3,h4,h5  {font-weight:bold;}
+
+p,h1,h2,h3,h4,h5,ul,li   {text-align:left;margin:1em 0 0.5em 0;}
+
+h1  {font-size:$base-font-size * 1.75;margin:2em 0 1em 0;} 
+h2  {font-size:$base-font-size * 1.5;margin:2em 0 1em 0;} 
+h3  {font-size:$base-font-size * 1.25;margin:1.5em 0 0.75em 0;} 
+h4  {font-size:$base-font-size * 1.15}
+h5  {font-size:$base-font-size * 1.1} 
+*/
+
+h1, h2, h3, h4, h5, h6 { font-family: $heading-font-family; font-weight: $heading-font-weight;text-align:left; }
+h1, h2 { line-height: 1.1; }
+h3, h4 { line-height: 1.3; }
+h1 { font-size: 250%; letter-spacing: -2px; }
+h2 { font-size: 175%; letter-spacing: -1px; }
+h3 { font-size: 150%; }
+h4 { font-size: 125%; }
+h5 { font-size: 120%; }
+
+.fixed { font-family: $fixed-font-family; font-size: $fixed-font-size; line-height: $fixed-line-height; }
+
+.quiet { font-color: $quiet-color; }
+.loud  { font-color: $loud-color; }
+
+.italic { font-style: italic; }
+.bold   { font-weight: 700; @extend .loud; }
+
+.block-margins { margin: 1em 0; }
+
+ul, ol  {padding:0 0 0 0.5em;text-align:left;}
+ul  {   list-style-type: disc;  }
+ol  {   list-style-type: decimal;   }
+li {padding:0 0 0 0.5em;margin:0 0 0 1em;text-align:left;}
+p   {text-align:left;margin:1em 0 0.5em 0;}
 

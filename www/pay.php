@@ -57,6 +57,11 @@
     //- harcode to main address if not using receive_address from blockchain
     //$receive_addr = SBTCP_RECEIVE_ADDR;
 
+    if($oid)    {
+        //$order = Helper::get_order($oid);
+    }
+
+
     try {
         $sql =  "REPLACE INTO orders ".
                 "(oid, total, email, desc, status, btc_usd, ".
