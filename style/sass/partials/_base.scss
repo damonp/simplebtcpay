@@ -1,18 +1,4 @@
-// Use Compass ('cause it rocks!')
-@import "compass";
-//@include global-reset;
-//@import "compass-unsemantic";
-//@import "compass/reset";
-//@import "compass/css3";
-//@import "compass/css3/images";
-//@import "compass/typography";
-//@import "compass/utilities";
-//@import "compass/layout";
-//@import "html5-boilerplate";
 
-@import "partials/normalize";
-
-@include establish-baseline;
 
 // Font weights
 $light: 100;
@@ -39,8 +25,6 @@ $fixed-line-height: $base-line-height;
 $heading-font-family: $base-font-family;
 $heading-font-weight: $bold;
 
-//@import "modules/all";
-
 body {
     text-align: center;
     background-color: #eee;
@@ -63,9 +47,8 @@ a {
     }
 }
 
-b   {font-weight: $bold;}
+b,h1,h2,h3,h4,h5   {font-weight: $bold;}
 /*
-h1,h2,h3,h4,h5  {font-weight:bold;}
 
 p,h1,h2,h3,h4,h5,ul,li   {text-align:left;margin:1em 0 0.5em 0;}
 
@@ -85,19 +68,10 @@ h3 { font-size: 150%; }
 h4 { font-size: 125%; }
 h5 { font-size: 120%; }
 
-.fixed { font-family: $fixed-font-family; font-size: $fixed-font-size; line-height: $fixed-line-height; }
-
-.quiet { font-color: $quiet-color; }
-.loud  { font-color: $loud-color; }
-
-.italic { font-style: italic; }
-.bold   { font-weight: 700; @extend .loud; }
-
-.block-margins { margin: 1em 0; }
-
 ul, ol  {padding:0 0 0 0.5em;text-align:left;}
 ul  {   list-style-type: disc;  }
 ol  {   list-style-type: decimal;   }
-li {padding:0 0 0 0.5em;margin:0 0 0 1em;text-align:left;}
+li  {padding:0 0 0 0.5em;margin:0 0 0 1em;text-align:left;}
 p   {text-align:left;margin:1em 0 0.5em 0;}
+
 

@@ -22,13 +22,13 @@
     <h4>Examples</h4>
     <ul>
     <li>Link to form to allow customer to complete (all fields):<br />
-        <a href="http://http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation</li>">http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation</a></li>
+        <a href="http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation</li>">http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation</a></li>
     <li>Direct link to payment page (all fields):
-        <a href="http://http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation">http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation</a></li>
+        <a href="http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation">http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation</a></li>
     <li>Link to minimal form:<br />
-        <a href="http://http://simplebtcpay.com/form.php?tot_usd=0.50">http://simplebtcpay.com/form.php?tot_usd=0.50</a></li>
+        <a href="http://simplebtcpay.com/form.php?tot_usd=0.50">http://simplebtcpay.com/form.php?tot_usd=0.50</a></li>
     <li>Form with optional fields disabled:<br />
-        <a href="http://http://simplebtcpay.com/form.php?oid=false&oemail=false&tot_usd=0.50&odesc=false">http://simplebtcpay.com/form.php?oid=false&oemail=false&tot_usd=0.50&odesc=false</a></li>
+        <a href="http://simplebtcpay.com/form.php?oid=false&oemail=false&tot_usd=0.50&odesc=false">http://simplebtcpay.com/form.php?oid=false&oemail=false&tot_usd=0.50&odesc=false</a></li>
     </ul>
 
 </div>

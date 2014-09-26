@@ -73,8 +73,9 @@
 <br /><br />
 <?php endif; ?>
 
-<label for="submit"></label>
+<div class="wide">
 <button type="submit" name="submit" id="submit" >Submit</button>
+</div>
 
 <br />
 </fieldset>

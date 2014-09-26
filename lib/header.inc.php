@@ -7,13 +7,15 @@
 <meta charset="utf-8">
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script>
 <!--
 
 -->
 </script>
 
-<link href="css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+<!-- <link href="css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> -->
+<link href="css/styles.css" media="screen, projection" rel="stylesheet" type="text/css" />
 
 <style>
 

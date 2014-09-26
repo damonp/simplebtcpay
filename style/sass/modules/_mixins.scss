@@ -1,0 +1,14 @@
+
+@mixin button($color) {
+  background-color: $color;
+  border: 1px solid mix(black, $color, 25%);
+  border-radius: 2px;
+  padding: 0.25em 2em;
+  color: white;
+
+  &:hover {
+    cursor: pointer;
+    background-color: mix(black, $color, 15%);
+    border-color: mix(black, $color, 40%);
+  }
+}

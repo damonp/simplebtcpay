@@ -1,10 +1,10 @@
-/* Welcome to Compass.
- * In this file you should write your main styles. (or centralize your imports)
- * Import this file using the following HTML or equivalent:
- * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+@import "bootstrap-compass";
+@import "bootstrap-variables";
+@import "bootstrap";
 
 @import "partials/base";
 @import "partials/fieldset";
+@import "modules/mixins";
 
 #logo {
     background-image: image-url("bitcoin-logo.png");
@@ -46,6 +46,11 @@
     font-size: 1.25em;
     padding: 0.5em auto;
     margin: 0.5em auto;
+}
+
+div.wide {
+  width:100%;
+  text-align:center;
 }
 
 .error {
@@ -110,3 +115,12 @@ div.footer {
 img {
     margin-bottom: 1em;
 }
+
+button#submit   {
+  @include button(blue);
+}
+
+button#checkreceipt   {
+  @include button(blue);
+}
+

@@ -37,7 +37,7 @@
     }
 
     if($total < 0.001)  {
-      header('Location: ./index.php?act=error.minimum');
+      header('Location: ./form.php?act=error.minimum');
       return false;
     }
 
@@ -137,9 +137,10 @@
         <div class="invitem"><?php echo number_format($total, 8); ?> BTC</div>
     </div>
 </div>
+<br />
 
-<div id="button">
-<button type="submit" name="receipt" id="receipt" >Check Receipt</button>
+<div class="wide">
+<button type="submit" name="receipt" id="checkreceipt" >Check Receipt</button>
 </div>
 <br />
 <center>
@@ -158,7 +159,7 @@
 <script>
 <!--
 
-$( "#receipt" ).click(function() {
+$( "#checkreceipt" ).click(function() {
     $("#results" ).show( "slow", function() {
       $("#results").html('<div id="loading"><img src="images/loader.gif" alt="loading" height="20" width="20" align="center" /></div>');
       $.ajax({
