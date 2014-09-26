@@ -47,15 +47,15 @@
     }
 
     $secret = Helper::rand_id(13);
-
+/*
     if(!$receive_addr = $api->get_receive_address(SBTCP_RECEIVE_ADDR, $secret, $oid))   {
         $receive_addr = SBTCP_RECEIVE_ADDR;
         error_log('Invalid Receive Address. Defaulting to main address. Disable at:');
         error_log('['.__LINE__.'] : '.__FILE__);
     }
-
+*/
     //- harcode to main address if not using receive_address from blockchain
-    //$receive_addr = SBTCP_RECEIVE_ADDR;
+    $receive_addr = SBTCP_RECEIVE_ADDR;
 
     if($oid)    {
         //$order = Helper::get_order($oid);
@@ -140,7 +140,7 @@
 <br />
 
 <div class="wide">
-<button type="submit" name="receipt" id="checkreceipt" >Check Receipt</button>
+<button type="submit" name="receipt" id="checkreceipt" class="btn btn-success">Check Receipt</button>
 </div>
 <br />
 <center>

@@ -3,8 +3,10 @@
 @import "bootstrap";
 
 @import "partials/base";
+@import "modules/bootswatch";
+@import "partials/variables";
 @import "partials/fieldset";
-@import "modules/mixins";
+//@import "modules/mixins";
 
 #logo {
     background-image: image-url("bitcoin-logo.png");
@@ -112,15 +114,5 @@ div.footer {
     }
 }
 
-img {
-    margin-bottom: 1em;
-}
 
-button#submit   {
-  @include button(blue);
-}
-
-button#checkreceipt   {
-  @include button(blue);
-}
 

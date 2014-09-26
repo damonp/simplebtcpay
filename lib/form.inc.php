@@ -39,11 +39,11 @@
 <?php endif; ?>
 
 <div id="orderform">
-<form action="./pay.php" method="post" id="orderform" name="orderform" onclick="">
+<form action="./pay.php" method="post" id="orderform" name="orderform" onclick="" class="form-horizontal">
 <input type="hidden" name="exch_rate" value="<?php $exch_rate; ?>" />
 <input type="hidden" name="act" value="pay" />
 
-<fieldset style="width:94%;margin-right:15px;">
+<fieldset class="">
 <legend>BTCPay</legend>
 
 <?php if($oid != 'false'): ?>
@@ -74,7 +74,7 @@
 <?php endif; ?>
 
 <div class="wide">
-<button type="submit" name="submit" id="submit" >Submit</button>
+<button type="submit" name="submit" id="submit" class="btn btn-primary">Submit</button>
 </div>
 
 <br />
