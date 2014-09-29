@@ -7,9 +7,23 @@ class API {
     public function get_address_balance($address, $confirmations=0)
     {
         try {
-            $balance = $this->curl('http://blockchain.info/nl/q/addressbalance/'.$address.'?confirmations='.$confirmations);
-            return $balance / 100000000;
-            //return $this->curl('http://blockexplorer.com/q/getreceivedbyaddress/'.$address.'/'.$confirmations);
+            switch(SBTCP_API_VENDOR) {
+                default:
+                case('blockchain'):
+                    $balance = $this->curl('http://blockchain.info/nl/q/addressbalance/'.$address.'?confirmations='.$confirmations);
+                    //$balance = $this->curl('http://blockexplorer.com/q/getreceivedbyaddress/'.$address.'/'.$confirmations);
+                    return $balance / 100000000;
+                break;
+                case('blockcypher'):
+                    $balance = $this->curl('http://api.blockcypher.com/v1/btc/main/addrs/'.$address.'?unspentOnly=true');
+                    if($balance->txrefs && $balance->txrefs[0]->confirmations > $confirmations) {
+                        return $balance->balance / 100000000;
+                    }   else    {
+                        return 0;
+                    }
+                break;
+            }
+
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
             error_log('['.__LINE__.'] : '.__FILE__);
@@ -19,7 +33,15 @@ class API {
     public function get_address_history($address)
     {
         try {
-            return $this->curl('http://blockchain.info/rawaddr/'.$address);
+            switch(SBTCP_API_VENDOR) {
+                default:
+                case('blockchain'):
+                    return $this->curl('http://blockchain.info/rawaddr/'.$address);
+                break;
+                case('blockcypher'):
+                    return $this->curl('http://api.blockcypher.com/v1/btc/main/addrs/'.$address);
+                break;
+            }
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
             error_log('['.__LINE__.'] : '.__FILE__);
@@ -52,23 +74,65 @@ class API {
         }
 
         try {
-            $url_params = array(
-                                'oid'       => $oid,
-                                'secret'    => $secret
-                                );
-            $callback_url = SBTCP_CALLBACK_URL.'?'.http_build_query($url_params);
-            $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.urlencode($callback_url));
-            //echo '<pre>'.print_r($response, true)."</pre>\n";
-            error_log('get_receive_address.response: '. print_r($response,true));
 
-            //- could check output == SBTP_RECEIVE_ADDR for security
-            if($response && property_exists($response, 'input_address'))   {
-                $_SESSION['sbtcp_fwd_addr'] = $response->input_address;
-                $_SESSION['sbtcp_fwd_addr_t_stamp'] = SBTCP_GLOBAL_TIMESTAMP;
-                $_SESSION['sbtcp_fwd_addr_input'] = $address;
-                return $response->input_address;
-            }   else    {
-                return false;
+            switch(SBTCP_API_VENDOR) {
+                default:
+                case('blockchain'):
+                    $url_params = array(
+                                        'oid'       => $oid,
+                                        'secret'    => $secret
+                                        );
+                    $callback_url = SBTCP_CALLBACK_URL.'?'.http_build_query($url_params);
+                    $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.urlencode($callback_url));
+                    //echo '<pre>'.print_r($response, true)."</pre>\n";
+                    error_log('get_receive_address.response: '. print_r($response,true));
+
+                    //- could check output == SBTP_RECEIVE_ADDR for security
+                    if($response && property_exists($response, 'input_address'))   {
+                        $_SESSION['sbtcp_fwd_addr'] = $response->input_address;
+                        $_SESSION['sbtcp_fwd_addr_t_stamp'] = SBTCP_GLOBAL_TIMESTAMP;
+                        $_SESSION['sbtcp_fwd_addr_input'] = $address;
+                        return $response->input_address;
+                    }   else    {
+                        return false;
+                    }
+                break;
+                case('blockcypher'):
+                /*
+                    {
+                      "input_address": "16uKw7GsQSzfMaVTcT7tpFQkd7Rh9qcXWX",
+                      "destination": "15qx9ug952GWGTNn7Uiv6vode4RcGrRemh",
+                      "callback_url": "https://my.domain.com/callbacks/payments",
+                      "id": "399d0923-e920-48ee-8928-2051cbfbc369",
+                      "token": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+                    }
+                 */
+                    $url_params = array(
+                                        'oid'       => $oid,
+                                        'secret'    => $secret,
+                                        );
+                    $callback_url = SBTCP_CALLBACK_URL.'?'.http_build_query($url_params);
+error_log('callback_url: '. print_r($callback_url,true));
+                    $post_params = array(
+                                         'token'        => SBTCP_BLOCKCYPHER_TOKEN,
+                                         'destination'  => $address,
+                                         'callback'     => urlencode($callback_url),
+                                         );
+
+                    $response =  $this->curl('https://api.blockcypher.com/v1/btc/main/payments', $post_params);
+                    //echo '<pre>'.print_r($response, true)."</pre>\n";
+                    error_log('get_receive_address.response: '. print_r($response,true));
+
+                    //- should check output == SBTP_RECEIVE_ADDR for security
+                    if($response && property_exists($response, 'input_address'))   {
+                        $_SESSION['sbtcp_fwd_addr'] = $response->input_address;
+                        $_SESSION['sbtcp_fwd_addr_t_stamp'] = SBTCP_GLOBAL_TIMESTAMP;
+                        $_SESSION['sbtcp_fwd_addr_input'] = $address;
+                        return $response->input_address;
+                    }   else    {
+                        return false;
+                    }
+                break;
             }
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
@@ -79,7 +143,15 @@ class API {
     public function get_transaction($hash)
     {
         try {
-            return $this->curl('http://blockchain.info/rawtx/'.$hash);
+            switch(SBTCP_API_VENDOR) {
+                default:
+                case('blockchain'):
+                    return $this->curl('http://blockchain.info/rawtx/'.$hash);
+                break;
+                case('blockcypher'):
+                    return $this->curl('https://api.blockcypher.com/v1/btc/main/txs/'.$hash);
+                break;
+            }
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
             error_log('['.__LINE__.'] : '.__FILE__);

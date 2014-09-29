@@ -12,5 +12,8 @@
     //define('SBTCP_SMS_ADMIN', '##########@carrier.com'); //- @txt.att.net @vtext.com etc.
     define('SBTCP_CALLBACK_URL', 'http://yourdomain.com/callback.php');
 
+    define('SBTCP_BLOCKCYPHER_TOKEN', '');  //- see: http://blockcypher.com
+    define('SBTCP_API_VENDOR', 'blockchain'); //- blockchain or blockcypher
+
     include('helper.class.php');
     include('api.class.php');

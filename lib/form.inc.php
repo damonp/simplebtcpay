@@ -78,6 +78,9 @@
 </div>
 
 <br />
+<div class="formfooter">
+
+</div>
 </fieldset>
 
 </form>
