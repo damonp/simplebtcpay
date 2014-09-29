@@ -69,7 +69,7 @@
 
 <?php if($odesc != 'false'): ?>
 <label for="odesc">Description:</label>
-<textarea name="odesc" rows="3" cols="20"><?php echo $odesc;?></textarea>
+<textarea name="odesc" rows="3" class="desc"><?php echo $odesc;?></textarea>
 <br /><br />
 <?php endif; ?>
 

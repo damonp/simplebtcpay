@@ -9,7 +9,7 @@ fieldset {
     background: #fff;
     //@media screen and (max-width: $break-small) {
     @media screen and (device-aspect-ratio: 40/71) {    //- iphone 5
-        width: 310px;
+        width: 294px;
     }
     @media screen and (device-aspect-ratio: 667/375) {  //- iphone 6
         width: 400px;
@@ -37,4 +37,8 @@ legend {
     color: #666;
     width:auto;
     border:none;
+}
+
+textarea.desc   {
+
 }
