@@ -1,13 +1,22 @@
 fieldset {
     padding: 1em;
     margin: 0.5em auto;
-    width: 350px;
     display: inline-block;
     font-size: .9em;
     text-align: left;
     color: #000;
     border: 1px solid #999;
     background: #fff;
+    //@media screen and (max-width: $break-small) {
+    @media screen and (device-aspect-ratio: 40/71) {    //- iphone 5
+        width: 310px;
+    }
+    @media screen and (device-aspect-ratio: 667/375) {  //- iphone 6
+        width: 400px;
+    }
+    @media screen and (min-width: $break-large) {
+        width: 400px;
+    }
 }
 
 label {

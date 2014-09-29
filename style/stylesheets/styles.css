@@ -8545,7 +8545,6 @@ label,
 fieldset {
   padding: 1em;
   margin: 0.5em auto;
-  width: 350px;
   display: inline-block;
   font-size: .9em;
   text-align: left;
@@ -8553,8 +8552,26 @@ fieldset {
   border: 1px solid #999;
   background: #fff;
 }
+@media screen and (device-aspect-ratio: 40 / 71) {
+  /* line 1, ../sass/partials/_fieldset.scss */
+  fieldset {
+    width: 310px;
+  }
+}
+@media screen and (device-aspect-ratio: 667 / 375) {
+  /* line 1, ../sass/partials/_fieldset.scss */
+  fieldset {
+    width: 400px;
+  }
+}
+@media screen and (min-width: 900px) {
+  /* line 1, ../sass/partials/_fieldset.scss */
+  fieldset {
+    width: 400px;
+  }
+}
 
-/* line 13, ../sass/partials/_fieldset.scss */
+/* line 22, ../sass/partials/_fieldset.scss */
 label {
   float: left;
   width: 30%;
@@ -8566,7 +8583,7 @@ label {
   color: #666;
 }
 
-/* line 24, ../sass/partials/_fieldset.scss */
+/* line 33, ../sass/partials/_fieldset.scss */
 legend {
   font-size: 1.2em;
   padding: 0.2em 0.5em;
@@ -8594,7 +8611,7 @@ legend {
 @media screen and (max-width: 380px) {
   /* line 17, ../sass/styles.scss */
   #main {
-    width: 400px;
+    width: 320px;
   }
 }
 @media screen and (min-width: 900px) {
