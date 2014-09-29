@@ -8545,7 +8545,7 @@ label,
 fieldset {
   padding: 1em;
   margin: 0.5em auto;
-  width: 95%;
+  width: 350px;
   display: inline-block;
   font-size: .9em;
   text-align: left;
@@ -8587,13 +8587,24 @@ legend {
 #main {
   margin: 1em auto;
   padding: 8px;
-  width: 400px;
   text-align: center;
   border: 1px solid #bbb;
   background-color: #fff;
 }
+@media screen and (max-width: 380px) {
+  /* line 17, ../sass/styles.scss */
+  #main {
+    width: 400px;
+  }
+}
+@media screen and (min-width: 900px) {
+  /* line 17, ../sass/styles.scss */
+  #main {
+    width: 800px;
+  }
+}
 
-/* line 26, ../sass/styles.scss */
+/* line 31, ../sass/styles.scss */
 #exchrate {
   width: 100%;
   text-align: center;
@@ -8604,7 +8615,7 @@ legend {
   margin: 1em auto;
 }
 
-/* line 36, ../sass/styles.scss */
+/* line 41, ../sass/styles.scss */
 #bodycontent {
   margin: 1em;
   padding: 1em auto;
@@ -8612,7 +8623,7 @@ legend {
   line-height: 1.25em;
 }
 
-/* line 43, ../sass/styles.scss */
+/* line 48, ../sass/styles.scss */
 #sendbtc {
   width: 100%;
   text-align: center;
@@ -8623,31 +8634,31 @@ legend {
   margin: 0.5em auto;
 }
 
-/* line 53, ../sass/styles.scss */
+/* line 58, ../sass/styles.scss */
 div.wide {
   width: 100%;
   text-align: center;
 }
 
-/* line 58, ../sass/styles.scss */
+/* line 63, ../sass/styles.scss */
 .error {
   padding: 0.75em;
   color: crimson;
   font-weight: bold;
 }
 
-/* line 64, ../sass/styles.scss */
+/* line 69, ../sass/styles.scss */
 .invrow {
   clear: both;
   text-align: left;
 }
 
-/* line 69, ../sass/styles.scss */
+/* line 74, ../sass/styles.scss */
 .invhead, .invitem {
   font-family: monospace;
 }
 
-/* line 73, ../sass/styles.scss */
+/* line 78, ../sass/styles.scss */
 .invhead {
   width: 50px;
   font-weight: bold;
@@ -8656,23 +8667,23 @@ div.wide {
   text-align: left;
 }
 
-/* line 81, ../sass/styles.scss */
+/* line 86, ../sass/styles.scss */
 .invitem {
   float: left;
 }
 
-/* line 86, ../sass/styles.scss */
+/* line 91, ../sass/styles.scss */
 div#orderform {
   text-align: center;
 }
-/* line 89, ../sass/styles.scss */
+/* line 94, ../sass/styles.scss */
 div#invoice {
   padding: 0.75em;
   margin: 0.5em auto;
   width: 250px;
   text-align: center;
 }
-/* line 95, ../sass/styles.scss */
+/* line 100, ../sass/styles.scss */
 div#results {
   padding: .25em;
   display: block;
@@ -8681,18 +8692,18 @@ div#results {
   text-align: center;
   font-family: monospace;
 }
-/* line 103, ../sass/styles.scss */
+/* line 108, ../sass/styles.scss */
 div#loading {
   padding: 0.75em;
 }
 
-/* line 108, ../sass/styles.scss */
+/* line 113, ../sass/styles.scss */
 div.footer {
   padding: 2em;
   color: #6f6f6f;
   font-size: .8em;
 }
-/* line 112, ../sass/styles.scss */
+/* line 117, ../sass/styles.scss */
 div.footer a {
   color: #6f6f6f;
 }

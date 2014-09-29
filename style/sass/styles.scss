@@ -17,10 +17,15 @@
 #main {
     margin: 1em auto;
     padding: 8px;
-    width: 400px;
     text-align: center;
     border: 1px solid #bbb;
     background-color: #fff;
+    @media screen and (max-width: $break-small) {
+        width: 400px;
+    }
+    @media screen and (min-width: $break-large) {
+        width: 800px;
+    }
 }
 
 #exchrate {

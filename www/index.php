@@ -12,11 +12,13 @@
 
     <h4>Features</h4>
     <ul>
-    <li>Simple API driven functionality</li>
-    <li>Live BTC/USD quotes from BitcoinAverage.com</li>
-    <li>On-the-fly BTC forwarding addresses generated from blockchain.io</li>
+    <li>Simple Secure API driven functionality</li>
+    <li>No secure keys or passwords stored or required.</li>
+    <li>Open Source [ <a href="/download.php">download</a> ]</li>
+    <li>Live BTC/USD quotes from <a href="http://BitcoinAverage.com">BitcoinAverage.com</a></li>
+    <li>On-the-fly BTC forwarding addresses generated from <a href="http://blockchain.io">Blochain.io</a></li>
+    <li>Only one incoming BTC address needed.</li>
     <li>Configurable minimum payment amount. [Default: 0.001B]</li>
-    <li>Only one incoming BTC address needed</li>
     </ul>
 
     <h4>Examples</h4>
@@ -31,12 +33,37 @@
         <a href="http://simplebtcpay.com/form.php?oid=false&oemail=false&tot_usd=0.50&odesc=false">http://simplebtcpay.com/form.php?oid=false&oemail=false&tot_usd=0.50&odesc=false</a></li>
     </ul>
 
-</div>
-
-
 <h2 id="exchrate">1 BTC = $<?php echo number_format($exch_rate, 2); ?></h2>
 <div style="text-align:center;"><img src="images/bitcoin-logo.png" id="logo" alt="SimpleBTCPay" width="200" height="52" border="0" align="center" /></div>
 
 <?php
 
     include_once('form.inc.php');
+
+?>
+
+<div class="">
+<h3 class="">Uses</h3>
+<ul style="">
+    <li>Donations</li>
+    <li>Download Forms</li>
+    <li>Invoice Payments</li>
+    <li>Micro-pay Support Form</li>
+</ul>
+</div>
+
+
+</div>
+
+
+<?php include('footer.inc.php'); ?>
+
+<script>
+<!--
+
+
+
+-->
+</script>
+</body>
+</html>

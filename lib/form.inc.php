@@ -17,11 +17,11 @@
 
     include_once('main.inc.php');
 
+    //- adjust defaults as needed
+    $oid = $oid ? $oid:Helper::rand_id();
     $tot_btc = $tot_btc != '' ? $tot_btc:0.0;
     $tot_usd = $tot_usd != '' ? $tot_usd:0.50;
-    $oid = $oid ? $oid:Helper::rand_id();
-
-    //include_once('header.inc.php');
+    $odesc = $odesc == '' ? 'Donation':$odesc;
 
     $error = false;
     switch($act)    {
@@ -82,15 +82,4 @@
 
 </form>
 
-<?php include('footer.inc.php'); ?>
-
-<script>
-<!--
-
-
-
--->
-</script>
-</body>
-</html>
 
