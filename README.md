@@ -14,13 +14,13 @@ simpleBTCpay provides an easy to setup bitcoin donation / micro-payment interfac
 
 ### Examples
 1. Link to form to allow customer to complete (all fields):  
-<http://simplebtcpay.com/index.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation>
+<http://simplebtcpay.com/form.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation>
 1. Direct link to payment page (all fields):  
-<http://simplebtcpay.com/index.php?oemail=user@domain.com&tot_usd=0.50&odesc=Donation>
+<http://simplebtcpay.com/form?oemail=user@domain.com&tot_usd=0.50&odesc=Donation>
 1. Link to minimal form:  
-<http://simplebtcpay.com/index.php?tot_usd=0.50>
+<http://simplebtcpay.com/form.php?tot_usd=0.50>
 1. Form with optional fields disabled:  
-<http://simplebtcpay.com/index.php?oid=false&oemail=false&tot_usd=0.50&odesc=false>
+<http://simplebtcpay.com/form.php?oid=false&oemail=false&tot_usd=0.50&odesc=false>
 
 ### Install
 1. Clone repo outside of public web space.
