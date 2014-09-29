@@ -6,8 +6,8 @@ simpleBTCpay provides an easy to setup bitcoin donation / micro-payment interfac
 
 ### Features
 - Simple API driven functionality
-- Live BTC/USD quotes from BitcoinAverage.com
-- On-the-fly BTC forwarding addresses generated from [blockchain.io](https://blockchain.info/api/api_receive)
+- Live BTC/USD quotes from multiple APIs; [BitcoinAverage](http://bitcoinaverage.com), [Coindesk BPI](http://coindesk.com), [Coinbase](http://coinbase.com) and others.
+- On-the-fly BTC forwarding addresses generated from [Blockchain.info](https://blockchain.info/api/api_receive) or [BlockCypher.com](http://dev.blockcypher.com/reference.html#payments)
 - Configurable minimum payment amount. [Default: 0.001B]
 - Only one incoming BTC address needed
 

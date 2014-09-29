@@ -36,7 +36,7 @@ error_log('vars.post: '. print_r($vars,true));
         case('check_receipt'):
             $total = $balance = $total_sent = $total_received = 0;
             //$balance = $api->get_address_balance($addr, SBTCP_MIN_CONFIRMATIONS);
-            $history = $api->get_address_history($addr);
+            $history = $api->get_address_history($addr, 'blockchain');
             if($history->balance)   {
                 $balance = $history->balance/100000000;
             } else  {
@@ -78,13 +78,11 @@ error_log('total: '. print_r($total,true));
                 error_log('receipt_address: '.$receipt_address);
                 error_log('SBTCP_RECEIVE_ADDR: '.SBTCP_RECEIVE_ADDR);
             }   else if($total_sent == $total_received && $final_balance == 0 && $total_sent >= $total && $total_sent > 0) {
-                //- blockchain forward order
                 $message = Helper::complete_order($oid);
                 $out = array("return"=>true,"balance"=>number_format($total_sent, 8),'message'=>$message);
-            }   else if($balance == $final_balance && $final_balance >= $total && $final_balance > 0) {
-                //- blockcypher forward order
-                $message = Helper::complete_order($oid);
-                $out = array("return"=>true,"balance"=>number_format($final_balance, 8),'message'=>$message);
+//            }   else if($balance == $final_balance && $final_balance >= $total && $final_balance > 0) {
+//                $message = Helper::complete_order($oid);
+//                $out = array("return"=>true,"balance"=>number_format($final_balance, 8),'message'=>$message);
             }   else if($balance > 0 && $balance >= $total) {
                 $message = Helper::complete_order($oid);
                 $out = array("return"=>true,"balance"=>number_format($balance, 8),'message'=>$message);

@@ -14,6 +14,7 @@
 
     define('SBTCP_BLOCKCYPHER_TOKEN', '');  //- see: http://blockcypher.com
     define('SBTCP_API_VENDOR', 'blockchain'); //- blockchain or blockcypher
+    define('SBTCP_API_VENDOR_EXCH_RATE', 'bitcoinaverage'); //- bitcoinaverage / blockchain / coindesk / coinbase
 
     include('helper.class.php');
     include('api.class.php');

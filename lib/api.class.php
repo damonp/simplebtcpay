@@ -2,7 +2,7 @@
 
 class API {
 
-    public $use_24h_avg = false;
+    public $use_avg = false;
 
     public function get_address_balance($address, $confirmations=0)
     {
@@ -30,10 +30,11 @@ class API {
         }
     }
 
-    public function get_address_history($address)
+    public function get_address_history($address, $vendor=null)
     {
+        $vendor = $vendor ? $vendor:SBTCP_API_VENDOR;
         try {
-            switch(SBTCP_API_VENDOR) {
+            switch($vendoer) {
                 default:
                 case('blockchain'):
                     return $this->curl('http://blockchain.info/rawaddr/'.$address);
@@ -48,16 +49,39 @@ class API {
         }
     }
 
-    public function get_current_price()
+    public function get_current_price($vendor=null)
     {
+        $vendor = $vendor ? $vendor:SBTCP_API_VENDOR_EXCH_RATE;
         try {
-            $ticker = $this->curl('https://api.bitcoinaverage.com/ticker/global/USD/');
-
-            if($this->use_24h_avg)    {
-                return $ticker->{'24h_avg'};
-            }   else    {
-                return $ticker->last;
+            switch($vendor) {
+                default:
+                case('bitcoinaverage'):
+                    $ticker = $this->curl('https://api.bitcoinaverage.com/ticker/global/USD/');
+                    if($this->use_avg)    {
+                        $ticker = $ticker->{'24h_avg'};
+                    }   else    {
+                        $ticker = $ticker->last;
+                    }
+                break;
+                case('blockchain'):
+                    $ticker = $this->curl('https://blockchain.info/ticker');
+                    if($this->use_avg)    {
+                        $ticker = $ticker->USD->{'15m'};
+                    }   else    {
+                        $ticker = $ticker->USD->last;
+                    }
+                break;
+                case('coinbase'):
+                    $ticker = $this->curl('https://coinbase.com/api/v1/prices/sell');
+                    $ticker = $ticker->amount;
+                break;
+                case('coindesk'):
+                    $ticker = $this->curl('http://api.coindesk.com/v1/bpi/currentprice.json');
+                    $ticker = $ticker->bpi->USD->rate_float;
+                break;
             }
+
+            return $ticker;
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
             error_log('['.__LINE__.'] : '.__FILE__);
