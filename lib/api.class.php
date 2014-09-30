@@ -32,9 +32,10 @@ class API {
 
     public function get_address_history($address, $vendor=null)
     {
+        //- TODO need to massage data and return _our_ history object
         $vendor = $vendor ? $vendor:SBTCP_API_VENDOR;
         try {
-            switch($vendoer) {
+            switch($vendor) {
                 default:
                 case('blockchain'):
                     return $this->curl('http://blockchain.info/rawaddr/'.$address);
@@ -136,7 +137,7 @@ class API {
                                         'secret'    => $secret,
                                         );
                     $callback_url = SBTCP_CALLBACK_URL.'?'.http_build_query($url_params);
-error_log('callback_url: '. print_r($callback_url,true));
+error_log('blockcypher.callback_url: '. print_r($callback_url,true));
                     $post_params = array(
                                          'token'        => SBTCP_BLOCKCYPHER_TOKEN,
                                          'destination'  => $address,
@@ -164,10 +165,11 @@ error_log('callback_url: '. print_r($callback_url,true));
         }
     }
 
-    public function get_transaction($hash)
+    public function get_transaction($hash, $vendor=null)
     {
+        $vendor = $vendor ? $vendor:SBTCP_API_VENDOR;
         try {
-            switch(SBTCP_API_VENDOR) {
+            switch($vendor) {
                 default:
                 case('blockchain'):
                     return $this->curl('http://blockchain.info/rawtx/'.$hash);

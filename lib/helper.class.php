@@ -11,24 +11,42 @@ class Helper {
         Helper::$db = $db;
     }
 
+    /*
+     *  Performs after payment received functionality.
+     *  Called from www/ajax.php or www/callback.php.
+     *
+     *
+     *
+     *
+     */
     public static function complete_order($oid)
     {
 
         $order = Helper::get_order($oid);
         error_log('complete_order.order: '. print_r($order,true));
 
-        //- remove cached fwd_addr, oid etc.
-        session_unset();
-
-        //- processes to run once payment is received
-        //- updated DB, download link, send email etc.
-
+        //- We can use this too if we need it
         //$history = Helper::$api->get_address_history($order->address);
         //error_log('complete_order.history: '. print_r($history,true));
 
-        $message = ('<a href="http://simplebtcpay.com/download.php">Download File</a>');
+        //- remove cached fwd_addr, oid etc.
+        session_unset();
 
-        //- don't process status update and emails
+        /*
+         *  Processes to run once payment is received
+         *  Update DB, download link, send email etc.
+         *
+         *
+         *  USES
+         *  Add function here to create secure dowload links for your download system.
+         *  Customize email template to include purchased information or attachment.
+         *  Process micro-pay contact / support request form on receipt of funds.
+         *
+         */
+
+        $message = ('<a href="http://simplebtcpay.com/download.php?oid='.$oid.'&secret='.$order->secret.'">Download File</a>');
+
+        //- so we don't process status update and emails again
         if($order->status != 'COMPLETE')    {
             Helper::update_order($oid, 'status', 'COMPLETE');
 
@@ -120,6 +138,7 @@ class Helper {
 
         }
 
+        //- TODO needs refactored for other API returns.
         $map['{receipt_address}'] = $history->txs[0]->out[0]->addr;
         $map['{final_balance}'] = $history->final_balance / 100000000;
         $map['{total_received}'] = $history->total_received / 100000000;
@@ -190,6 +209,7 @@ class Helper {
             $map['{callback}'] = 'false';
         }
 
+        //- TODO needs refactored for other API returns.
         $map['{receipt_address}'] = $history->txs[0]->out[0]->addr;
         $map['{final_balance}'] = $history->final_balance / 100000000;
         $map['{total_received}'] = $history->total_received / 100000000;
