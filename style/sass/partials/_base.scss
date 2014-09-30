@@ -35,6 +35,8 @@ body {
 a {
     color: blue;
     text-decoration: none;
+    word-wrap: break-word;
+    word-break: break-word;
     &:visited {
         color: blue;
         text-decoration: none;
