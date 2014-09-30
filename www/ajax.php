@@ -64,8 +64,8 @@ error_log('vars.post: '. print_r($vars,true));
 error_log('check_receipt.balance: '. print_r($balance,true));
 error_log('check_receipt.total_received: '. print_r($total_received,true));
 error_log('check_receipt.total_sent: '. print_r($total_sent,true));
-error_log('check_receipt.history: '. print_r($history,true));
-error_log('receipt_address: '. print_r($receipt_address,true));
+//error_log('check_receipt.history: '. print_r($history,true));
+error_log('check_receipt.receipt_address: '. print_r($receipt_address,true));
 
             $order = Helper::get_order($oid);
             $total = round(floatval($order->total), 8);

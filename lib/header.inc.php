@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-<title>SimpleBTCPay</title>
+<title>SimpleBTCPay - simple BTC payments</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="SimpleBTCPay"/>
