@@ -1,5 +1,8 @@
 lib/config.inc.php
-lib/config.local.inc.php
+lib/config.*.inc.php
+
+app/lib/config.inc.php
+app/lib/config.*.inc.php
 
 
 /style/.sass-cache/
