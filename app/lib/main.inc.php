@@ -8,7 +8,7 @@
 
    session_start();
 
-   $db = new PDO('sqlite:../data/simplebtcpay.sqlite3') or die("Open DB FAILED!");
+   $db = new PDO('sqlite:'.SBTCP_PATH.'/app/data/simplebtcpay.sqlite3') or die("Open DB FAILED!");
    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
    switch(SBTCP_API_VENDOR)    {

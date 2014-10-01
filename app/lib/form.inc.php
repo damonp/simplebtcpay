@@ -28,7 +28,7 @@
 
     if($error):
 ?>
-<div id="error">
+<div class="error">
 <?php echo $error; ?>
 </div>
 

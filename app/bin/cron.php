@@ -3,9 +3,8 @@
     $cwd = getcwd();
     chdir(dirname(__FILE__));
 
-    include('../lib/config.inc.php');
-
-    include('main.inc.php');
+    include_once('../lib/config.inc.php');
+    include_once('app/lib/main.inc.php');
 
     //- create orders table if necessary
     $sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='orders';";

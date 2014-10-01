@@ -3,9 +3,8 @@
     $cwd = getcwd();
     chdir(dirname(__FILE__));
 
-    include('../lib/config.inc.php');
-
-    include('main.inc.php');
+    include_once('../lib/config.inc.php');
+    include_once('app/lib/main.inc.php');
 
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, 1);
 
