@@ -1,6 +1,6 @@
 <?php
 
-    include('../lib/config.inc.php');
+    include_once('../app/lib/config.inc.php');
 
     //- prefer _POSTed variables
     if(count($_POST) > 0)   {
@@ -26,7 +26,7 @@
       extract(filter_input_array(INPUT_GET, $filters));
     }
 
-    include('main.inc.php');
+    include_once('app/lib/main.inc.php');
 
     if($tot_btc > 0)    {
         $total = $tot_btc;
@@ -100,7 +100,7 @@
     }
 
 
-    include('header.inc.php');
+    include_once('app/lib/header.inc.php');
 
 ?>
 
@@ -154,7 +154,7 @@
 
 <?php endif; ?>
 
-<?php include('footer.inc.php'); ?>
+<?php include('app/lib/footer.inc.php'); ?>
 
 <script>
 <!--

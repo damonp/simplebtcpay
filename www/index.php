@@ -1,8 +1,10 @@
 <?php
 
-    include_once('../lib/config.inc.php');
-    include_once('main.inc.php');
-    include_once('header.inc.php');
+    include_once('../app/lib/config.inc.php');
+    include_once('app/lib/main.inc.php');
+
+    include_once('app/lib/header.inc.php');
+
 ?>
 
 <div id="bodycontent" style="">
@@ -38,11 +40,7 @@
 <h2 id="exchrate">1 BTC = $<?php echo number_format($exch_rate, 2); ?></h2>
 <div style="text-align:center;"><img src="images/bitcoin-logo.png" id="logo" alt="SimpleBTCPay" width="200" height="52" border="0" align="center" /></div>
 
-<?php
-
-    include_once('form.inc.php');
-
-?>
+<?php   include_once('app/lib/form.inc.php');   ?>
 
 <div class="">
 <h3 class="">Uses</h3>
@@ -58,7 +56,7 @@
 </div>
 
 
-<?php include('footer.inc.php'); ?>
+<?php   include_once('app/lib/footer.inc.php'); ?>
 
 <script>
 <!--

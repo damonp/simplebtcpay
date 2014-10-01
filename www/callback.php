@@ -1,8 +1,9 @@
 <?php
 
    define('SBTCP_CALLBACK', true);
-   include('../lib/config.inc.php');
-   include('main.inc.php');
+   include_once('../app/lib/config.inc.php');
+   include_once('app/lib/main.inc.php');
+
 /*
 [23-Sep-2014 14:39:08 America/Chicago] _REQUEST: Array
 (
