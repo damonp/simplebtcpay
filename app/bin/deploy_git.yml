@@ -15,7 +15,7 @@
     git: repo=ssh://git@github.com/damonp/simplebtcpay.git dest={{ releasedir }} version=HEAD
 
   - name: Install host specific configs
-    copy: src=../app/lib/config.{{ inventory_hostname }}.inc.php dest={{ releasedir }}/app/lib/config.inc.php owner=nginx group=nginx mode=0644
+    copy: src=../lib/config.{{ inventory_hostname }}.inc.php dest={{ releasedir }}/app/lib/config.inc.php owner=nginx group=nginx mode=0644
 
 #  - name: Run composer install
 #    composer: working_dir={{ releasedir }}

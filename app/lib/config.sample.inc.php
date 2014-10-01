@@ -3,7 +3,8 @@
    define('SBTCP_GLOBAL_TIMESTAMP', time());
    error_reporting('E_ALL ^ E_NOTICE ^ E_DEPRECATED');
 
-   ini_set('include_path', dirname(dirname(__DIR__)).':'.ini_get('include_path'));
+   define('SBTCP_PATH', dirname(dirname(__DIR__)));
+   ini_set('include_path', SBTCP_PATH.':'.ini_get('include_path'));
 
    define('SBTCP_RECEIVE_ADDR', '');
    define('SBTCP_MIN_CONFIRMATIONS', 1);
