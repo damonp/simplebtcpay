@@ -21,6 +21,10 @@
          require_once('app/models/blockcypher.class.php');
          $api = new Blockcypher();
       break;
+      case('jsonrpc'):
+         require_once('app/models/bitcoin.class.php');
+         $api = new CoindRPC();
+      break;
    }
 
    $helper = new Helper($db, $api);

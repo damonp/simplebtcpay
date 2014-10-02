@@ -14,6 +14,10 @@
    define('SBTCP_CALLBACK_URL', 'http://yourdomain.com/callback.php');
 
    define('SBTCP_BLOCKCYPHER_TOKEN', '');  //- see: http://blockcypher.com
-   define('SBTCP_API_VENDOR', 'blockchain'); //- blockchain or blockcypher
+   define('SBTCP_API_VENDOR', 'blockchain'); //- jsonrpc, blockchain or blockcypher
    define('SBTCP_API_VENDOR_EXCH_RATE', 'bitcoinaverage'); //- bitcoinaverage / blockchain / coindesk / coinbase
 
+   define('SBTCP_RPC_USER', '');
+   define('SBTCP_RPC_PASS', '');
+   define('SBTCP_RPC_HOST', '');
+   define('SBTCP_RPC_PORT', '');
