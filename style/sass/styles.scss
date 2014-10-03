@@ -8,7 +8,7 @@
 @import "partials/fieldset";
 //@import "modules/mixins";
 
-#logo {
+.logo {
     background-image: image-url("drk/darkcoin-logo.png");
     width: image-width("drk/darkcoin-logo.png");
     height: image-height("drk/darkcoin-logo.png");

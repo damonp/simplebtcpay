@@ -14,14 +14,6 @@
 
    switch(SBTCP_API_VENDOR)    {
       default:
-      case('blockchain'):
-         require_once('app/models/blockchain.class.php');
-         $api = new Blockchain();
-      break;
-      case('blockcypher'):
-         require_once('app/models/blockcypher.class.php');
-         $api = new Blockcypher();
-      break;
       case('jsonrpc'):
          require_once('app/models/jsonrpc.class.php');
          $api = new CoindRPC();

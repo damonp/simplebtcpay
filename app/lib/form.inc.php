@@ -1,9 +1,9 @@
 <?php
 
-    $tot_btc = $tot_usd = $oid = $odesc = null;
+    $tot_drk = $tot_usd = $oid = $odesc = null;
     if(count($_GET) > 0)   {
        $filters = array(
-                         'tot_btc'  => FILTER_SANITIZE_STRING,
+                         'tot_drk'  => FILTER_SANITIZE_STRING,
                          'tot_usd'  => FILTER_SANITIZE_STRING,
                          'oid'      => FILTER_SANITIZE_STRING,
                          'odesc'    => FILTER_SANITIZE_STRING,
@@ -15,14 +15,14 @@
 
     //- adjust defaults as needed
     $oid = $oid ? $oid:Helper::rand_id();
-    $tot_btc = $tot_btc != '' ? $tot_btc:0.0;
+    $tot_drk = $tot_drk != '' ? $tot_drk:0.0;
     $tot_usd = $tot_usd != '' ? $tot_usd:0.50;
     $odesc = $odesc == '' ? 'Donation':$odesc;
 
     $error = false;
     switch($act)    {
         case('error.minimum'):
-            $error = "Minimum Payment is: 0.001 BTC.";
+            $error = "Minimum Payment is: 0.001 DRK.";
         break;
     }
 
@@ -48,8 +48,8 @@
 <br /><br />
 <?php endif; ?>
 
-<label for="tot_btc">Total <?php echo SBTCP_COIN; ?>:</label>
-<input type="text" name="tot_btc" value="<?php echo $tot_btc;?>" size="8" style="text-align:right;" /> <b>BTC</b>
+<label for="tot_drk">Total <?php echo SBTCP_COIN; ?>:</label>
+<input type="text" name="tot_drk" value="<?php echo $tot_drk;?>" size="8" style="text-align:right;" /> <b><?php echo SBTCP_COIN; ?></b>
 <br />
 <center><em style="font-weight:bold;color:#999;">or</em></center>
 
