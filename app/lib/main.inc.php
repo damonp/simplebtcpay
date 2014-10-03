@@ -4,7 +4,8 @@
    require_once('app/models/api.class.php');
    require_once('app/models/address_history.class.php');
    require_once('app/models/trans_ref.class.php');
-   require_once('app/models/exch_rate.class.php');
+   //require_once('app/models/exch_rate.class.php');
+   require_once('app/models/exch_rate.drk.class.php');
 
    session_start();
 
