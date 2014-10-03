@@ -93,7 +93,7 @@ CREATE TABLE `orders` (
     `status`    TEXT,
     `btc_usd`   NUMERIC,
     `tot_usd`   NUMERIC,
-    `tot_btc`   NUMERIC,
+    `tot_drk`   NUMERIC,
     `address`   TEXT,
     `secret`    TEXT NOT NULL,
     `t_stamp`   INTEGER,
