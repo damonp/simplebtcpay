@@ -5,7 +5,7 @@
     //- prefer _POSTed variables
     if(count($_POST) > 0)   {
       $filters = array(
-                       'tot_btc'  => FILTER_SANITIZE_STRING,
+                       'tot_drk'  => FILTER_SANITIZE_STRING,
                        'tot_usd'  => FILTER_SANITIZE_STRING,
                        'oid'      => FILTER_SANITIZE_STRING,
                        'odesc'    => FILTER_SANITIZE_STRING,
@@ -16,7 +16,7 @@
     }   elseif(count($_GET) > 0)   {
     //- but accept in _GET if _POST empty
       $filters = array(
-                       'tot_btc'  => FILTER_SANITIZE_STRING,
+                       'tot_drk'  => FILTER_SANITIZE_STRING,
                        'tot_usd'  => FILTER_SANITIZE_STRING,
                        'oid'      => FILTER_SANITIZE_STRING,
                        'odesc'    => FILTER_SANITIZE_STRING,
@@ -28,12 +28,12 @@
 
     include_once('app/lib/main.inc.php');
 
-    if($tot_btc > 0)    {
-        $total = $tot_btc;
-        $tot_usd = round($tot_btc * $exch_rate, 2);
+    if($tot_drk > 0)    {
+        $total = $tot_drk;
+        $tot_usd = round($tot_drk * $exch_rate, 2);
     }   else    {
-        $tot_btc = round($tot_usd / $exch_rate, 8);
-        $total = $tot_btc;
+        $tot_drk = round($tot_usd / $exch_rate, 8);
+        $total = $tot_drk;
     }
 
     if($total < 0.001)  {
@@ -65,10 +65,10 @@
     try {
         $sql =  "REPLACE INTO orders ".
                 "(oid, total, email, desc, status, btc_usd, ".
-                "tot_usd, tot_btc, address, secret, t_stamp) ".
+                "tot_usd, tot_drk, address, secret, t_stamp) ".
                 "VALUES ".
                 "(:oid, :total, :email, :desc, :status, :btc_usd, ".
-                ":tot_usd, :tot_btc, :address, :secret, :t_stamp)";
+                ":tot_usd, :tot_drk, :address, :secret, :t_stamp)";
 
         $qry = $db->prepare($sql);
         $vars = array(
@@ -79,7 +79,7 @@
                       ':status' => 'PENDING',
                       ':btc_usd'=> round($exch_rate, 2),
                       ':tot_usd'=> round($tot_usd, 2),
-                      ':tot_btc'=> round($tot_btc, 8),
+                      ':tot_drk'=> round($tot_drk, 8),
                       ':address'=> $receive_addr,
                       ':secret' => $secret,
                       ':t_stamp'=> time()
