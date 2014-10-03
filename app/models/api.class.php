@@ -43,7 +43,7 @@ class API
       }
 
       $response = json_decode($response);
-      //error_log('API.curl.response: '. print_r($response,true));
+      error_log('API.curl.response: '. print_r($response,true));
 
       return $response;
    }
