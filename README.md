@@ -8,8 +8,9 @@ simpleBTCpay provides an easy to setup crypto donation / micro-payment interface
 - Simple API driven functionality.
 - No secure keys or passwords stored or required.
 - Live DRK/USD quotes from multiple exchange APIs.
+- QR Code support for easy of payment.
 - On-the-fly DRK forwarding addresses generated from darkcoind.
-- Automated job to forward payments to main receiving address every 5 mins.  
+- Automated job to forward payments to main receiving address every 5 mins.
 - Provides automated callback to complete order when funds are received.
 - Generates templated admin and customer emails upon successful payment with order detals.
 - Configurable minimum payment amount. [Default: 0.001DRK]
