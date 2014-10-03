@@ -40,7 +40,7 @@
 <input type="hidden" name="act" value="pay" />
 
 <fieldset class="">
-<legend>BTCPay</legend>
+<legend><?php echo SBTCP_COIN; ?>Pay</legend>
 
 <?php if($oid != 'false'): ?>
 <label for="oid">Invoice ID:</label>
@@ -48,7 +48,7 @@
 <br /><br />
 <?php endif; ?>
 
-<label for="tot_btc">Total BTC:</label>
+<label for="tot_btc">Total <?php echo SBTCP_COIN; ?>:</label>
 <input type="text" name="tot_btc" value="<?php echo $tot_btc;?>" size="8" style="text-align:right;" /> <b>BTC</b>
 <br />
 <center><em style="font-weight:bold;color:#999;">or</em></center>

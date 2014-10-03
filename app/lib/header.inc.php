@@ -23,6 +23,6 @@
 <body>
 
 <div id="main">
-<h2 id="exchrate">1 BTC = $<?php echo number_format($exch_rate, 2); ?></h2>
-<div style="text-align:center;"><img src="images/btc/bitcoin-logo.png" id="logo" alt="SimpleBTCPay" width="200" height="52" border="0" align="center" /></div>
+<h2 id="exchrate"><?php echo '1 '.SBTCP_COIN.' = $'.number_format($exch_rate, 2); ?></h2>
+<div id="logo"></div>
 <!-- end header.inc.php -->

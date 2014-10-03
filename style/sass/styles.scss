@@ -9,9 +9,11 @@
 //@import "modules/mixins";
 
 #logo {
-    background-image: image-url("btc/bitcoin-logo.png");
-    width: image-width("btc/bitcoin-logo.png");
-    height: image-height("btc/bitcoin-logo.png");
+    background-image: image-url("drk/darkcoin-logo.png");
+    width: image-width("drk/darkcoin-logo.png");
+    height: image-height("drk/darkcoin-logo.png");
+    text-align: center;
+    margin: 1em auto;
 }
 
 #main {
