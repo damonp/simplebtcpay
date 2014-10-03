@@ -97,7 +97,7 @@ class Bitcoin {
         $this->url           = $url;
 
         // Set some defaults
-        $this->proto         = 'http';
+        $this->proto = $host == 'localhost' ? 'http':'https';
         $this->CACertificate = null;
     }
 

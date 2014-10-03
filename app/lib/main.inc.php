@@ -22,7 +22,7 @@
          $api = new Blockcypher();
       break;
       case('jsonrpc'):
-         require_once('app/models/bitcoin.class.php');
+         require_once('app/models/jsonrpc.class.php');
          $api = new CoindRPC();
       break;
    }

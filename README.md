@@ -7,6 +7,7 @@ simpleBTCpay provides an easy to setup bitcoin donation / micro-payment interfac
 ### Features
 - Simple API driven functionality
 - Live BTC/USD quotes from multiple APIs; [BitcoinAverage](http://bitcoinaverage.com), [Coindesk BPI](http://coindesk.com), [Coinbase](http://coinbase.com) and others.
+- QR Code support for easy of payment.
 - On-the-fly BTC forwarding addresses generated from [Blockchain](https://blockchain.info/api/api_receive) or [BlockCypher](http://dev.blockcypher.com/reference.html#payments)
 - Provides automated callback to complete order when funds are received.
 - Generates templated admin and customer emails upon successful payment with order detals.

@@ -132,18 +132,18 @@ class Helper
         } else  {
             $get = null;
             $balance = Helper::$api->get_address_balance($order->address);
-            $map['{input_address}'] = $history->txs[0]->inputs[0]->prev_out->addr;
+            $map['{input_address}'] = $history->address;
             $map['{confirmations}'] = 'na';
-            $map['{trans_hash}'] = $history->txs[0]->hash;
+            $map['{trans_hash}'] = $history->txns[0]->hash;
             $map['{callback}'] = 'false';
 
         }
 
         //- TODO needs refactored for other API returns.
-        $map['{receipt_address}'] = $history->txs[0]->out[0]->addr;
-        $map['{final_balance}'] = $history->final_balance / 100000000;
-        $map['{total_received}'] = $history->total_received / 100000000;
-        $map['{total_sent}'] = $history->total_sent / 100000000;
+        $map['{receipt_address}'] = $history->address;
+        $map['{final_balance}'] = $history->final_balance;
+        $map['{total_received}'] = $history->total_received;
+        $map['{total_sent}'] = $history->total_sent;
 
         if($input_address != '') $msg .= 'InAddr:'.$input_address."\n";
         if($map['{receipt_address}'] != '')    $msg .= 'RcvAddr:'.substr($map['{receipt_address}'], 0, 3).'..'.substr($map['{receipt_address}'], -3)."\n";
@@ -204,17 +204,17 @@ class Helper
         } else  {
             $get = null;
             $balance = Helper::$api->get_address_balance($order->address);
-            $map['{input_address}'] = $history->txs[0]->inputs[0]->prev_out->addr;
+            $map['{input_address}'] = $history->address;
             $map['{confirmations}'] = 'na';
-            $map['{trans_hash}'] = $history->txs[0]->hash;
+            $map['{trans_hash}'] = $history->txns[0]->hash;
             $map['{callback}'] = 'false';
         }
 
         //- TODO needs refactored for other API returns.
-        $map['{receipt_address}'] = $history->txs[0]->out[0]->addr;
-        $map['{final_balance}'] = $history->final_balance / 100000000;
-        $map['{total_received}'] = $history->total_received / 100000000;
-        $map['{total_sent}'] = $history->total_sent / 100000000;
+        $map['{receipt_address}'] = $history->address;
+        $map['{final_balance}'] = $history->final_balance;
+        $map['{total_received}'] = $history->total_received;
+        $map['{total_sent}'] = $history->total_sent;
 
         foreach($order as $key => $val) {
             $map['{'.$key.'}'] = $val;
