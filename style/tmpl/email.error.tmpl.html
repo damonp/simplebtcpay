@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>simplebtcpay Order Notification</title>
+<title>simplebtcpay ErrorNotify</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style type="text/css">
@@ -21,42 +21,10 @@ h4,h5   {margin:1em auto;}
 </head>
 <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor="#eee">
 <div id="main">
-<h4>New Order Details</h4>
+<h4>Error: {hostname}</h4>
 <h5 class="">{timestamp}</h5>
-
-<div id="table">
-  <div class="row even">
-    <div class="cell head">ID</div>
-    <div class="cell value">{oid}</div>
-  </div>
-  <div class="row">
-    <div class="cell head">Item</div>
-    <div class="cell value">{desc}</div>
-  </div>
-  <div class="row even">
-    <div class="cell head">Email</div>
-    <div class="cell value">{email}</div>
-  </div>
-  <div class="row">
-    <div class="cell head">Address</div>
-    <div class="cell value"><a href="https://blockchain.info/address/{address}">{address}</a></div>
-  </div>
-  <div class="row even">
-    <div class="cell head">Status</div>
-    <div class="cell value">{status}</div>
-  </div>
-  <div class="row">
-    <div class="cell head">BTC/USD</div>
-    <div class="cell value">${btc_usd}</div>
-  </div>
-  <div class="row even">
-    <div class="cell head">Total USD</div>
-    <div class="cell value">${tot_usd}</div>
-  </div>
-  <div class="row header">
-    <div class="cell head">Total</div>
-    <div class="cell value">{total} BTC</div>
-  </div>
+<div class="body">
+{error_body}
 </div>
 <div class="footer">
 Thanks<br />

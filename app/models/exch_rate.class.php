@@ -20,8 +20,6 @@ class ExchRate extends API
                     }   else    {
                         $this->ticker = $ticker->last;
                     }
-                    //$ticker = $this->curl('http://drk.cryptoapi.net/index.php');
-                    //$this->ticker = $ticker->drk_usd;
                 break;
                 case('blockchain'):
                     $ticker = $this->curl('https://blockchain.info/ticker');

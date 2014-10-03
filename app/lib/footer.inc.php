@@ -3,7 +3,7 @@
 </div>
 
 <div class="footer">
-<a href="http://drkmkt.com">drkmkt</a> &copy; 2014
+<a href="http://simplebtcpay.com">simplebtcpay.com</a> &copy; 2014
 </div>
 </div>
 <!-- end footer.inc.php -->

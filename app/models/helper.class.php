@@ -45,7 +45,7 @@ class Helper
          *
          */
 
-        $message = ('<a href="http://drkmkt.com/download.php?oid='.$oid.'&secret='.$order->secret.'" target="_new">Download File</a>');
+        $message = ('<a href="http://simplebtcpay.com/download.php?oid='.$oid.'&secret='.$order->secret.'" target="_new">Download File</a>');
 
         //- so we don't process status update and emails again
         if($order->status != 'COMPLETE')    {
@@ -100,7 +100,7 @@ class Helper
         $history = Helper::$api->get_address_history($order->address);
 
         $msg  = 'Order: '.$order->oid."\n";
-        $msg .= 'DRK: '.number_format($order->total, 4)."B\n";
+        $msg .= 'BTC: '.number_format($order->total, 4)."B\n";
         $msg .= 'USD: $'.number_format($order->tot_usd, 2)."\n";
         //if($order->email != '') $msg .= 'Email: '.print_r($order->email, true)."\n";
         if($order->desc != '') $msg .= 'Item: '. print_r($order->desc, true)."\n";
@@ -140,7 +140,7 @@ class Helper
 
         }
 
-        $map['{receipt_address}'] = $history->address;
+	$map['{receipt_address}'] = $history->address;
         $map['{final_balance}'] = $history->final_balance;
         $map['{total_received}'] = $history->total_received;
         $map['{total_sent}'] = $history->total_sent;

@@ -6,5 +6,5 @@
                  'gratitude'  => 0.25,
                  'martini'  => 7.50,
                  'shot'  => 5.00,
-                 'DRK'  => EXCH_RATE
+                 'BTC'  => EXCH_RATE
                   );
