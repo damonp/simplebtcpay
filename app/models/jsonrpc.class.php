@@ -1,24 +1,35 @@
 <?php
 
 require_once('app/lib/easybitcoin.php');
+require_once('app/models/blockchain.class.php');
 
 class CoindRPC extends API
 {
 
    public function __construct()
    {
+
       $this->coind = new Bitcoin(SBTCP_RPC_USER, SBTCP_RPC_PASS, SBTCP_RPC_HOST, SBTCP_RPC_PORT);
+      $this->api = new Blockchain();
+
    }
 
     public function get_address_balance($address, $confirmations=0)
     {
         try {
 
-            $balance = $this->coind->getbalance($address);
-            //$balance = $this->curl('http://blockchain.info/nl/q/addressbalance/'.$address.'?confirmations='.$confirmations);
-error_log('balance: '. print_r($balance,true));
-            if($balance->txrefs && $balance->txrefs[0]->confirmations > $confirmations) {
-                return $balance->balance / 100000000;
+            //- remote api query
+            return $this->api->get_address_balance($address, $confirmations);
+
+            //- jsonrpc query
+            $address_info = $this->coind->validateaddress($address);
+
+            if($address_info['isvalid'] == 1 && $address_info['ismine'] == 1)   {
+                $balance = $this->coind->getreceivedbyaddress($address, $confirmations);
+            }
+
+            if($balance != '') {
+                return floatval($balance);
             }   else    {
                 return 0;
             }
@@ -29,13 +40,17 @@ error_log('balance: '. print_r($balance,true));
         }
     }
 
-    public function get_address_history($address, $vendor=null)
+    public function get_address_history($address)
     {
 
-        $vendor = $vendor ? $vendor:SBTCP_API_VENDOR;
         try {
-            $history =  $this->curl('http://blockchain.info/rawaddr/'.$address);
+            //- remote api query
+            $history =  $this->api->get_address_history($address);
 
+            //- jsonrpc query
+            //$history = $this->coind->listtransactions($address);
+error_log('history: '. print_r($history,true));
+//echo '<pre>'.print_r($history, true)."</pre>\n";
             $addr_hist = array(
                                'address'    => $history->address,
                                'n_tx'       => $history->n_tx,
@@ -57,10 +72,15 @@ error_log('balance: '. print_r($balance,true));
     {
         if(!$address)   $address = SBTCP_RECEIVE_ADDR;
 
-        if(array_key_exists('sbtcp_fwd_addr_t_stamp', $_SESSION) && 
-                $_SESSION['sbtcp_fwd_addr_t_stamp'] > (SBTCP_GLOBAL_TIMESTAMP - 600))  {
-            return $_SESSION['sbtcp_fwd_addr'];
-        }
+//        if(array_key_exists('sbtcp_fwd_addr_t_stamp', $_SESSION) && 
+//                $_SESSION['sbtcp_fwd_addr_t_stamp'] > (SBTCP_GLOBAL_TIMESTAMP - 600))  {
+//            return $_SESSION['sbtcp_fwd_addr'];
+//        }
+
+        $info = $this->coind->getinfo();
+        $error = $this->coind->error;
+        error_log('info: '. print_r($info,true));
+        error_log('error: '. print_r($error,true));
 
         try {
 
@@ -70,15 +90,18 @@ error_log('balance: '. print_r($balance,true));
                                 );
 
             $callback_url = SBTCP_CALLBACK_URL.'?'.http_build_query($url_params);
-            $response =  $this->curl('https://blockchain.info/api/receive?method=create&address='.$address.'&callback='.urlencode($callback_url));
-            //error_log('get_receive_address.response: '. print_r($response,true));
+            $new_address = $this->coind->getnewaddress(SBTCP_RPC_ACCT);
+            error_log('new_address: '. print_r($new_address,true));
+
+            $address_info = $this->coind->validateaddress($new_address);
+            error_log('address_info: '. print_r($address_info,true));
 
             //- could check output == SBTP_RECEIVE_ADDR for security
-            if($response && property_exists($response, 'input_address'))   {
-                $_SESSION['sbtcp_fwd_addr'] = $response->input_address;
+            if($address_info['isvalid'] == 1 && $address_info['ismine'] == 1)   {
+                $_SESSION['sbtcp_fwd_addr'] = $new_address;
                 $_SESSION['sbtcp_fwd_addr_t_stamp'] = SBTCP_GLOBAL_TIMESTAMP;
                 $_SESSION['sbtcp_fwd_addr_input'] = $address;
-                return $response->input_address;
+                return $new_address;
             }   else    {
                 return false;
             }
@@ -92,7 +115,8 @@ error_log('balance: '. print_r($balance,true));
     public function get_transaction($hash)
     {
         try {
-            $transaction = $this->curl('http://blockchain.info/rawtx/'.$hash);
+            $transaction = $this->api->get_transaction($hash);
+            //$transaction = $this->coind->gettransaction($hash);
             return $transaction;
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));

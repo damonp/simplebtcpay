@@ -17,10 +17,9 @@ class Blockchain extends API
         }
     }
 
-    public function get_address_history($address, $vendor=null)
+    public function get_address_history($address)
     {
 
-        $vendor = $vendor ? $vendor:SBTCP_API_VENDOR;
         try {
             $history =  $this->curl('http://blockchain.info/rawaddr/'.$address);
 
