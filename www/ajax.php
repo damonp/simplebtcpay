@@ -22,44 +22,24 @@
         break;
         case('check_receipt'):
             $total = $balance = $total_sent = $total_received = $n_tx = 0;
-            //$balance = $api->get_address_balance($addr, SBTCP_MIN_CONFIRMATIONS);
+
+            $balance = $api->get_address_balance($addr, SBTCP_MIN_CONFIRMATIONS);
             $history = $api->get_address_history($addr);
 
-            if(property_exists('AddressHistory', 'balance'))   {
-                $balance = $history->balance/100000000;
-            } else  {
-                $balance = 0;
-            }
+            $n_tx = $history->n_tx;
+            $balance = $history->balance;
+            $final_balance = $history->final_balance;
+            $receipt_address = $history->address;
+            $total_received = $history->total_received;
+            $total_sent = $history->total_sent;
 
-            if(property_exists('AddressHistory', 'final_balance'))   {
-                $final_balance = $history->final_balance/100000000;
-            } else  {
-                $final_balance = 0;
-            }
-
-            if(property_exists('AddressHistory', 'n_tx'))   {
-                $n_tx = $history->n_tx;
-            } else  {
-                $n_tx = 0;
-            }
-
-            if(property_exists('AddressHistory', 'txs'))   {
-                $receipt_address = $history->txs[0]->out[0]->addr;
-                $total_received = $history->total_received/100000000;
-                $total_sent = $history->total_sent/100000000;
-            }   elseif(property_exists('AddressHistory', 'txrefs'))   {
-                $receipt_address = $history->address;
-                //$txn = $api->get_transaction($history->txrefs[0]->tx_hash);
-                //error_log('txn: '. print_r($txn,true));
-            }   else   {
-                $receipt_address = $history->address;
-            }
-
-            //error_log('check_receipt.balance: '. print_r($balance,true));
-            //error_log('check_receipt.total_received: '. print_r($total_received,true));
-            //error_log('check_receipt.total_sent: '. print_r($total_sent,true));
-            //error_log('check_receipt.history: '. print_r($history,true));
-            //error_log('check_receipt.receipt_address: '. print_r($receipt_address,true));
+            /*
+            error_log('check_receipt.balance: '. print_r($balance,true));
+            error_log('check_receipt.total_received: '. print_r($total_received,true));
+            error_log('check_receipt.total_sent: '. print_r($total_sent,true));
+            error_log('check_receipt.history: '. print_r($history,true));
+            error_log('check_receipt.receipt_address: '. print_r($receipt_address,true));
+            */
 
             $order = Helper::get_order($oid);
             $total = round(floatval($order->total), 8);

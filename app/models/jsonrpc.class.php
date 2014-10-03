@@ -15,7 +15,7 @@ class CoindRPC extends API
    {
 
       $this->coind = new Bitcoin(SBTCP_RPC_USER, SBTCP_RPC_PASS, SBTCP_RPC_HOST, SBTCP_RPC_PORT);
-      $this->api = new Blockchain();
+      //$this->api = new Blockchain();
       //$this->api = new Blockcypher();
 
    }
@@ -25,7 +25,7 @@ class CoindRPC extends API
         try {
 
             //- remote api query
-            return $this->api->get_address_balance($address, $confirmations);
+            //return $this->api->get_address_balance($address, $confirmations);
 
             //- jsonrpc query
             $address_info = $this->coind->validateaddress($address);
@@ -51,22 +51,63 @@ class CoindRPC extends API
 
         try {
             //- remote api query
-            $history =  $this->api->get_address_history($address);
+            //$history =  $this->api->get_address_history($address);
 
             //- jsonrpc query
-            //$history = $this->coind->listtransactions($address);
+            $address_info = $this->coind->validateaddress($address);
 
-            error_log('history: '. print_r($history,true));
+            if($address_info['isvalid'] == 1 && $address_info['ismine'] == 1)   {
+                $history = $this->coind->listtransactions(SBTCP_RPC_ACCT);
 
-            $addr_hist = array(
-                               'address'    => $history->address,
-                               'n_tx'       => $history->n_tx,
-                               'total_sent' => $history->total_sent,
-                               'total_received' => $history->total_received,
-                               'final_balance'  => $history->final_balance,
-                               //'txns'       => $txns
-                               );
-            $addr_hist = new AddressHistory($addr_hist);
+                $txns = array();
+                $final_balance = $balance = 0;
+                foreach($history as $txn) {
+                    if($txn['address'] != $address)    continue;
+                    $n_tx = $total_received = $total_sent = 0;
+
+                    $n_tx = intval($addr_hist['n_tx']) + 1;
+                    switch($txn['category'])  {
+                        case('receive'):
+                            $total_received = $addr_hist['total_received'] += $txn['amount'];
+                            $balance = $balance + $txn['amount'];
+
+                            //- can we trust final balance here?  do we need more history
+                            $final_balance = $final_balance + $txn['amount'];
+                        break;
+                        case('send'):
+                            $total_sent = $addr_hist['total_sent'] += $txn['amount'];
+                            $balance = $balance - $txn['amount'];
+
+                            //- can we trust final balance here?  do we need more history
+                            $final_balance = $final_balance + $txn['amount'];
+                        break;
+                    }
+
+                    $txns[] = array(
+                                       'hash'   => $txn['txid'],
+                                       'value'  => $txn['amount'],
+                                       'spent'  => $txn['spent'],
+                                       'spent_by'  => $txn['spent_by'],
+                                       'confirmations'   => $txn['confirmations'],
+                                       );
+                }
+
+                $addr_hist = array(
+                                   'address'    => $address,
+                                   'n_tx'       => $n_tx,
+                                   'total_sent' => $total_sent,
+                                   'total_received' => $total_received,
+                                   'balance'        => $balance,
+                                   'final_balance'  => $final_balance,
+                                   'txns'           => $txns
+                                   );
+
+                $addr_hist = new AddressHistory($addr_hist);
+            }   else {
+                $addr_hist = false;
+                error_log('Address invalid: '.$address);
+                error_log('['.__LINE__.'] : '.__FILE__);
+            }
 
             return $addr_hist;
         } catch (Exception $e) {
@@ -118,11 +159,11 @@ class CoindRPC extends API
     {
         try {
             //- remote api query
-            $transaction = $this->api->get_transaction($hash);
+            $txn = $this->api->get_transaction($hash);
 
             //- jsonrpc query
-            //$transaction = $this->coind->gettransaction($hash);
-            return $transaction;
+            //$txn = $this->coind->gettransaction($hash);
+            return $txn;
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
             error_log('['.__LINE__.'] : '.__FILE__);

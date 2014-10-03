@@ -45,7 +45,7 @@ class Helper
          *
          */
 
-        $message = ('<a href="http://simplebtcpay.com/download.php?oid='.$oid.'&secret='.$order->secret.'">Download File</a>');
+        $message = ('<a href="http://drkmkt.com/download.php?oid='.$oid.'&secret='.$order->secret.'" target="_new">Download File</a>');
 
         //- so we don't process status update and emails again
         if($order->status != 'COMPLETE')    {
