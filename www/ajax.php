@@ -94,6 +94,10 @@
             $data = $api->get_address_history($addr);
             $out = array("return"=>true,"history"=>$data);
         break;
+        case('receive_address'):
+            $data = $api->get_receive_address($addr);
+            $out = array("return"=>true,"data"=>$data);
+        break;
         case('transaction'):
             $data = $api->get_transaction($hash);
             $out = array("return"=>true,"transaction"=>$data);
