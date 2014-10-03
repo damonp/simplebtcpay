@@ -110,7 +110,7 @@
 
 <?php echo '<img src="./qr.php?addr='.$receive_addr.'&amount='.$total.'&orderid='.$oid.'" width="264" height="264" class="qrcode">'."\n"; ?>
 <div style="padding:.5em;">
-<?php echo '<a href="bitcoin:'.$receive_addr.'?amount='.$total.'&label='.$oid.'" title="">'.$receive_addr.'</a>'."\n";  ?>
+<?php echo '<a href="darkcoin:'.$receive_addr.'?amount='.$total.'&label='.$oid.'" title="">'.$receive_addr.'</a>'."\n";  ?>
 </div>
 
 <div id="invoice">
