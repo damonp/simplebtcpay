@@ -36,8 +36,8 @@
          $tot_drk = $order->tot_drk;
          $tot_usd = $order->tot_usd;
          $address = $order->address;
-         $odesc = $order->odesc;
-         $oemail = $order->oemail;
+         $odesc = $order->desc;
+         $oemail = $order->email;
          $secret = $order->secret;
       }
    }
