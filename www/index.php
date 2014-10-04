@@ -10,15 +10,16 @@
 <div id="bodycontent" style="">
 
     <h3>Overview</h3>
-    <p>simpleBTCpay provides an easy to setup bitcoin donation / micro-payment interface.</p>
+    <p>simpleBTCpay : DRK provides an easy to setup Darkcoin donation / micro-payment interface.</p>
 
     <h4>Features</h4>
     <ul>
-    <li>Simple Secure API driven functionality</li>
+    <li>Simple Secure API driven functionality.</li>
     <li>No secure keys or passwords stored or required.</li>
-    <li>Open Source [ <a href="/download.php">download</a> ]</li>
-    <li>Live DRK/USD quotes from multiple APIs</li>
-    <li>On-the-fly DRK forwarding addresses generated from local darkcoind</li>
+    <li>QR Code support for easy of payment.</li>
+    <li>Open Source [ <a href="/download.php">download</a> ].</li>
+    <li>Live DRK/USD quotes from multiple exchange APIs.</li>
+    <li>On-the-fly DRK forwarding addresses generated from local darkcoind.</li>
     <li>Only one incoming DRK address needed.</li>
     <li>Configurable minimum payment amount. [Default: 0.001DRK]</li>
     </ul>
