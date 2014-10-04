@@ -9,8 +9,20 @@
 
    session_start();
 
-   $db = new PDO('sqlite:'.SBTCP_PATH.'/app/data/drkmkt.sqlite3') or die("Open DB FAILED!");
-   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+   try {
+      if(defined('SBTCP_MYSQL_HOST'))  {
+
+
+      }  else  {
+         $db = new PDO('sqlite:'.SBTCP_PATH.'/app/data/drkmkt.sqlite3');
+         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      }
+
+   } catch (PDOException $e) {
+      error_log('PDOException.Message: '. print_r($e->getMessage(),true));
+      error_log('PDOException.Trace: '. print_r($e->getTrace(),true));
+
+   }
 
    switch(SBTCP_API_VENDOR)    {
       default:
