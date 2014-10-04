@@ -94,6 +94,7 @@
                                 ':amount'   => $details['amount'],
                                 ':fee'      => $details['fee']
                             );
+                if(!$txnhead)   $txnhead = $vars;
 
                 foreach($vars as $key => $val)  {
                     $qry->bindValue($key, $val);
@@ -102,6 +103,8 @@
                 error_log('walletnotify.vars: '. print_r($vars,true));
                 $qry->execute();
             }
+
+            Helper::walletnotify_email($txnhead);
 
         }  catch (PDOException $e) {
             error_log('error: '. print_r($e->getMessage(),true));

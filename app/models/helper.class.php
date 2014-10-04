@@ -99,7 +99,7 @@ class Helper
         $history = Helper::$api->get_address_history($order->address);
 
         $msg  = 'Order: '.$order->oid."\n";
-        $msg .= 'BTC: '.number_format($order->total, 4)."B\n";
+        $msg .= 'DRK: '.number_format($order->total, 4)."B\n";
         $msg .= 'USD: $'.number_format($order->tot_usd, 2)."\n";
         //if($order->email != '') $msg .= 'Email: '.print_r($order->email, true)."\n";
         if($order->desc != '') $msg .= 'Item: '. print_r($order->desc, true)."\n";
@@ -139,7 +139,6 @@ class Helper
 
         }
 
-        //- TODO needs refactored for other API returns.
         $map['{receipt_address}'] = $history->address;
         $map['{final_balance}'] = $history->final_balance;
         $map['{total_received}'] = $history->total_received;
@@ -210,7 +209,6 @@ class Helper
             $map['{callback}'] = 'false';
         }
 
-        //- TODO needs refactored for other API returns.
         $map['{receipt_address}'] = $history->address;
         $map['{final_balance}'] = $history->final_balance;
         $map['{total_received}'] = $history->total_received;
@@ -254,5 +252,23 @@ class Helper
             error_log('oid: '. print_r($oid,true));
             return false;
         }
+    }
+
+    public static function walletnotify_email($txnhead)
+    {
+        if($txnhead['confirmations'] > 0)   return;
+
+        $tmpl = file_get_contents('../style/tmpl/email.notify.tmpl.html');
+
+        foreach($txnhead as $key => $val)   {
+            $key = str_replace(':', '', $key);
+            $map['{'.$key.'}'] = $val;
+        }
+
+        $map['{timestamp}'] = date('Y-m-d H:i:s', SBTCP_GLOBAL_TIMESTAMP);
+
+        $html = str_replace(array_keys($map), array_values($map), $tmpl);
+
+        return Helper::send_email($html, 'WalletNotify', $order->email);
     }
 }
