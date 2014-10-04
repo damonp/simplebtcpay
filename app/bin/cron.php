@@ -1,5 +1,7 @@
 <?php
 
+    define('SBTCP_CMD', true);
+
     $cwd = getcwd();
     chdir(dirname(__FILE__));
 
