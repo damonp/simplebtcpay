@@ -69,6 +69,7 @@
 )
 */
         try {
+            //- Keep this flat for now.  No need to join for data always queried together.
             $sql =  "INSERT INTO walletnotify ".
                     "(`txid`, `tot_amt`, `tot_fee`, `confirmations`, `comment`, `blocktime`, ".
                     "`address`, `account`, `category`, `amount`, `fee`) ".
@@ -82,7 +83,7 @@
             foreach($txninfo['details'] as $id => $details) {
                 $vars = array(
                                 ':txid'     => $txninfo['txid'],
-                                ':total_amt'=> $txninfo['amount'],
+                                ':tot_amt'  => $txninfo['amount'],
                                 ':tot_fee'  => $txninfo['fee'],
                                 ':confirmations'=> $txninfo['confirmations'],
                                 ':comment'  => $txninfo['comment'],

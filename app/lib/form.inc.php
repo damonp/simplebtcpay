@@ -1,6 +1,6 @@
 <?php
 
-   $tot_drk = $tot_usd = $oid = $odesc = null;
+   $tot_drk = $tot_usd = $oid = $odesc = $order = null;
    if(count($_GET) > 0)   {
       $filters = array(
                         'tot_drk'  => FILTER_SANITIZE_STRING,
@@ -13,11 +13,34 @@
       extract(filter_input_array(INPUT_GET, $filters));
    }
 
+   if($_GET['oid'] != '')  {
+      $order = Helper::get_order($oid);
+      if($order)  {
+         $tot_drk = $order->tot_drk;
+         $tot_usd = $order->tot_usd;
+         $total   = $order->total;
+         $address = $order->address;
+         $odesc   = $order->desc;
+         $oemail  = $order->email;
+         $secret  = $order->secret;
+
+         //- assume we want to be paid the same amount of USD, so adjust DRK on delayed invoices.
+         if($tot_usd > 0)    {
+            $tot_drk = round($tot_usd / $exch_rate, 8);
+            $total = $tot_drk;
+         }   else    {
+            $tot_usd = round($tot_drk * $exch_rate, 2);
+            $total = $tot_drk;
+         }
+      }
+   }
+
    //- adjust defaults as needed
    $oid = $oid ? $oid:Helper::rand_id();
    $tot_drk = $tot_drk != '' ? $tot_drk:0.0;
    $tot_usd = $tot_usd != '' ? $tot_usd:0.50;
-   if($odesc == '') {
+
+   if($odesc == '' && $oid == '' && $tot_usd = 0.50 && $tot_drk == 0.0) {
       if(file_exists(SBTCP_PATH.'/app/data/tips.php'))   {
          include(SBTCP_PATH.'/app/data/tips.php');
          srand((double)microtime()*1000000);
