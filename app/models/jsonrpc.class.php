@@ -6,7 +6,7 @@
  */
 
 require_once('app/lib/easybitcoin.php');
-require_once('app/models/blockchain.class.php');
+//require_once('app/models/blockchain.class.php');
 
 class CoindRPC extends API
 {

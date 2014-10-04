@@ -1,32 +1,46 @@
 <?php
 
-    $tot_drk = $tot_usd = $oid = $odesc = null;
-    if(count($_GET) > 0)   {
-       $filters = array(
-                         'tot_drk'  => FILTER_SANITIZE_STRING,
-                         'tot_usd'  => FILTER_SANITIZE_STRING,
-                         'oid'      => FILTER_SANITIZE_STRING,
-                         'odesc'    => FILTER_SANITIZE_STRING,
-                         'oemail'   => FILTER_SANITIZE_STRING, //- filter email
-                         'act'      => FILTER_SANITIZE_STRING,
+   $tot_drk = $tot_usd = $oid = $odesc = null;
+   if(count($_GET) > 0)   {
+      $filters = array(
+                        'tot_drk'  => FILTER_SANITIZE_STRING,
+                        'tot_usd'  => FILTER_SANITIZE_STRING,
+                        'oid'      => FILTER_SANITIZE_STRING,
+                        'odesc'    => FILTER_SANITIZE_STRING,
+                        'oemail'   => FILTER_SANITIZE_STRING, //- filter email
+                        'act'      => FILTER_SANITIZE_STRING,
                         );
-       extract(filter_input_array(INPUT_GET, $filters));
-    }
+      extract(filter_input_array(INPUT_GET, $filters));
+   }
 
-    //- adjust defaults as needed
-    $oid = $oid ? $oid:Helper::rand_id();
-    $tot_drk = $tot_drk != '' ? $tot_drk:0.0;
-    $tot_usd = $tot_usd != '' ? $tot_usd:0.50;
-    $odesc = $odesc == '' ? 'Donation':$odesc;
+   //- adjust defaults as needed
+   $oid = $oid ? $oid:Helper::rand_id();
+   $tot_drk = $tot_drk != '' ? $tot_drk:0.0;
+   $tot_usd = $tot_usd != '' ? $tot_usd:0.50;
+   if($odesc == '') {
+      if(file_exists(SBTCP_PATH.'/app/data/tips.php'))   {
+         include(SBTCP_PATH.'/app/data/tips.php');
+         srand((double)microtime()*1000000);
+         $odesc = array_rand($tips);
+         $tot_usd = $tips[$odesc];
+         if($tot_usd == EXCH_RATE)  {
+            $tot_usd = $tot_usd <= 0 ? 1.0:$tot_usd;
+            $tot_drk = $tot_usd;
+            $tot_usd = $tot_usd * $exch_rate;
+         }
+      }  else  {
+         $odesc = 'Donation';
+      }
+   }
 
-    $error = false;
-    switch($act)    {
-        case('error.minimum'):
-            $error = "Minimum Payment is: 0.001 DRK.";
-        break;
-    }
+   $error = false;
+   switch($act)    {
+      case('error.minimum'):
+        $error = "Minimum Payment is: 0.001 DRK.";
+      break;
+   }
 
-    if($error):
+   if($error):
 ?>
 <div class="error">
 <?php echo $error; ?>
