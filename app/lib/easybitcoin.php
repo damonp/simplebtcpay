@@ -110,6 +110,7 @@ class Bitcoin {
     }
 
     function __call($method, $params) {
+
         $this->status       = null;
         $this->error        = null;
         $this->raw_response = null;
@@ -156,6 +157,7 @@ class Bitcoin {
         // Execute the request and decode to an array
         $this->raw_response = curl_exec($curl);
         $this->response     = json_decode($this->raw_response, TRUE);
+        //error_log('this->response: '. print_r($this->response,true));
 
         // If the status is not 200, something is wrong
         $this->status = curl_getinfo($curl, CURLINFO_HTTP_CODE);

@@ -22,5 +22,8 @@
 
    $helper = new Helper($db, $api);
 
-   $exch_rate = (string) new ExchRate();
+   //if(!defined('SBTCP_CMD') && SBTCP_CMD != true)  {
+      $exch_rate = (string) new ExchRate();
+   //}
+
 
