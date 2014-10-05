@@ -86,9 +86,8 @@ class CoindRPC extends API
                             $final_balance = $final_balance + $txn['amount'];
                         break;
                         case('send'):
-                            //- is amount +/- here? do we need do subtract or add negative?
                             $total_sent = $addr_hist['total_sent'] += $txn['amount'];
-                            $balance = $balance - $txn['amount'];
+                            $balance = $balance + $txn['amount'];
 
                             //- can we trust final balance here?  do we need more history
                             $final_balance = $final_balance + $txn['amount'];
