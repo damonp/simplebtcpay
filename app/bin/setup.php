@@ -90,14 +90,14 @@ CREATE TABLE `orders` (
     `rowid`    INTEGER PRIMARY KEY AUTOINCREMENT,
     `oid`   NUMERIC NOT NULL UNIQUE,
     `total` NUMERIC,
-    `email` TEXT,
+    `email` varchar(100),
     `desc`  NUMERIC,
-    `status`    TEXT,
+    `status`    varchar(10),
     `btc_usd`   NUMERIC,
     `tot_usd`   NUMERIC,
     `tot_drk`   NUMERIC,
-    `address`   TEXT,
-    `secret`    TEXT NOT NULL,
+    `address`   varchar(50),
+    `secret`    varchar(50) NOT NULL,
     `t_stamp`   INTEGER,
     `last_update`   TEXT
 );
@@ -139,6 +139,76 @@ END_SQL;
 CREATE TRIGGER orders_trigger_au AFTER UPDATE ON orders
  BEGIN
   UPDATE orders SET last_update = DATETIME('NOW', 'localtime')  WHERE rowid = new.rowid;
+ END;
+END_SQL;
+
+        $qry = $db->prepare(str_replace(array("\n", "   ", "  "), " ", $sql));
+        if($qry->execute()) echo chr(27)."[01;32m"."OK".chr(27)."[0m\n";
+        else    echo chr(27)."[02;31m"."FAILED".chr(27)."[0m\n";
+        //echo $sql."\n";
+    }
+
+    //- create walletnotify table if necessary
+    $sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='walletnotify';";
+    $qry = $db->prepare($sql);
+    $qry->execute();
+
+    if(!$res = $qry->fetch()) {
+        echo "Creating ".chr(27)."[01;36m"."walletnotify".chr(27)."[0m table: ";
+
+        $sql = <<< END_SQL
+CREATE TABLE "walletnotify" 
+(
+
+ `rowid` integer PRIMARY KEY NOT NULL,
+ "txid" varchar(100) NOT NULL  UNIQUE ,
+ "tot_amt" NUMERIC, "tot_fee" NUMERIC,
+ "confirmations" INTEGER,
+ "comment" varchar(50),
+ "blocktime" varchar(20),
+ "account" varchar(50),
+ "address" varchar(50),
+ "category" varchar(20),
+ "amount" NUMERIC,
+ "fee" NUMERIC,
+ "last_update" VARCHAR DEFAULT CURRENT_TIMESTAMP
+);
+END_SQL;
+
+        $qry = $db->prepare(str_replace(array("\n", "   ", "  "), " ", $sql));
+        if($qry->execute()) echo chr(27)."[01;32m"."OK".chr(27)."[0m\n";
+        else    echo chr(27)."[02;31m"."FAILED".chr(27)."[0m\n";
+
+        echo "Creating ".chr(27)."[01;36m"."walletnotify".chr(27)."[0m idx_walletnotify_txid:  ";
+
+        $sql = <<< END_SQL
+CREATE  INDEX "main"."idx_walletnotify_txid" ON "walletnotify" ("txid" ASC);
+END_SQL;
+
+        //$qry = $db->prepare(str_replace(array("\n", "   ", "  "), " ", $sql));
+        $qry = $db->prepare($sql);
+        if($qry->execute()) echo chr(27)."[01;32m"."OK".chr(27)."[0m\n";
+        else    echo chr(27)."[02;31m"."FAILED".chr(27)."[0m\n";
+
+        echo "Creating ".chr(27)."[01;36m"."walletnotify".chr(27)."[0m walletnotify_trigger_ai:  ";
+
+        $sql = <<< END_SQL
+CREATE TRIGGER walletnotify_trigger_ai AFTER INSERT ON walletnotify
+ BEGIN
+  UPDATE walletnotify SET last_update = DATETIME('NOW', 'localtime')  WHERE rowid = new.rowid;
+ END;
+END_SQL;
+
+        $qry = $db->prepare(str_replace(array("\n", "   ", "  "), " ", $sql));
+        if($qry->execute()) echo chr(27)."[01;32m"."OK".chr(27)."[0m\n";
+        else    echo chr(27)."[02;31m"."FAILED".chr(27)."[0m\n";
+
+        echo "Creating ".chr(27)."[01;36m"."walletnotify".chr(27)."[0m walletnotify_trigger_au:  ";
+
+        $sql = <<< END_SQL
+CREATE TRIGGER walletnotify_trigger_au AFTER UPDATE ON walletnotify
+ BEGIN
+  UPDATE walletnotify SET last_update = DATETIME('NOW', 'localtime')  WHERE rowid = new.rowid;
  END;
 END_SQL;
 
