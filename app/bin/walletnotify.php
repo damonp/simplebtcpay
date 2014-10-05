@@ -114,9 +114,10 @@
 
         $address = $txnhead['address'];
         $order = Helper::get_order($address, 'address');
-        error_log('walletnotify.order: '. print_r($order,true));
+
         if($order)  {
             $history = Helper::$api->get_address_history($address);
+            error_log('walletnotify.order: '. print_r($order,true));
             error_log('walletnotify.history: '. print_r($history,true));
 
             $n_tx = $history->n_tx;
@@ -150,7 +151,7 @@
             }   else    {
                 Helper::walletnotify_email($txnhead);
 
-                error_log('WalletNofify: ERROR completing order')
+                error_log('WalletNofify: ERROR completing order');
                 error_log('balance: '. print_r($balance,true));
                 error_log('total: '. print_r($total,true));
                 error_log('total_received: '. print_r($total_received,true));

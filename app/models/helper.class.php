@@ -262,20 +262,20 @@ class Helper
         $tmpl = file_get_contents(SBTCP_PATH.'/style/tmpl/email.notify.tmpl.html');
 
         foreach($txnhead as $key => $val)   {
-            $map['{'.str_replace(':', '', $key).'}'] = $val;
+            $map['{'.$key.'}'] = $val;
         }
 
         $map['{timestamp}'] = date('Y-m-d H:i:s', SBTCP_GLOBAL_TIMESTAMP);
 
         $html = str_replace(array_keys($map), array_values($map), $tmpl);
 
-        $txid_short = substr($txnhead[':txid'], 0, 4).' .. '.substr($txnhead[':txid'], -4);
-        $msg = "=WNotify=\ntxid: ".$txid_short."\nAmt : ".$txnhead[':amount'].
-                "\nCmnt: ".$txnhead[':comment'].
-                "\nAcct: ".$txnhead[':account'].
-                "\nConf: ".$txnhead[':confirmations'].
-                "\nCat : ".$txnhead[':category'].
-                "\nAddr: ".$txnhead[':address'].
+        $txid_short = substr($txnhead['txid'], 0, 4).' .. '.substr($txnhead['txid'], -4);
+        $msg = "=WNotify=\ntxid: ".$txid_short."\nAmt : ".$txnhead['amount'].
+                "\nCmnt: ".$txnhead['comment'].
+                "\nAcct: ".$txnhead['account'].
+                "\nConf: ".$txnhead['confirmations'].
+                "\nCat : ".$txnhead['category'].
+                "\nAddr: ".$txnhead['address'].
                 "";
 
         //- send to carrier's email to SMS gateway if configured
