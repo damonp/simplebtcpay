@@ -88,7 +88,7 @@
                                 ':confirmations'=> $txninfo['confirmations'],
                                 ':comment'  => $txninfo['comment'],
                                 ':blocktime'=> $txninfo['blocktime'],
-                                ':acount'   => $details['account'],
+                                ':account'  => $details['account'],
                                 ':address'  => $details['address'],
                                 ':category' => $details['category'],
                                 ':amount'   => $details['amount'],
