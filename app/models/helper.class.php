@@ -261,14 +261,27 @@ class Helper
         $tmpl = file_get_contents('../style/tmpl/email.notify.tmpl.html');
 
         foreach($txnhead as $key => $val)   {
-            $key = str_replace(':', '', $key);
-            $map['{'.$key.'}'] = $val;
+            $map['{'.str_replace(':', '', $key).'}'] = $val;
         }
 
         $map['{timestamp}'] = date('Y-m-d H:i:s', SBTCP_GLOBAL_TIMESTAMP);
 
         $html = str_replace(array_keys($map), array_values($map), $tmpl);
 
-        return Helper::send_email($html, 'WalletNotify', $order->email);
+        $msg = "=WNotify=\ntxid:".$txninfo['txid']."\nAmt :".$txninfo['amount'].
+                "\nCmnt:".$txninfo['comment'].
+                "\nAcct:".$txninfo['confirmations'].
+                "\nConf:".$txninfo['confirmations'].
+                "\nConf:".$txninfo['confirmations'].
+                "\nCat :".$details['category'].
+                "\nAddr:".$details['address'].
+                "\n.";
+
+        //- send to carrier's email to SMS gateway if configured
+        if(defined(SBTCP_SMS_ADMIN) && filter_var(SBTCP_SMS_ADMIN, FILTER_VALIDATE_EMAIL))  {
+            Helper::send_email_sms($msg, SBTCP_SMS_ADMIN);
+        }
+
+        return Helper::send_email($html, 'SBTCP:WalletNotify', SBTCP_EMAIL_ADMIN);;
     }
 }

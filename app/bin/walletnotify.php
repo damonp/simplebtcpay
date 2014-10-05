@@ -1,7 +1,7 @@
 <?php
 /*
     darkcoin.conf:
-        walletnotify=/usr/bin/php -f /srv/drkmkt/app/bin/walletnotify.php %s
+        walletnotify=/usr/bin/php -f /srv/path/to/drkmkt/app/bin/walletnotify.php %s
 
  */
     define('SBTCP_CMD', true);
@@ -13,11 +13,11 @@
     include_once('app/lib/main.inc.php');
 
     if(2==$argc)    {
-        $walletinfo = $api->coind->getinfo();
+        $getinfo = $api->coind->getinfo();
         $txninfo = $api->coind->gettransaction($argv[1]);
 
         error_log('=== WALLETNOTIFY ===');
-        error_log('walletinfo: '. print_r($walletinfo,true));
+        error_log('getinfo: '. print_r($getinfo,true));
         error_log('txninfo: '. print_r($txninfo,true));
 /*
 (
