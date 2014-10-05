@@ -101,7 +101,7 @@
                 }
 
                 error_log('walletnotify.vars: '. print_r($vars,true));
-//                $qry->execute();
+                $qry->execute();
             }
 
         }  catch (PDOException $e) {
@@ -111,7 +111,7 @@
             error_log('vars: '. print_r($vars,true));
             error_log('sql: '. print_r($sql,true));
         }
-error_log('address: '. print_r($txnhead['address'],true));
+
         $address = $txnhead['address'];
         $order = Helper::get_order($address, 'address');
         error_log('walletnotify.order: '. print_r($order,true));
@@ -128,39 +128,37 @@ error_log('address: '. print_r($txnhead['address'],true));
 
             /*
             error_log('walletnotify.balance: '. print_r($balance,true));
+            error_log('walletnotify.total: '. print_r($total,true));
             error_log('walletnotify.total_received: '. print_r($total_received,true));
             error_log('walletnotify.total_sent: '. print_r($total_sent,true));
             error_log('walletnotify.history: '. print_r($history,true));
             error_log('walletnotify.received_address: '. print_r($received_address,true));
+            error_log('walletnotify.order: '. print_r($order,true));
             */
 
-            $order = Helper::get_order($oid);
-            $total = round(floatval($order->total), 8);
+            //$address_info = Helper::$api->coind->validateaddress($address);
+            if($n_tx == 1 && $final_balance == $total_received && $total_received >= $total && $total_sent == 0) {
+                //- payment received, not yet forwarded on.
 
-            //error_log('order: '. print_r($order,true));
-            //error_log('total: '. print_r($total,true));
-
-            if($received_address != SBTCP_RECEIVE_ADDR && $received_address != $order->address)  {
-
-                $out = array("return"=>false,"message"=>"Transaction Not Found","history"=>$history);
-                error_log('received_address does not match SBTCP_RECEIVE_ADDR');
-                error_log('received_address: '.$received_address);
-                error_log('SBTCP_RECEIVE_ADDR: '.SBTCP_RECEIVE_ADDR);
+                $message = Helper::complete_order($oid);
 
             }   else if($n_tx == 2 && $total_sent == $total_received && $final_balance == 0 && $total_sent >= $total && $total_sent > 0) {
+                //- payment received, already forwarded
 
                 $message = Helper::complete_order($oid);
-                $out = array("return"=>true,"balance"=>number_format($total_sent, 8),'message'=>$message);
-
-            }   else if($balance > 0 && $balance >= $total) {
-
-                $message = Helper::complete_order($oid);
-                $out = array("return"=>true,"balance"=>number_format($balance, 8),'message'=>$message);
 
             }   else    {
+                Helper::walletnotify_email($txnhead);
 
-                $out = array("return"=>false,"message"=>"Transaction Not Found","history"=>$history);
-
+                error_log('WalletNofify: ERROR completing order')
+                error_log('balance: '. print_r($balance,true));
+                error_log('total: '. print_r($total,true));
+                error_log('total_received: '. print_r($total_received,true));
+                error_log('total_sent: '. print_r($total_sent,true));
+                error_log('history: '. print_r($history,true));
+                error_log('received_address: '. print_r($received_address,true));
+                error_log('order: '. print_r($order,true));
+                error_log('['.__LINE__.'] : '.__FILE__);
             }
         }   else    {
             //- walletnotify but no order
