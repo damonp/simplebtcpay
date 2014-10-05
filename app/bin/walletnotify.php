@@ -1,7 +1,7 @@
 <?php
 /*
     darkcoin.conf:
-        walletnotify=/usr/bin/php -f /srv/path/to/drkmkt/app/bin/walletnotify.php %s
+        walletnotify=/usr/bin/php -f /srv/drkmkt/app/bin/walletnotify.php %s
 
  */
     define('SBTCP_CMD', true);
@@ -13,11 +13,11 @@
     include_once('app/lib/main.inc.php');
 
     if(2==$argc)    {
-        $getinfo = $api->coind->getinfo();
+        $walletinfo = $api->coind->getinfo();
         $txninfo = $api->coind->gettransaction($argv[1]);
 
         error_log('=== WALLETNOTIFY ===');
-        error_log('getinfo: '. print_r($getinfo,true));
+        error_log('walletinfo: '. print_r($walletinfo,true));
         error_log('txninfo: '. print_r($txninfo,true));
 /*
 (
@@ -70,7 +70,7 @@
 */
         try {
             //- Keep this flat for now.  No need to join for data always queried together.
-            $sql =  "INSERT INTO walletnotify ".
+            $sql =  "REPLACE INTO walletnotify ".
                     "(`txid`, `tot_amt`, `tot_fee`, `confirmations`, `comment`, `blocktime`, ".
                     "`address`, `account`, `category`, `amount`, `fee`) ".
                     "VALUES ".
@@ -82,29 +82,27 @@
 
             foreach($txninfo['details'] as $id => $details) {
                 $vars = array(
-                                ':txid'     => $txninfo['txid'],
-                                ':tot_amt'  => $txninfo['amount'],
-                                ':tot_fee'  => $txninfo['fee'],
-                                ':confirmations'=> $txninfo['confirmations'],
-                                ':comment'  => $txninfo['comment'],
-                                ':blocktime'=> $txninfo['blocktime'],
-                                ':account'  => $details['account'],
-                                ':address'  => $details['address'],
-                                ':category' => $details['category'],
-                                ':amount'   => $details['amount'],
-                                ':fee'      => $details['fee']
+                                'txid'     => $txninfo['txid'],
+                                'tot_amt'  => $txninfo['amount'],
+                                'tot_fee'  => $txninfo['fee'],
+                                'confirmations'=> $txninfo['confirmations'],
+                                'comment'  => $txninfo['comment'],
+                                'blocktime'=> $txninfo['blocktime'],
+                                'account'  => $details['account'],
+                                'address'  => $details['address'],
+                                'category' => $details['category'],
+                                'amount'   => $details['amount'],
+                                'fee'      => $details['fee']
                             );
                 if(!$txnhead)   $txnhead = $vars;
 
                 foreach($vars as $key => $val)  {
-                    $qry->bindValue($key, $val);
+                    $qry->bindValue(':'.$key, $val);
                 }
 
                 error_log('walletnotify.vars: '. print_r($vars,true));
-                $qry->execute();
+//                $qry->execute();
             }
-
-            Helper::walletnotify_email($txnhead);
 
         }  catch (PDOException $e) {
             error_log('error: '. print_r($e->getMessage(),true));
@@ -113,10 +111,64 @@
             error_log('vars: '. print_r($vars,true));
             error_log('sql: '. print_r($sql,true));
         }
+error_log('address: '. print_r($txnhead['address'],true));
+        $address = $txnhead['address'];
+        $order = Helper::get_order($address, 'address');
+        error_log('walletnotify.order: '. print_r($order,true));
+        if($order)  {
+            $history = Helper::$api->get_address_history($address);
+            error_log('walletnotify.history: '. print_r($history,true));
+
+            $n_tx = $history->n_tx;
+            $balance = $history->balance;
+            $final_balance = $history->final_balance;
+            $received_address = $history->address;
+            $total_received = $history->total_received;
+            $total_sent = $history->total_sent;
+
+            /*
+            error_log('walletnotify.balance: '. print_r($balance,true));
+            error_log('walletnotify.total_received: '. print_r($total_received,true));
+            error_log('walletnotify.total_sent: '. print_r($total_sent,true));
+            error_log('walletnotify.history: '. print_r($history,true));
+            error_log('walletnotify.received_address: '. print_r($received_address,true));
+            */
+
+            $order = Helper::get_order($oid);
+            $total = round(floatval($order->total), 8);
+
+            //error_log('order: '. print_r($order,true));
+            //error_log('total: '. print_r($total,true));
+
+            if($received_address != SBTCP_RECEIVE_ADDR && $received_address != $order->address)  {
+
+                $out = array("return"=>false,"message"=>"Transaction Not Found","history"=>$history);
+                error_log('received_address does not match SBTCP_RECEIVE_ADDR');
+                error_log('received_address: '.$received_address);
+                error_log('SBTCP_RECEIVE_ADDR: '.SBTCP_RECEIVE_ADDR);
+
+            }   else if($n_tx == 2 && $total_sent == $total_received && $final_balance == 0 && $total_sent >= $total && $total_sent > 0) {
+
+                $message = Helper::complete_order($oid);
+                $out = array("return"=>true,"balance"=>number_format($total_sent, 8),'message'=>$message);
+
+            }   else if($balance > 0 && $balance >= $total) {
+
+                $message = Helper::complete_order($oid);
+                $out = array("return"=>true,"balance"=>number_format($balance, 8),'message'=>$message);
+
+            }   else    {
+
+                $out = array("return"=>false,"message"=>"Transaction Not Found","history"=>$history);
+
+            }
+        }   else    {
+            //- walletnotify but no order
+            Helper::walletnotify_email($txnhead);
+        }
     }
 
-
     error_log('=== END WALLETNOTIFY ===');
-    echo chr(27)."[01;32m"."walletnotify Complete".chr(27)."[0m\n";
+    echo chr(27)."[01;32m"."WalletNofify Complete".chr(27)."[0m\n";
 
     chdir($cwd);

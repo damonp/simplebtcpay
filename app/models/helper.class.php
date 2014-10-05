@@ -81,11 +81,12 @@ class Helper
         return mail($to, null, $msg."\n.", $headers);
     }
 
-    public static function get_order($oid)
+    public static function get_order($oid, $where='oid')
     {
-        $sql =  "SELECT * FROM orders WHERE oid = :oid";
+        $sql = "SELECT * FROM orders WHERE `$where` = :$where";
+
         $qry = Helper::$db->prepare($sql);
-        $qry->bindValue(':oid', $oid);
+        $qry->bindValue(':'.$where, $oid);
         $qry->execute();
 
         return $qry->fetch(PDO::FETCH_OBJ);
@@ -104,7 +105,7 @@ class Helper
         //if($order->email != '') $msg .= 'Email: '.print_r($order->email, true)."\n";
         if($order->desc != '') $msg .= 'Item: '. print_r($order->desc, true)."\n";
 
-        $tmpl = file_get_contents('../style/tmpl/email.admin.tmpl.html');
+        $tmpl = file_get_contents(SBTCP_PATH.'/style/tmpl/email.admin.tmpl.html');
 
         if(defined('SBTCP_CALLBACK'))   {
             $filters = array(
@@ -178,7 +179,7 @@ class Helper
 
         $history = Helper::$api->get_address_history($order->address);
 
-        $tmpl = file_get_contents('../style/tmpl/email.user.tmpl.html');
+        $tmpl = file_get_contents(SBTCP_PATH.'/style/tmpl/email.user.tmpl.html');
 
         if(defined('SBTCP_CALLBACK'))   {
             $filters = array(
@@ -258,7 +259,7 @@ class Helper
     {
         if($txnhead['confirmations'] > 0)   return;
 
-        $tmpl = file_get_contents('../style/tmpl/email.notify.tmpl.html');
+        $tmpl = file_get_contents(SBTCP_PATH.'/style/tmpl/email.notify.tmpl.html');
 
         foreach($txnhead as $key => $val)   {
             $map['{'.str_replace(':', '', $key).'}'] = $val;
@@ -268,17 +269,17 @@ class Helper
 
         $html = str_replace(array_keys($map), array_values($map), $tmpl);
 
-        $msg = "=WNotify=\ntxid:".$txninfo['txid']."\nAmt :".$txninfo['amount'].
-                "\nCmnt:".$txninfo['comment'].
-                "\nAcct:".$txninfo['confirmations'].
-                "\nConf:".$txninfo['confirmations'].
-                "\nConf:".$txninfo['confirmations'].
-                "\nCat :".$details['category'].
-                "\nAddr:".$details['address'].
-                "\n.";
+        $txid_short = substr($txnhead[':txid'], 0, 4).' .. '.substr($txnhead[':txid'], -4);
+        $msg = "=WNotify=\ntxid: ".$txid_short."\nAmt : ".$txnhead[':amount'].
+                "\nCmnt: ".$txnhead[':comment'].
+                "\nAcct: ".$txnhead[':account'].
+                "\nConf: ".$txnhead[':confirmations'].
+                "\nCat : ".$txnhead[':category'].
+                "\nAddr: ".$txnhead[':address'].
+                "";
 
         //- send to carrier's email to SMS gateway if configured
-        if(defined(SBTCP_SMS_ADMIN) && filter_var(SBTCP_SMS_ADMIN, FILTER_VALIDATE_EMAIL))  {
+        if(defined('SBTCP_SMS_ADMIN') && filter_var(SBTCP_SMS_ADMIN, FILTER_VALIDATE_EMAIL))  {
             Helper::send_email_sms($msg, SBTCP_SMS_ADMIN);
         }
 
