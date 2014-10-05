@@ -40,7 +40,7 @@
    $tot_drk = $tot_drk != '' ? $tot_drk:0.0;
    $tot_usd = $tot_usd != '' ? $tot_usd:0.50;
 
-   if($odesc == '' && $oid == '' && $tot_usd = 0.50 && $tot_drk == 0.0) {
+   if($odesc == '' && $_REQUEST['oid'] == '' && $tot_usd = 0.50 && $tot_drk == 0.0) {
       if(file_exists(SBTCP_PATH.'/app/data/tips.php'))   {
          include(SBTCP_PATH.'/app/data/tips.php');
          srand((double)microtime()*1000000);
