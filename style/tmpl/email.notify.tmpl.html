@@ -26,9 +26,9 @@ h4,h5   {margin:1em auto;}
 <div id="table">
   <div class="row even">
     <div class="cell head">TXID</div>
-    <div class="cell value">{txid}</div>
+    <div class="cell value"><a href="http://explorer.darkcoin.io/tx/{trans_hash}">{txid}</a></div>
   </div>
-  <div class="row">
+  <div class="row header">
     <div class="cell head">TotAmt</div>
     <div class="cell value">{tot_amt} DRK</div>
   </div>
@@ -36,35 +36,35 @@ h4,h5   {margin:1em auto;}
     <div class="cell head">TotFee</div>
     <div class="cell value">{tot_fee} DRK</div>
   </div>
-  <div class="row even">
-    <div class="cell head">Confirmations</div>
+  <div class="row">
+    <div class="cell head">Confirms</div>
     <div class="cell value">{confirmations}</div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head">Comment</div>
     <div class="cell value">{comment}</div>
   </div>
-  <div class="row even">
+  <div class="row">
     <div class="cell head">Blocktime</div>
     <div class="cell value">{blocktime}</div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head">Account</div>
     <div class="cell value">{account}</div>
   </div>
-  <div class="row even">
+  <div class="row">
     <div class="cell head">Address</div>
     <div class="cell value"><a href="http://explorer.darkcoin.io/address/{address}">{address}</a></div>
   </div>
-  <div class="row header">
+  <div class="row even">
     <div class="cell head">Category</div>
     <div class="cell value">{category}</div>
   </div>
-  <div class="row even">
+  <div class="row">
     <div class="cell head">Amount0</div>
     <div class="cell value">{amount}</div>
   </div>
-  <div class="row">
+  <div class="row even">
     <div class="cell head">Fee0</div>
     <div class="cell value">{fee}</div>
   </div>
