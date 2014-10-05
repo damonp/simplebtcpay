@@ -157,6 +157,7 @@ class Helper
         $map['{total}'] = number_format($order->total, 8);
         $map['{tot_usd}'] = number_format($order->tot_usd, 2);
         $map['{timestamp}'] = date('Y-m-d H:i:s', SBTCP_GLOBAL_TIMESTAMP);
+        $map['{hostname}'] = php_uname('n');
         //$map['{callback}'] = defined('SBTCP_CALLBACK') ? 'true':'false';
 
         $html = str_replace(array_keys($map), array_values($map), $tmpl);
@@ -265,12 +266,14 @@ class Helper
             $map['{'.$key.'}'] = $val;
         }
 
+        $map['{hostname}'] = php_uname('n');
         $map['{timestamp}'] = date('Y-m-d H:i:s', SBTCP_GLOBAL_TIMESTAMP);
 
         $html = str_replace(array_keys($map), array_values($map), $tmpl);
 
         $txid_short = substr($txnhead['txid'], 0, 4).' .. '.substr($txnhead['txid'], -4);
-        $msg = "=WNotify=\ntxid: ".$txid_short."\nAmt : ".$txnhead['amount'].
+        $msg = "=WNotify=\nTxID: ".$txid_short.
+                "\nAmt : ".$txnhead['amount'].
                 "\nCmnt: ".$txnhead['comment'].
                 "\nAcct: ".$txnhead['account'].
                 "\nConf: ".$txnhead['confirmations'].
