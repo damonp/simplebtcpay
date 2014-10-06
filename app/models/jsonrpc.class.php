@@ -108,7 +108,7 @@ class CoindRPC extends API
                 error_log('Address invalid: '.$address);
                 error_log('['.__LINE__.'] : '.__FILE__);
             }
-error_log('get_address_history.addr_hist: '. print_r($addr_hist,true));
+
             return $addr_hist;
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
@@ -159,10 +159,10 @@ error_log('get_address_history.addr_hist: '. print_r($addr_hist,true));
     {
         try {
             //- remote api query
-            $txn = $this->api->get_transaction($hash);
+            //$txn = $this->api->get_transaction($hash);
 
             //- jsonrpc query
-            //$txn = $this->coind->gettransaction($hash);
+            $txn = $this->coind->gettransaction($hash);
             return $txn;
         } catch (Exception $e) {
             error_log('error: '. print_r($e->getMessage(),true));
