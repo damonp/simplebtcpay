@@ -46,6 +46,7 @@
          srand((double)microtime()*1000000);
          $odesc = array_rand($tips);
          $tot_usd = $tips[$odesc];
+         $tot_drk = $tot_usd / $exch_rate;
          if($tot_usd == EXCH_RATE)  {
             $tot_usd = $tot_usd <= 0 ? 1.0:$tot_usd;
             $tot_drk = $tot_usd;
