@@ -120,6 +120,7 @@
             error_log('walletnotify.order: '. print_r($order,true));
             error_log('walletnotify.history: '. print_r($history,true));
 
+            $oid = $order->oid;
             $n_tx = $history->n_tx;
             $balance = $history->balance;
             $final_balance = $history->final_balance;
@@ -127,15 +128,15 @@
             $total_received = $history->total_received;
             $total_sent = $history->total_sent;
 
-            /*
+            /**/
+            error_log('walletnotify.oid: '. print_r($oid,true));
+            error_log('walletnotify.n_tx: '. print_r($n_tx,true));
             error_log('walletnotify.balance: '. print_r($balance,true));
             error_log('walletnotify.total: '. print_r($total,true));
             error_log('walletnotify.total_received: '. print_r($total_received,true));
             error_log('walletnotify.total_sent: '. print_r($total_sent,true));
-            error_log('walletnotify.history: '. print_r($history,true));
             error_log('walletnotify.received_address: '. print_r($received_address,true));
-            error_log('walletnotify.order: '. print_r($order,true));
-            */
+            /**/
 
             //$address_info = Helper::$api->coind->validateaddress($address);
             if($n_tx == 1 && $final_balance == $total_received && $total_received >= $total && $total_sent == 0) {
@@ -168,6 +169,6 @@
     }
 
     error_log('=== END WALLETNOTIFY ===');
-    echo chr(27)."[01;32m"."WalletNofify Complete".chr(27)."[0m\n";
+    //echo chr(27)."[01;32m"."WalletNofify Complete".chr(27)."[0m\n";
 
     chdir($cwd);
