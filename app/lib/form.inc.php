@@ -43,8 +43,11 @@
    if($odesc == '' && $_REQUEST['oid'] == '' && $tot_usd = 0.50 && $tot_btc == 0.0) {
       if(file_exists(SBTCP_PATH.'/app/data/tips.php'))   {
          include(SBTCP_PATH.'/app/data/tips.php');
+
          srand((double)microtime()*1000000);
+
          $odesc = array_rand($tips);
+
          $tot_usd = $tips[$odesc];
          $tot_btc = $tot_usd / $exch_rate;
          if($tot_usd == EXCH_RATE)  {

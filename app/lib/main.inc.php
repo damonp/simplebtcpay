@@ -13,7 +13,7 @@
 
 
       }  else  {
-         $db = new PDO('sqlite:'.SBTCP_PATH.'/app/data/drkmkt.sqlite3');
+         $db = new PDO('sqlite:'.SBTCP_PATH.'/app/data/simplebtcpay.sqlite3');
          $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       }
 
