@@ -1,6 +1,6 @@
 <?php
 
-   require_once('app/models/helper.class.php');
+   require_once('app/lib/helper.class.php');
    require_once('app/models/api.class.php');
    require_once('app/models/address_history.class.php');
    require_once('app/models/trans_ref.class.php');
@@ -32,6 +32,10 @@
       case('blockcypher'):
          require_once('app/models/blockcypher.class.php');
          $api = new Blockcypher();
+      break;
+      case('blockio'):
+         require_once('app/models/blockio.class.php');
+         $api = new Block_Io();
       break;
       case('jsonrpc'):
          require_once('app/models/jsonrpc.class.php');
