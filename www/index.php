@@ -20,8 +20,13 @@
     <li>Open Source [ <a href="/download.php">download</a> ]</li>
     <li>Live BTC/USD quotes from multiple APIs; <a href="http://bitcoinaverage">BitcoinAverage</a>, <a href="http://coindesk.com">Coindesk BPI</a>, 
         <a href="http://coinbase.com">Coinbase</a> and others.</li>
-    <li>On-the-fly BTC forwarding addresses generated from <a href="http://blockchain.info">Blochain.io</a> or
-        <a href="http://dev.blockcypher.com/reference.html#payments">BlockCypher</a></li>
+    <li>Dynamically created BTC forwarding addresses generated from multiple API vendors:
+        <ul>
+            <li><a href="http://blockchain.info">Blockhain.info</a></li>
+            <li><a href="http://dev.blockcypher.com/reference.html#payments">BlockCypher</a></li>
+            <li><a href="http://block.io/api">Block.io</a></li>
+        </ul>
+    </li>
     <li>Configurable minimum payment amount. [Default: 0.001B]</li>
     </ul>
 
